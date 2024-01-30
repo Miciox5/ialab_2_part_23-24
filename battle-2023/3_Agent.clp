@@ -190,7 +190,15 @@
 )
 
 
+(defrule start1
+	(status (step ?s)(currently running))
+	
 
+
+=>
+	; (assert (exec (step ?s) (action guess) (x 1) (y 4)))
+	(pop-focus)
+)
 
 
 (defrule print-what-i-know-since-the-beginning

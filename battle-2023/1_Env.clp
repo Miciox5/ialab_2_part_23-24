@@ -31,7 +31,7 @@
 
 ;;navi verticali
 (deftemplate boat-ver
-        (slot name)
+    (slot name)
 	(multislot xs)
 	(slot y)
 	(slot size)
@@ -142,13 +142,14 @@
 (defrule hit-boat-ver-trace
 
 	(cell (x ?x) (y ?y) (content hit-boat))
-        (not (considered ?x ?y))
+    (not (considered ?x ?y))
 	?b <-(boat-ver (xs $? ?x $?) (y ?y) (size ?s) (status $?prima safe $?dopo))
 =>
 	(modify ?b (status ?prima hit ?dopo))
         (assert (considered ?x ?y))
 )
 
+;;nave orizzontale affondata
 (defrule sink-boat-hor
 
 	(cell (x ?x) (y ?y) (content hit-boat))
@@ -177,7 +178,7 @@
 
 	(assert (sink-boat ?n ))
 )
-
+;;nave verticale affondata
 (defrule sink-boat-ver
 
 	(cell (x ?x) (y ?y) (content hit-boat))
