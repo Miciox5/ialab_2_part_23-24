@@ -1,0 +1,12 @@
+(load 0_Main.clp)
+(load 1_Env.clp)
+(load case1_obs_2.clp)
+(load 3_Agent.clp)
+(load 4_Init.clp)
+(load 5_Delib.clp)
+(load 6_Action.clp)
+(reset)
+(run)
+(facts AGENT)
+(facts DELIBERATION)
+

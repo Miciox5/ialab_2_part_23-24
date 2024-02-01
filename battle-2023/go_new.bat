@@ -3,5 +3,5 @@
 (load case1_obs_2.clp)
 (load 3_Agent.clp)
 (reset)
-(run)
+@REM (run)
 
