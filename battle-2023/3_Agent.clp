@@ -8,6 +8,7 @@
 (deftemplate cell-agent
 	(slot x)
 	(slot y)	
+	(slot content (allowed-values none water boat hit-boat))
 	(slot status (allowed-values none guess fire unguess))
 )
 
@@ -35,23 +36,23 @@
 ;------------ REGOLE -----------------------------
 
 (defrule go-on-init-first (declare (salience 30))
-  ?f <- (first-pass-to-init)
+  	?f <- (first-pass-to-init)
 =>
-  (retract ?f)
-  (focus INIT)
+  	(retract ?f)
+  	(focus INIT)
 )
 
 (defrule go-on-deliberate (declare (salience 20))
-(status (step ?s)(currently running))
+	(status (step ?s)(currently running))
 =>
-  (focus DELIBERATION)
+	(focus DELIBERATION)
 )
 
 (defrule go-on-action (declare (salience 10))
-  (status (step ?s)(currently running))	
+	(status (step ?s)(currently running))	
 =>
 	; (retract (assert-deliberate))
-  (focus ACTION)
+	(focus ACTION)
 )
 
 (defrule print-what-i-know-since-the-beginning

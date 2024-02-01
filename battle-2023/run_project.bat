@@ -6,7 +6,14 @@
 (load 5_Delib.clp)
 (load 6_Action.clp)
 (reset)
+@REM Il watch focus è molto utile per capire l'esecuzione dei moduli
+@REM nello stack.
+(watch focus)
+(watch rules)
 (run)
+@REM Il comando dribble-on serve per mettere il risultato
+@REM delle prossime esecuzioni nel file result.txt
+(dribble-on result.txt)
 (facts AGENT)
-(facts DELIBERATION)
+(exit)
 

@@ -2,9 +2,9 @@
 
 ;------------ FATTI -----------------------------
 
-(defrule prova 
-  ?f <- (cell-agent (x 0)(y 0))
-=>
-  (modify ?f (status guess))
-  (pop-focus)
-)
+; (defrule prova 
+;   ?f <- (cell-agent (x 0)(y 0))
+; =>
+;   (modify ?f (status guess))
+;   (pop-focus)
+; )
