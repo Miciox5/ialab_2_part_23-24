@@ -1,12 +1,16 @@
 (defmodule ACTION (import AGENT ?ALL) (import MAIN ?ALL) (import ENV ?ALL) (export ?ALL))
 
 ;------------ REGOLE -----------------------------
-
+(defrule prova 
+   =>
+   (printout t "sono qua" crlf)
+   (pop-focus)
+)
 ;------------ FATTI -----------------------------
 
-(deffacts assert1
-    (assert-action)
-)
+; (deffacts assert1
+;     (assert-action)
+; )
 ;;emettono azioni di exec casuali (non fanno niente così)
 ;;fondamentale: ogni volta che viene eseguita una exec, l'importante è garantire che 
 ;;venga eseguita una (pop-focus) -> quando abbiamo deliberato l'azione in un determinato passo

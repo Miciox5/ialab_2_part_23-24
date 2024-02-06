@@ -9,7 +9,7 @@
 	(slot x)
 	(slot y)	
 	(slot content (allowed-values none water boat hit-boat))
-	(slot status (allowed-values none guess fire unguess))
+	(slot status (allowed-values none guess fire unguess know exclusion))
 )
 
 (deftemplate k-per-row-agent
@@ -22,6 +22,16 @@
 	; (slot step)
 	(slot col)
 	(slot num)
+)
+
+; definire un template per l'azione da eseguire? delib asserisce 
+; fatto, action vede il fatto e fa exec
+
+(deftemplate action
+	; (slot step)
+	(slot name)
+	(slot x)
+	(slot y)
 )
 
 

@@ -39,7 +39,9 @@
     =>
     ; NOTA: ad ora, è stato messo come status fire. 
     ;       Potrebbe essere modificarto in base ai ragionamenti.
-    (modify ?cell-to-upd (content water) (status fire))
+    ; (modify ?cell-to-upd (content water) (status fire)) 
+    (modify ?cell-to-upd (content water) (status exclusion))  
+ 
 )
 
 ;La regola serve per contrassegnare, all'inizio, tutte le caselle
@@ -52,7 +54,8 @@
     ?k-cell <- (k-cell (x ?x) (y ?y) (content ?content))
     ?cell-to-upd <- (cell-agent (x ?x) (y ?y) (content none) (status none))
 =>
-    (modify ?cell-to-upd (content ?content) (status fire))
+    ;(modify ?cell-to-upd (content ?content) (status fire)) 
+    (modify ?cell-to-upd (content ?content) (status know)) 
 )
 
 (defrule finish-init(declare (salience 80)) 
