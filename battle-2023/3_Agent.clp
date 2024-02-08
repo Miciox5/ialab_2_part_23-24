@@ -8,7 +8,7 @@
 (deftemplate cell-agent
 	(slot x)
 	(slot y)	
-	(slot content (allowed-values none water boat hit-boat))
+	(slot content (allowed-values none water left right middle top bot sub)) ;il contenuto ce lo dice la fire
 	(slot status (allowed-values none guess fire unguess know exclusion))
 )
 
@@ -23,9 +23,6 @@
 	(slot col)
 	(slot num)
 )
-
-; definire un template per l'azione da eseguire? delib asserisce 
-; fatto, action vede il fatto e fa exec
 
 (deftemplate action
 	; (slot step)
@@ -65,9 +62,9 @@
 	(focus ACTION)
 )
 
-(defrule print-what-i-know-since-the-beginning
-	(k-cell (x ?x) (y ?y) (content ?t) )
-=>
-	(printout t "I know that cell [" ?x ", " ?y "] contains " ?t "." crlf)
-)
+; (defrule print-what-i-know-since-the-beginning
+; 	(k-cell (x ?x) (y ?y) (content ?t) )
+; =>
+; 	(printout t "I know that cell [" ?x ", " ?y "] contains " ?t "." crlf)
+; )
 

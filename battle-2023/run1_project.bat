@@ -10,11 +10,13 @@
 @REM nello stack.
 (watch focus)
 (watch rules)
+(set-break game-over)
 (run)
+(run 2)
 @REM Il comando dribble-on serve per mettere il risultato
 @REM delle prossime esecuzioni nel file result.txt
-(dribble-on result.txt)
-@REM (facts MAIN)
-(facts AGENT)
+(dribble-on result1.txt)
+(focus ENV)
+(run)
+(facts)
 (exit)
-

@@ -1,16 +1,15 @@
 (defmodule ACTION (import AGENT ?ALL) (import MAIN ?ALL) (import ENV ?ALL) (export ?ALL))
 
 ;------------ REGOLE -----------------------------
-(defrule prova 
+(defrule exec-action-guess
+    (status (step ?s)(currently running))
+    ?a <- (action(name ?n)(x ?x)(y ?y))
    =>
-   (printout t "sono qua" crlf)
+   (assert (exec (step ?s) (action ?n) (x ?x) (y ?y)))
+   (retract ?a)
    (pop-focus)
 )
-;------------ FATTI -----------------------------
 
-; (deffacts assert1
-;     (assert-action)
-; )
 ;;emettono azioni di exec casuali (non fanno niente così)
 ;;fondamentale: ogni volta che viene eseguita una exec, l'importante è garantire che 
 ;;venga eseguita una (pop-focus) -> quando abbiamo deliberato l'azione in un determinato passo
