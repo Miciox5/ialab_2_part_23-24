@@ -1,8 +1,29 @@
 (defmodule ACTION (import AGENT ?ALL) (import MAIN ?ALL) (import ENV ?ALL) (export ?ALL))
 
 ;------------ REGOLE -----------------------------
-(defrule exec-action-guess
+
+; Update score di tutte le colonne di una riga
+(defrule update-scores-row (declare (salience 100))
+    ?a <- (action(name ?n)(x ?row)(y ?col))
+   ?cell-to-upd <- (cell-agent (x ?row) (y ?y) (status none) )
+   (k-per-row-agent (row ?row) (num ?nr))
+   (k-per-col-agent (col ?y) (num ?nc))
+   =>
+   (modify ?cell-to-upd (score (* ?nr ?nc)))
+)
+; Update score di tutte le righe di una colonna
+(defrule update-scores-cols (declare (salience 100))
+    ?a <- (action(name ?n)(x ?row)(y ?col))
+   ?cell-to-upd <- (cell-agent (x ?x) (y ?col) (status none) )
+   (k-per-col-agent (col ?col) (num ?nc))
+   (k-per-row-agent (row ?x) (num ?nr))
+   =>
+   (modify ?cell-to-upd (score (* ?nr ?nc)))
+)
+
+(defrule exec-action-guess (declare (salience 90))
     (status (step ?s)(currently running))
+    (moves (guesses ?ng&:(> ?ng 0)))
     ?a <- (action(name ?n)(x ?x)(y ?y))
    =>
    (assert (exec (step ?s) (action ?n) (x ?x) (y ?y)))
