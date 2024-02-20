@@ -4,7 +4,7 @@
 
 ;   Se ho top-middle-bot ho trovato un incrociatore -> aggiorno base conoscenza 
 ;   (setto gli score a 0 cosi la regola non si attiva per tutti gli altri fatti boat-agent(content incrociatore))
-(defrule find-incrociatore (declare (salience 90)) 
+(defrule find-incrociatore-ver (declare (salience 90)) 
    ?cell-middle <- (cell-agent (x ?x) (y ?y) (content middle) (score ?s&:(> ?s 0)) )
    ?cell-top-on-middle <- (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (content top)  )
    ?cell-bot-on-middle <- (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content bot)  )
@@ -15,6 +15,9 @@
    (modify ?cell-bot-on-middle (score 0))
    (retract ?incrociatore)
 )
+
+;(defrule find-incrociatore-hor)   TO DO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 ;   Se ho un sub aggiorno la base di conoscenza
 (defrule find-sottomarino (declare (salience 90)) 
    ?cell <- (cell-agent (x ?x) (y ?y) (content sub) (score ?s&:(> ?s 0)) )
@@ -59,8 +62,8 @@
    ?row <- (k-per-row-agent (row ?top-x) (num ?nr&:(> ?nr 0)) )
    ?col <- (k-per-col-agent (col ?y) (num ?nc&:(> ?nc 0)) )
    (or
-      (not (cell-agent (x ?tt-x&:(eq ?tt-x (+ ?top-x 1))) (y ?y)))
-      (cell-agent (x ?tt-x&:(eq ?tt-x (+ ?top-x 1))) (y ?y) (content water))
+      (not (cell-agent (x ?tt-x&:(eq ?tt-x (+ ?bot-x 1))) (y ?y)))
+      (cell-agent (x ?tt-x&:(eq ?tt-x (+ ?bot-x 1))) (y ?y) (content water))
    )
    =>
    (assert (action (name guess) (x ?bot-x) (y ?y)))  
