@@ -2,10 +2,35 @@
 
 ;------------ REGOLE -----------------------------
 
+;   Se ho top-middle-bot ho trovato un incrociatore -> aggiorno base conoscenza 
+;   (setto gli score a 0 cosi la regola non si attiva per tutti gli altri fatti boat-agent(content incrociatore))
+(defrule find-incrociatore (declare (salience 90)) 
+   ?cell-middle <- (cell-agent (x ?x) (y ?y) (content middle) (score ?s&:(> ?s 0)) )
+   ?cell-top-on-middle <- (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (content top)  )
+   ?cell-bot-on-middle <- (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content bot)  )
+   ?incrociatore <- (boat-agent (name incrociatore))
+   =>
+   (modify ?cell-middle (score 0))
+   (modify ?cell-top-on-middle (score 0))
+   (modify ?cell-bot-on-middle (score 0))
+   (retract ?incrociatore)
+)
+;   Se ho un sub aggiorno la base di conoscenza
+(defrule find-sottomarino (declare (salience 90)) 
+   ?cell <- (cell-agent (x ?x) (y ?y) (content sub) (score ?s&:(> ?s 0)) )
+   ?sub <- (boat-agent (name sottomarino))
+   =>
+   (modify ?cell (score 0))
+   (retract ?sub)
+)
+
+
+
+
+
 ;   Se il contenuto di una cella nota è middle, allora la cella sopra sarà top
 ;   se quella ancora sopra contiene acqua oppure non esiste(bordo)
 (defrule find-top-for-middle (declare (salience 80)) 
-   (moves (guesses ?ng&:(> ?ng 0)))
    ?cell-middle <- (cell-agent (x ?x) (y ?y) (content middle) (status know))
    ?cell-top-on-middle <- (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (content none))
    (not (cell-agent (x ?x) (y ?left-y&:(eq ?left-y (- ?y 1))) (content none)))
@@ -27,7 +52,6 @@
 ;   Se il contenuto di una cella nota è middle, allora la cella sottostante sarà bottom
 ;   se quella ancora sotto contiene acqua oppure non esiste(bordo)
 (defrule find-bot-for-middle (declare (salience 80)) 
-   ;(moves (guesses ?ng&:(> ?ng 0)))
    ?cell-middle <- (cell-agent (x ?x) (y ?y) (content middle) (status know))
    ?cell-bot-on-middle <- (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content none))
    (not (cell-agent (x ?x) (y ?left-y&:(eq ?left-y (- ?y 1))) (content none)))
@@ -45,6 +69,7 @@
    (modify ?col (num (- ?nc 1))) ;decrem col
    (pop-focus)
 )
+
 
 
 (defrule find-cell-guess (declare (salience 70)) 

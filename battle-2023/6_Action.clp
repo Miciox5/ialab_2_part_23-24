@@ -20,7 +20,7 @@
    =>
    (modify ?cell-to-upd (score (* ?nr ?nc)))
 )
-
+; exec della guess
 (defrule exec-action-guess (declare (salience 90))
     (status (step ?s)(currently running))
     (moves (guesses ?ng&:(> ?ng 0)))

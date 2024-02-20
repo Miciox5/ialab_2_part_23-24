@@ -32,13 +32,6 @@
 	(slot y)
 )
 
-; (deftemplate boat-domain
-; 	(slot id (default-dynamic (gensym*)))
-; 	(slot name (allowed-values corazzata incrociatore cacciatorpediniere sottomarino))
-; 	(slot qty)
-; 	(slot boat-pieces)
-; )
-
 ; (deftemplate boat-agent
 ; 	(slot id (default-dynamic (gensym*)))
 ; 	(slot name (allowed-values corazzata incrociatore cacciatorpediniere sottomarino))
@@ -46,37 +39,44 @@
 ; 	(slot boat-pieces)
 ; )
 
-(deftemplate boat-hor-agent
-	(slot name)
-	(slot x)
-	(multislot ys) 
-	(slot size)
-	(multislot status (allowed-values safe hit)) 
+(deftemplate boat-agent
+	(slot id (default-dynamic (gensym*)))
+	(slot name (allowed-values corazzata incrociatore cacciatorpediniere sottomarino))
+	(slot qty)
+	(slot boat-pieces)
 )
 
-(deftemplate boat-ver-agent
-    (slot name)
-	(multislot xs)
-	(slot y)
-	(slot size)
-	(multislot status (allowed-values safe hit))
-)
+; (deftemplate boat-hor-agent
+; 	(slot name)
+; 	(slot x)
+; 	(multislot ys) 
+; 	(slot size)
+; 	(multislot status (allowed-values safe hit)) 
+; )
+
+; (deftemplate boat-ver-agent
+;     (slot name)
+; 	(multislot xs)
+; 	(slot y)
+; 	(slot size)
+; 	(multislot status (allowed-values safe hit))
+; )
 
 ;------------ FATTI -----------------------------
 
 
 (deffacts initialization
 	(first-pass-to-init)
-	; (boat-domain (name corazzata) (qty 1) (boat-pieces 4))
-	; (boat-domain (name incrociatore) (qty 2) (boat-pieces 3))
-	; (boat-domain (name incrociatore) (qty 2) (boat-pieces 3))
-	; (boat-domain (name cacciatorpediniere) (qty 3) (boat-pieces 2))
-	; (boat-domain (name cacciatorpediniere) (qty 3) (boat-pieces 2))
-	; (boat-domain (name cacciatorpediniere) (qty 3) (boat-pieces 2))
-	; (boat-domain (name sottomarino) (boat-pieces 1))
-	; (boat-domain (name sottomarino) (boat-pieces 1))
-	; (boat-domain (name sottomarino) (boat-pieces 1))
-	; (boat-domain (name sottomarino) (boat-pieces 1))
+	(boat-agent (name corazzata) (qty 1) (boat-pieces 4))
+	(boat-agent (name incrociatore) (qty 2) (boat-pieces 3))
+	(boat-agent (name incrociatore) (qty 2) (boat-pieces 3))
+	(boat-agent (name cacciatorpediniere) (qty 3) (boat-pieces 2))
+	(boat-agent (name cacciatorpediniere) (qty 3) (boat-pieces 2))
+	(boat-agent (name cacciatorpediniere) (qty 3) (boat-pieces 2))
+	(boat-agent (name sottomarino) (boat-pieces 1))
+	(boat-agent (name sottomarino) (boat-pieces 1))
+	(boat-agent (name sottomarino) (boat-pieces 1))
+	(boat-agent (name sottomarino) (boat-pieces 1))
 )
 
 

@@ -49,7 +49,7 @@
 =>
     (bind ?new-nr (- ?nr 1))
     (bind ?new-nc (- ?nc 1))
-    (modify ?cell-to-upd (content ?content) (status know) (score 0)) 
+    (modify ?cell-to-upd (content ?content) (status know)) 
     (modify ?row(num ?new-nr )) ;decrem row
     (modify ?col(num ?new-nc)) ;decrem col 
 )
