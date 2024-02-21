@@ -1,5 +1,7 @@
 (defmodule INIT (import AGENT ?ALL) (import MAIN ?ALL) (import ENV ?ALL) (export ?ALL))
 
+;------------ TEMPLATE ---------------------------
+
 
 ;------------ REGOLE -----------------------------
 
@@ -26,16 +28,7 @@
 	(assert (k-per-col-agent (col ?c) (num ?cnum)))
 )
 
-;   Aggiornamento della base di conoscenza se sappiamo che il 
-;   contenuto della cella è un sottomarino
-; (defrule update-cell-boat-sub (declare (salience 95))
-;     (status (step ?s)(currently running))
-;     ?k-cell <- (k-cell (x ?x) (y ?y) (content sub))
-; =>
-;     (assert (boat-agent (name sottomarino) (hit-boat-pieces 1)))
-; )
-
-;La regola serve per contrassegnare, all'inizio, tutte le caselle
+;La regola serve per contrassegnare, tutte le caselle
 ;   in cui si hanno contenuti sicuri. Questa regola si attiva 
 ;   nel momento in cui viene effettuata una ricerca con osservazioni.
 ;   Scatta perciò quando vengono asseriti fatti k-cell, da cui viene preso
@@ -47,11 +40,12 @@
     ?row <- (k-per-row-agent (row ?x) (num ?nr) )
     ?col <- (k-per-col-agent (col ?y) (num ?nc) )
 =>
-    (bind ?new-nr (- ?nr 1))
-    (bind ?new-nc (- ?nc 1))
     (modify ?cell-to-upd (content ?content) (status know)) 
-    (modify ?row(num ?new-nr )) ;decrem row
-    (modify ?col(num ?new-nc)) ;decrem col 
+    (modify ?row(num (- ?nr 1) )) ;decrem row
+    (modify ?col(num (- ?nc 1))) ;decrem col 
+    (assert (update-score-col (col ?y) (num (- ?nc 1)) (x 0) ))
+
+    ;(assert (update-score-row (row ?x) (num (- ?nr 1)) (y 0)))
 )
 ;   Questa regola si attiva 
 ;   nel momento in cui viene effettuata una ricerca con osservazioni.
@@ -61,7 +55,6 @@
     (status (step ?s)(currently running))
     ?k-cell <- (k-cell (x ?x) (y ?y) (content ?content&:(eq ?content water)))
     ?cell-to-upd <- (cell-agent (x ?x) (y ?y) (content none) (status none))
-
 =>
     (modify ?cell-to-upd (content ?content) (status know) (score 0)) 
 )
@@ -77,7 +70,7 @@
     ?cell-to-upd <- (cell-agent (x ?r) (y ?c) (content none) (status none))
     (test (eq (* ?rnum ?cnum) 0))
     =>
-    (modify ?cell-to-upd (content water) (status exclusion) (score 0))  
+    (modify ?cell-to-upd (content water) (status exclusion) (score 0)) 
 )
 
 ;   Regole per aggiungere acqua ai lati dei pezzi di nave
@@ -118,14 +111,42 @@
     (modify ?cell-left (content water) (status exclusion) (score 0))
 )
 
+;  Update score di tutte le colonne di una riga
+(defrule update-scores-rows (declare (salience 75))
+    ?a <- (update-score-row (row ?row) (num ?nr) (y ?y))
+   ?cell-to-upd <- (cell-agent (x ?row) (y ?y) (status ?s&:(neq ?s know)))
+   (k-per-col-agent (col ?y) (num ?nc))
+   =>
+   (retract ?a)
+   (assert (update-score-row (row ?row) (num ?nr) (y (+ ?y 1))))
+   (modify ?cell-to-upd (score (* ?nr ?nc)))
+)
+;  Update score di tutte le righe di una colonna
+(defrule update-scores-cols (declare (salience 70))
+    ?a <- (update-score-col (col ?y) (num ?nc) (x ?x) (status ?s&:(neq ?s know)) )
+   ?cell-to-upd <- (cell-agent (x ?x) (y ?y) )
+   (k-per-row-agent (row ?x) (num ?nr))
+   =>
+   (assert (update-score-col (col ?y) (num ?nc) (x (+ ?x 1))))
+   (retract ?a)
+   (modify ?cell-to-upd (score (* ?nr ?nc)))
+)
 
 
 
-
-(defrule finish-init(declare (salience 80)) 
+(defrule finish-init-row ( declare (salience 60) ) 
     (status (step ?s)(currently running))
+    ?factr <- (update-score-row (row ?r) (num ?n) (y ?y) )
     =>
-    (pop-focus)
+    (retract ?factr)
+
+)
+(defrule finish-init-col ( declare (salience 60) ) 
+    (status (step ?s)(currently running))
+    ?factc <- (update-score-col (col ?col) (num ?nc) (x ?x)) 
+    =>
+    (retract ?factc)
+
 )
 
 

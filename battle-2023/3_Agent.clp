@@ -62,6 +62,17 @@
 ; 	(multislot status (allowed-values safe hit))
 ; )
 
+(deftemplate update-score-row
+    (slot row )
+	(slot num )
+	(slot y )
+)
+(deftemplate update-score-col
+    (slot col )
+	(slot num )
+	(slot x )
+)
+
 ;------------ FATTI -----------------------------
 
 
@@ -88,6 +99,7 @@
   	(retract ?f)
   	(focus INIT)
 )
+
 
 (defrule go-on-deliberate (declare (salience 20))
 	(status (step ?s)(currently running))

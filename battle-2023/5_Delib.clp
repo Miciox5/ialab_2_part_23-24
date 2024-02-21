@@ -1,6 +1,15 @@
 (defmodule DELIBERATION (import AGENT ?ALL) (import MAIN ?ALL) (import ENV ?ALL) (export ?ALL))
 
-;------------ REGOLE -----------------------------
+;------------ TEMPLATE ---------------------------
+(deftemplate unguess
+	(slot x)
+	(slot y)
+)
+
+;---------------- REGOLE ------------------------------------------
+
+
+;---------------conoscenza--------------------------------------
 
 ;   Se ho top-middle-bot ho trovato un incrociatore -> aggiorno base conoscenza 
 ;   (setto gli score a 0 cosi la regola non si attiva per tutti gli altri fatti boat-agent(content incrociatore))
@@ -18,18 +27,30 @@
 
 ;(defrule find-incrociatore-hor)   TO DO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-;   Se ho un sub aggiorno la base di conoscenza
-(defrule find-sottomarino (declare (salience 90)) 
+;   Se ho un sub aggiorno la base di conoscenza (aggiunta la condizione sullo score per non farlo attivare sugli altri fatti)
+(defrule find-sottomarino (declare (salience 85)) 
    ?cell <- (cell-agent (x ?x) (y ?y) (content sub) (score ?s&:(> ?s 0)) )
    ?sub <- (boat-agent (name sottomarino))
    =>
    (modify ?cell (score 0))
    (retract ?sub)
 )
+;   aggiornamento della cella a seguito di una fire su un pezzo di nave
+; (defrule update-cell-after-fire (declare (salience 90))
+;     ?k-cell <- (k-cell (x ?x) (y ?y) (content ?content&:(neq ?content water)))
+;     ?cell-to-upd <- (cell-agent (x ?x) (y ?y))
+;     ?row <- (k-per-row-agent (row ?x) (num ?nr) )
+;     ?col <- (k-per-col-agent (col ?y) (num ?nc) )
+; =>
+;     (bind ?new-nr (- ?nr 1))
+;     (bind ?new-nc (- ?nc 1))
+;     (modify ?cell-to-upd (content ?content) (status know) (score 0)) 
+;     (modify ?row(num ?new-nr )) ;decrem row
+;     (modify ?col(num ?new-nc)) ;decrem col 
+; )
 
 
-
-
+;------------------------- inferenza + azione ---------------------------
 
 ;   Se il contenuto di una cella nota è middle, allora la cella sopra sarà top
 ;   se quella ancora sopra contiene acqua oppure non esiste(bordo)
@@ -43,12 +64,15 @@
    (or
       (not (cell-agent (x ?tt-x&:(eq ?tt-x (- ?top-x 1))) (y ?y)))
       (cell-agent (x ?tt-x&:(eq ?tt-x (- ?top-x 1))) (y ?y) (content water))
+      (k-per-col-agent (col ?y) (num ?nc&:(= ?nc 1)) )
    )
    =>
    (assert (action (name guess) (x ?top-x) (y ?y)))  
    (modify ?cell-top-on-middle (content top) (status guess))
    (modify ?row (num (- ?nr 1))) ;decrem row
    (modify ?col (num (- ?nc 1))) ;decrem col
+   (assert (update-score-row (row ?row)))
+   (assert (update-score-col (col ?col)))
    (pop-focus)
 )
 
@@ -59,11 +83,12 @@
    ?cell-bot-on-middle <- (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content none))
    (not (cell-agent (x ?x) (y ?left-y&:(eq ?left-y (- ?y 1))) (content none)))
    (not (cell-agent (x ?x) (y ?right-y&:(eq ?right-y (+ ?y 1))) (content none)))
-   ?row <- (k-per-row-agent (row ?top-x) (num ?nr&:(> ?nr 0)) )
+   ?row <- (k-per-row-agent (row ?bot-x) (num ?nr&:(> ?nr 0)) )
    ?col <- (k-per-col-agent (col ?y) (num ?nc&:(> ?nc 0)) )
    (or
       (not (cell-agent (x ?tt-x&:(eq ?tt-x (+ ?bot-x 1))) (y ?y)))
       (cell-agent (x ?tt-x&:(eq ?tt-x (+ ?bot-x 1))) (y ?y) (content water))
+      (k-per-col-agent (col ?y) (num ?nc&:(= ?nc 1)) )
    )
    =>
    (assert (action (name guess) (x ?bot-x) (y ?y)))  
@@ -73,7 +98,22 @@
    (pop-focus)
 )
 
+;---------------------scelta azione---------------------------------
 
+(defrule do-fire (declare (salience 95)) 
+   ?a <- (unguess (x ?x) (y ?y))
+   ?cell-to-upd <-(cell-agent (x ?x) (y ?y))   
+   ?row <- (k-per-row-agent (row ?x) (num ?nr) )
+   ?col <- (k-per-col-agent (col ?y) (num ?nc) )
+   =>
+   (retract ?a)
+   (assert (action (name fire) (x ?x) (y ?y)))  
+   (modify ?cell-to-upd (status fire))
+   (modify ?row (num (- ?nr 1))) 
+   (modify ?col (num (- ?nc 1))) 
+   (pop-focus)
+
+)
 
 (defrule find-cell-guess (declare (salience 70)) 
    ;(moves (guesses ?ng&:(> ?ng 0)))
@@ -88,6 +128,27 @@
    (modify ?col (num (- ?nc 1))) ;decrem col
    (pop-focus)
 )
+
+;   Faccio l'unguess delle celle con contenuto none per poi fare le fire
+; (defrule find-cell-unguess (declare (salience 60)) 
+;    ?cell-to-upd <-(cell-agent (x ?x) (y ?y) (status guess) (score ?s))  
+;    (not (cell-agent (x ?x1) (y ?y2) (content none) (status guess) (score ?s1&:(> ?s1 ?s))))
+;    ?row <- (k-per-row-agent (row ?x) (num ?nr) )
+;    ?col <- (k-per-col-agent (col ?y) (num ?nc) )
+;    =>
+;    (assert (unguess (x ?x) (y ?y) ))
+;    (assert (action (name unguess) (x ?x) (y ?y)))  
+;    (modify ?cell-to-upd (status unguess))
+;    (modify ?row (num (+ ?nr 1))) 
+;    (modify ?col (num (+ ?nc 1))) 
+;    (pop-focus)
+; )
+
+
+
+
+
+
 
 ; (defrule find-max-number-row (declare (salience 100)) 
 ; (moves (guesses ?ng&:(> ?ng 0)))

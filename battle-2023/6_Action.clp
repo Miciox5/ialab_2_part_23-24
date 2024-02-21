@@ -3,24 +3,25 @@
 ;------------ REGOLE -----------------------------
 
 ; Update score di tutte le colonne di una riga
-(defrule update-scores-row (declare (salience 100))
-    ?a <- (action(name ?n)(x ?row)(y ?col))
+(defrule update-scores-rows (declare (salience 100))
+    ?a <- (action(name ?n)(x ?x)(y ?y))
    ?cell-to-upd <- (cell-agent (x ?row) (y ?y) (status none) )
    (k-per-row-agent (row ?row) (num ?nr))
    (k-per-col-agent (col ?y) (num ?nc))
    =>
-   (modify ?cell-to-upd (score (* ?nr ?nc)))
+    (modify ?cell-to-upd (score (* ?nr ?nc)))
 )
 ; Update score di tutte le righe di una colonna
 (defrule update-scores-cols (declare (salience 100))
-    ?a <- (action(name ?n)(x ?row)(y ?col))
+    ?a <- (action(name ?n)(x ?x)(y ?y))
    ?cell-to-upd <- (cell-agent (x ?x) (y ?col) (status none) )
    (k-per-col-agent (col ?col) (num ?nc))
    (k-per-row-agent (row ?x) (num ?nr))
    =>
    (modify ?cell-to-upd (score (* ?nr ?nc)))
 )
-; exec della guess
+
+;  exec della guess
 (defrule exec-action-guess (declare (salience 90))
     (status (step ?s)(currently running))
     (moves (guesses ?ng&:(> ?ng 0)))
@@ -30,6 +31,23 @@
    (retract ?a)
    (pop-focus)
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ;;emettono azioni di exec casuali (non fanno niente così)
 ;;fondamentale: ogni volta che viene eseguita una exec, l'importante è garantire che 
