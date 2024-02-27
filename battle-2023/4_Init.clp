@@ -32,7 +32,7 @@
 ;   in cui si hanno contenuti sicuri. Questa regola si attiva 
 ;   nel momento in cui viene effettuata una ricerca con osservazioni.
 ;   Scatta perciò quando vengono asseriti fatti k-cell, da cui viene preso
-;   il contenuto. Viene poi effettuato l'aggiornamento dei valori k-per-row e col
+;   il contenuto. Viene poi effettuato l'aggiornamento dei valori k-per-row, col e score
 (defrule update-cell-boat (declare (salience 95))
     (status (step ?s)(currently running))
     ?k-cell <- (k-cell (x ?x) (y ?y) (content ?content&:(neq ?content water)))
@@ -43,9 +43,9 @@
     (modify ?cell-to-upd (content ?content) (status know)) 
     (modify ?row(num (- ?nr 1) )) ;decrem row
     (modify ?col(num (- ?nc 1))) ;decrem col 
-    (assert (update-score-col (col ?y) (num (- ?nc 1)) (x 0) ))
+    (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0) ))
 
-    ;(assert (update-score-row (row ?x) (num (- ?nr 1)) (y 0)))
+    ;(assert (update-score-row (row ?x) (num (- ?nr 1)) (y-to-upd 0)))
 )
 ;   Questa regola si attiva 
 ;   nel momento in cui viene effettuata una ricerca con osservazioni.
@@ -113,21 +113,21 @@
 
 ;  Update score di tutte le colonne di una riga
 (defrule update-scores-rows (declare (salience 75))
-    ?a <- (update-score-row (row ?row) (num ?nr) (y ?y))
+    ?a <- (update-score-row (row ?row) (num ?nr) (y-to-upd ?y))
    ?cell-to-upd <- (cell-agent (x ?row) (y ?y) (status ?s&:(neq ?s know)))
    (k-per-col-agent (col ?y) (num ?nc))
    =>
    (retract ?a)
-   (assert (update-score-row (row ?row) (num ?nr) (y (+ ?y 1))))
+   (assert (update-score-row (row ?row) (num ?nr) (y-to-upd (+ ?y 1))))
    (modify ?cell-to-upd (score (* ?nr ?nc)))
 )
 ;  Update score di tutte le righe di una colonna
 (defrule update-scores-cols (declare (salience 70))
-    ?a <- (update-score-col (col ?y) (num ?nc) (x ?x) (status ?s&:(neq ?s know)) )
-   ?cell-to-upd <- (cell-agent (x ?x) (y ?y) )
+    ?a <- (update-score-col (col ?y) (num ?nc) (x-to-upd ?x)  )
+   ?cell-to-upd <- (cell-agent (x ?x) (y ?y) (status ?s&:(neq ?s know)))
    (k-per-row-agent (row ?x) (num ?nr))
    =>
-   (assert (update-score-col (col ?y) (num ?nc) (x (+ ?x 1))))
+   (assert (update-score-col (col ?y) (num ?nc) (x-to-upd (+ ?x 1))))
    (retract ?a)
    (modify ?cell-to-upd (score (* ?nr ?nc)))
 )
@@ -136,19 +136,27 @@
 
 (defrule finish-init-row ( declare (salience 60) ) 
     (status (step ?s)(currently running))
-    ?factr <- (update-score-row (row ?r) (num ?n) (y ?y) )
+    ?factr <- (update-score-row (row ?r) (num ?n) (y-to-upd ?y) )
     =>
     (retract ?factr)
 
 )
 (defrule finish-init-col ( declare (salience 60) ) 
     (status (step ?s)(currently running))
-    ?factc <- (update-score-col (col ?col) (num ?nc) (x ?x)) 
+    ?factc <- (update-score-col (col ?col) (num ?nc) (x-to-upd ?x)) 
     =>
     (retract ?factc)
 
 )
 
 
+;; ----------Regole di aggiornamento base di conoscenza------------------
 
-
+;  Se ho un sub aggiorno la base di conoscenza (aggiunta la condizione sullo score per non farlo attivare sugli altri fatti)
+(defrule update-kb-sottomarino (declare (salience 55)) 
+   ?cell <- (cell-agent (x ?x) (y ?y) (content sub) (score ?s&:(> ?s 0)) )
+   ?sub <- (boat-agent (name sottomarino))
+   =>
+   (modify ?cell (score 0))
+   (retract ?sub)
+)

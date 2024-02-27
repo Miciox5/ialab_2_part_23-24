@@ -65,12 +65,12 @@
 (deftemplate update-score-row
     (slot row )
 	(slot num )
-	(slot y )
+	(slot y-to-upd )
 )
 (deftemplate update-score-col
     (slot col )
 	(slot num )
-	(slot x )
+	(slot x-to-upd )
 )
 
 ;------------ FATTI -----------------------------
