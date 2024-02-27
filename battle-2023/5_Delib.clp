@@ -28,13 +28,13 @@
 ;(defrule find-incrociatore-hor)   TO DO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 ;   Se ho un sub aggiorno la base di conoscenza (aggiunta la condizione sullo score per non farlo attivare sugli altri fatti)
-(defrule find-sottomarino (declare (salience 85)) 
-   ?cell <- (cell-agent (x ?x) (y ?y) (content sub) (score ?s&:(> ?s 0)) )
-   ?sub <- (boat-agent (name sottomarino))
-   =>
-   (modify ?cell (score 0))
-   (retract ?sub)
-)
+; (defrule find-sottomarino (declare (salience 85)) 
+;    ?cell <- (cell-agent (x ?x) (y ?y) (content sub) (score ?s&:(> ?s 0)) )
+;    ?sub <- (boat-agent (name sottomarino))
+;    =>
+;    (modify ?cell (score 0))
+;    (retract ?sub)
+; )
 ;   aggiornamento della cella a seguito di una fire su un pezzo di nave
 ; (defrule update-cell-after-fire (declare (salience 90))
 ;     ?k-cell <- (k-cell (x ?x) (y ?y) (content ?content&:(neq ?content water)))
@@ -71,8 +71,8 @@
    (modify ?cell-top-on-middle (content top) (status guess))
    (modify ?row (num (- ?nr 1))) ;decrem row
    (modify ?col (num (- ?nc 1))) ;decrem col
-   (assert (update-score-row (row ?row)))
-   (assert (update-score-col (col ?col)))
+   (assert (update-score-row (row ?top-x) (num (- ?nr 1)) (y-to-upd 0)) )
+   (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0)) )
    (pop-focus)
 )
 
@@ -100,20 +100,20 @@
 
 ;---------------------scelta azione---------------------------------
 
-(defrule do-fire (declare (salience 95)) 
-   ?a <- (unguess (x ?x) (y ?y))
-   ?cell-to-upd <-(cell-agent (x ?x) (y ?y))   
-   ?row <- (k-per-row-agent (row ?x) (num ?nr) )
-   ?col <- (k-per-col-agent (col ?y) (num ?nc) )
-   =>
-   (retract ?a)
-   (assert (action (name fire) (x ?x) (y ?y)))  
-   (modify ?cell-to-upd (status fire))
-   (modify ?row (num (- ?nr 1))) 
-   (modify ?col (num (- ?nc 1))) 
-   (pop-focus)
+; (defrule do-fire (declare (salience 95)) 
+;    ?a <- (unguess (x ?x) (y ?y))
+;    ?cell-to-upd <-(cell-agent (x ?x) (y ?y))   
+;    ?row <- (k-per-row-agent (row ?x) (num ?nr) )
+;    ?col <- (k-per-col-agent (col ?y) (num ?nc) )
+;    =>
+;    (retract ?a)
+;    (assert (action (name fire) (x ?x) (y ?y)))  
+;    (modify ?cell-to-upd (status fire))
+;    (modify ?row (num (- ?nr 1))) 
+;    (modify ?col (num (- ?nc 1))) 
+;    (pop-focus)
 
-)
+; )
 
 (defrule find-cell-guess (declare (salience 70)) 
    ;(moves (guesses ?ng&:(> ?ng 0)))

@@ -4,27 +4,31 @@
 
 ; Update score di tutte le colonne di una riga
 (defrule update-scores-rows (declare (salience 100))
-    ?a <- (action(name ?n)(x ?x)(y ?y))
-   ?cell-to-upd <- (cell-agent (x ?row) (y ?y) (status none) )
-   (k-per-row-agent (row ?row) (num ?nr))
-   (k-per-col-agent (col ?y) (num ?nc))
+   ?a <- (update-score-col (col ?col) (num ?nc) (x-to-upd ?x))
+   ?cell-to-upd <- (cell-agent (x ?x) (y ?col))
+   (k-per-row-agent (row ?x) (num ?nr))
    =>
     (modify ?cell-to-upd (score (* ?nr ?nc)))
+    (retract ?a)
+    (assert (update-score-col (col ?col) (num ?nc) (x-to-upd (+ ?x 1))))
+    ; (pop-focus)
 )
 ; Update score di tutte le righe di una colonna
 (defrule update-scores-cols (declare (salience 100))
-    ?a <- (action(name ?n)(x ?x)(y ?y))
-   ?cell-to-upd <- (cell-agent (x ?x) (y ?col) (status none) )
-   (k-per-col-agent (col ?col) (num ?nc))
-   (k-per-row-agent (row ?x) (num ?nr))
+   ?a <- (update-score-row (row ?row) (num ?nr) (y-to-upd ?y))
+   ?cell-to-upd <- (cell-agent (x ?row) (y ?y))
+   (k-per-col-agent (col ?y) (num ?nc))
    =>
-   (modify ?cell-to-upd (score (* ?nr ?nc)))
+    (modify ?cell-to-upd (score (* ?nr ?nc)))
+    (retract ?a)
+    (assert (update-score-row (row ?row) (num ?nr) (y-to-upd (+ ?y 1))))
+    ; (pop-focus)
 )
 
 ;  exec della guess
 (defrule exec-action-guess (declare (salience 90))
     (status (step ?s)(currently running))
-    (moves (guesses ?ng&:(> ?ng 0)))
+    (moves (guesses ?ng&:(> ?ng 19)))
     ?a <- (action(name ?n)(x ?x)(y ?y))
    =>
    (assert (exec (step ?s) (action ?n) (x ?x) (y ?y)))
