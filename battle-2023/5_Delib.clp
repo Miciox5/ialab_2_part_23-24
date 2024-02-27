@@ -95,6 +95,8 @@
    (modify ?cell-bot-on-middle (content bot) (status guess))
    (modify ?row (num (- ?nr 1))) ;decrem row
    (modify ?col (num (- ?nc 1))) ;decrem col
+   (assert (update-score-row (row ?bot-x) (num (- ?nr 1)) (y-to-upd 0)) )
+   (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0)) )
    (pop-focus)
 )
 
@@ -126,6 +128,8 @@
    (modify ?cell-to-upd (status guess))
    (modify ?row (num (- ?nr 1))) ;decrem row
    (modify ?col (num (- ?nc 1))) ;decrem col
+   (assert (update-score-row (row ?x) (num (- ?nr 1)) (y-to-upd 0)) )
+   (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0)) )
    (pop-focus)
 )
 
