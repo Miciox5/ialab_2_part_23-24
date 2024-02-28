@@ -93,11 +93,17 @@
 
 ;------------ REGOLE -----------------------------
 
-(defrule go-on-init-first (declare (salience 30))
+(defrule go-on-init-first (declare (salience 40))
   	?f <- (first-pass-to-init)
 =>
   	(retract ?f)
   	(focus INIT)
+)
+
+(defrule go-on-update-kc (declare (salience 30))
+	(status (step ?s)(currently running))
+=>
+  	(focus UPDATE_KC)
 )
 
 

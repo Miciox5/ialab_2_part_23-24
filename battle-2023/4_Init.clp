@@ -148,15 +148,3 @@
     (retract ?factc)
 
 )
-
-
-;; ----------Regole di aggiornamento base di conoscenza------------------
-
-;  Se ho un sub aggiorno la base di conoscenza (aggiunta la condizione sullo score per non farlo attivare sugli altri fatti)
-(defrule update-kb-sottomarino (declare (salience 55)) 
-   ?cell <- (cell-agent (x ?x) (y ?y) (content sub) (score ?s&:(> ?s 0)) )
-   ?sub <- (boat-agent (name sottomarino))
-   =>
-   (modify ?cell (score 0))
-   (retract ?sub)
-)

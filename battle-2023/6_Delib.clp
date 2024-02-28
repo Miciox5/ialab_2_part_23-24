@@ -11,19 +11,7 @@
 
 ;---------------conoscenza--------------------------------------
 
-;   Se ho top-middle-bot ho trovato un incrociatore -> aggiorno base conoscenza 
-;   (setto gli score a 0 cosi la regola non si attiva per tutti gli altri fatti boat-agent(content incrociatore))
-(defrule find-incrociatore-ver (declare (salience 90)) 
-   ?cell-middle <- (cell-agent (x ?x) (y ?y) (content middle) (score ?s&:(> ?s 0)) )
-   ?cell-top-on-middle <- (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (content top)  )
-   ?cell-bot-on-middle <- (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content bot)  )
-   ?incrociatore <- (boat-agent (name incrociatore))
-   =>
-   (modify ?cell-middle (score 0))
-   (modify ?cell-top-on-middle (score 0))
-   (modify ?cell-bot-on-middle (score 0))
-   (retract ?incrociatore)
-)
+
 
 ;(defrule find-incrociatore-hor)   TO DO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -51,6 +39,13 @@
 
 
 ;------------------------- inferenza + azione ---------------------------
+
+()
+
+
+
+
+;-----------------------------------------------------------------------
 
 ;   Se il contenuto di una cella nota è middle, allora la cella sopra sarà top
 ;   se quella ancora sopra contiene acqua oppure non esiste(bordo)

@@ -1,4 +1,434 @@
 TRUE
+CLIPS> (run)
+FIRE    1 go-on-env-first: f-4
+==> Focus ENV from MAIN
+FIRE    2 reset-map: f-118,f-3,*
+FIRE    3 fire-ok: f-151,f-60,f-152
+FIRE    4 reset-map: f-117,f-155,*
+FIRE    5 fire-ok: f-156,f-55,f-157
+FIRE    6 hit-boat-ver-trace: f-159,*,f-109
+FIRE    7 hit-boat-hor-trace: f-154,f-110,*
+FIRE    8 sink-boat-hor: f-154,f-163
+<== Focus ENV to MAIN
+FIRE    9 go-on-agent: f-1,f-2
+==> Focus AGENT from MAIN
+FIRE   10 go-on-init-first: f-140
+==> Focus INIT from AGENT
+FIRE   11 init-cells: f-2,f-120,f-139
+FIRE   12 init-cells: f-2,f-121,f-139
+FIRE   13 init-cells: f-2,f-122,f-139
+FIRE   14 init-cells: f-2,f-123,f-139
+FIRE   15 init-cells: f-2,f-124,f-139
+FIRE   16 init-cells: f-2,f-125,f-139
+FIRE   17 init-cells: f-2,f-126,f-139
+FIRE   18 init-cells: f-2,f-127,f-139
+FIRE   19 init-cells: f-2,f-128,f-139
+FIRE   20 init-cells: f-2,f-129,f-139
+FIRE   21 init-cols: f-2,f-139
+FIRE   22 init-cells: f-2,f-120,f-138
+FIRE   23 init-cells: f-2,f-121,f-138
+FIRE   24 init-cells: f-2,f-122,f-138
+FIRE   25 init-cells: f-2,f-123,f-138
+FIRE   26 init-cells: f-2,f-124,f-138
+FIRE   27 init-cells: f-2,f-125,f-138
+FIRE   28 init-cells: f-2,f-126,f-138
+FIRE   29 init-cells: f-2,f-127,f-138
+FIRE   30 init-cells: f-2,f-128,f-138
+FIRE   31 init-cells: f-2,f-129,f-138
+FIRE   32 init-cols: f-2,f-138
+FIRE   33 init-cells: f-2,f-120,f-137
+FIRE   34 init-cells: f-2,f-121,f-137
+FIRE   35 init-cells: f-2,f-122,f-137
+FIRE   36 init-cells: f-2,f-123,f-137
+FIRE   37 init-cells: f-2,f-124,f-137
+FIRE   38 init-cells: f-2,f-125,f-137
+FIRE   39 init-cells: f-2,f-126,f-137
+FIRE   40 init-cells: f-2,f-127,f-137
+FIRE   41 init-cells: f-2,f-128,f-137
+FIRE   42 init-cells: f-2,f-129,f-137
+FIRE   43 init-cols: f-2,f-137
+FIRE   44 init-cells: f-2,f-120,f-136
+FIRE   45 init-cells: f-2,f-121,f-136
+FIRE   46 init-cells: f-2,f-122,f-136
+FIRE   47 init-cells: f-2,f-123,f-136
+FIRE   48 init-cells: f-2,f-124,f-136
+FIRE   49 init-cells: f-2,f-125,f-136
+FIRE   50 init-cells: f-2,f-126,f-136
+FIRE   51 init-cells: f-2,f-127,f-136
+FIRE   52 init-cells: f-2,f-128,f-136
+FIRE   53 init-cells: f-2,f-129,f-136
+FIRE   54 init-cols: f-2,f-136
+FIRE   55 init-cells: f-2,f-120,f-135
+FIRE   56 init-cells: f-2,f-121,f-135
+FIRE   57 init-cells: f-2,f-122,f-135
+FIRE   58 init-cells: f-2,f-123,f-135
+FIRE   59 init-cells: f-2,f-124,f-135
+FIRE   60 init-cells: f-2,f-125,f-135
+FIRE   61 init-cells: f-2,f-126,f-135
+FIRE   62 init-cells: f-2,f-127,f-135
+FIRE   63 init-cells: f-2,f-128,f-135
+FIRE   64 init-cells: f-2,f-129,f-135
+FIRE   65 init-cols: f-2,f-135
+FIRE   66 init-cells: f-2,f-120,f-134
+FIRE   67 init-cells: f-2,f-121,f-134
+FIRE   68 init-cells: f-2,f-122,f-134
+FIRE   69 init-cells: f-2,f-123,f-134
+FIRE   70 init-cells: f-2,f-124,f-134
+FIRE   71 init-cells: f-2,f-125,f-134
+FIRE   72 init-cells: f-2,f-126,f-134
+FIRE   73 init-cells: f-2,f-127,f-134
+FIRE   74 init-cells: f-2,f-128,f-134
+FIRE   75 init-cells: f-2,f-129,f-134
+FIRE   76 init-cols: f-2,f-134
+FIRE   77 init-cells: f-2,f-120,f-133
+FIRE   78 init-cells: f-2,f-121,f-133
+FIRE   79 init-cells: f-2,f-122,f-133
+FIRE   80 init-cells: f-2,f-123,f-133
+FIRE   81 init-cells: f-2,f-124,f-133
+FIRE   82 init-cells: f-2,f-125,f-133
+FIRE   83 init-cells: f-2,f-126,f-133
+FIRE   84 init-cells: f-2,f-127,f-133
+FIRE   85 init-cells: f-2,f-128,f-133
+FIRE   86 init-cells: f-2,f-129,f-133
+FIRE   87 init-cols: f-2,f-133
+FIRE   88 init-cells: f-2,f-120,f-132
+FIRE   89 init-cells: f-2,f-121,f-132
+FIRE   90 init-cells: f-2,f-122,f-132
+FIRE   91 init-cells: f-2,f-123,f-132
+FIRE   92 init-cells: f-2,f-124,f-132
+FIRE   93 init-cells: f-2,f-125,f-132
+FIRE   94 init-cells: f-2,f-126,f-132
+FIRE   95 init-cells: f-2,f-127,f-132
+FIRE   96 init-cells: f-2,f-128,f-132
+FIRE   97 init-cells: f-2,f-129,f-132
+FIRE   98 init-cols: f-2,f-132
+FIRE   99 init-cells: f-2,f-120,f-131
+FIRE  100 init-cells: f-2,f-121,f-131
+FIRE  101 init-cells: f-2,f-122,f-131
+FIRE  102 init-cells: f-2,f-123,f-131
+FIRE  103 init-cells: f-2,f-124,f-131
+FIRE  104 init-cells: f-2,f-125,f-131
+FIRE  105 init-cells: f-2,f-126,f-131
+FIRE  106 init-cells: f-2,f-127,f-131
+FIRE  107 init-cells: f-2,f-128,f-131
+FIRE  108 init-cells: f-2,f-129,f-131
+FIRE  109 init-cols: f-2,f-131
+FIRE  110 init-cells: f-2,f-120,f-130
+FIRE  111 init-cells: f-2,f-121,f-130
+FIRE  112 init-cells: f-2,f-122,f-130
+FIRE  113 init-cells: f-2,f-123,f-130
+FIRE  114 init-cells: f-2,f-124,f-130
+FIRE  115 init-cells: f-2,f-125,f-130
+FIRE  116 init-cells: f-2,f-126,f-130
+FIRE  117 init-cells: f-2,f-127,f-130
+FIRE  118 init-cells: f-2,f-128,f-130
+FIRE  119 init-cells: f-2,f-129,f-130
+FIRE  120 init-cols: f-2,f-130
+FIRE  121 init-rows: f-2,f-129
+FIRE  122 init-rows: f-2,f-128
+FIRE  123 init-rows: f-2,f-127
+FIRE  124 init-rows: f-2,f-126
+FIRE  125 init-rows: f-2,f-125
+FIRE  126 init-rows: f-2,f-124
+FIRE  127 init-rows: f-2,f-123
+FIRE  128 init-rows: f-2,f-122
+FIRE  129 init-rows: f-2,f-121
+FIRE  130 init-rows: f-2,f-120
+FIRE  131 update-cell-boat: f-2,f-117,f-170,f-281,f-176
+FIRE  132 update-cell-boat: f-2,f-118,f-226,f-280,f-231
+FIRE  133 update-cell-water: f-2,f-119,f-271
+FIRE  134 update-cell-water: f-2,f-116,f-254
+FIRE  135 add-water-cell: f-2,f-276,f-292,f-230
+FIRE  136 add-water-cell: f-2,f-277,f-292,f-229
+FIRE  137 add-water-cell: f-2,f-278,f-292,f-228
+FIRE  138 add-water-cell: f-2,f-279,f-292,f-227
+FIRE  139 add-water-cell: f-2,f-282,f-292,f-224
+FIRE  140 add-water-cell: f-2,f-283,f-292,f-223
+FIRE  141 add-water-cell: f-2,f-284,f-292,f-222
+FIRE  142 add-water-cell: f-2,f-285,f-292,f-221
+FIRE  143 add-water-cell: f-2,f-287,f-292,f-225
+FIRE  144 add-water-cell: f-2,f-291,f-242,f-237
+FIRE  145 add-water-cell: f-2,f-283,f-288,f-168
+FIRE  146 add-water-cell: f-2,f-284,f-288,f-167
+FIRE  147 add-water-cell: f-2,f-287,f-275,f-269
+FIRE  148 add-water-cell: f-2,f-287,f-264,f-258
+FIRE  149 add-water-cell: f-2,f-287,f-253,f-247
+FIRE  150 add-water-cell: f-2,f-287,f-242,f-236
+FIRE  151 add-water-cell: f-2,f-287,f-220,f-214
+FIRE  152 add-water-cell: f-2,f-287,f-209,f-203
+FIRE  153 add-water-cell: f-2,f-287,f-198,f-192
+FIRE  154 add-water-cell: f-2,f-287,f-187,f-181
+FIRE  155 add-water-cell: f-2,f-285,f-242,f-232
+FIRE  156 add-water-cell: f-2,f-284,f-275,f-266
+FIRE  157 add-water-cell: f-2,f-284,f-264,f-255
+FIRE  158 add-water-cell: f-2,f-284,f-253,f-244
+FIRE  159 add-water-cell: f-2,f-284,f-242,f-233
+FIRE  160 add-water-cell: f-2,f-284,f-220,f-211
+FIRE  161 add-water-cell: f-2,f-284,f-209,f-200
+FIRE  162 add-water-cell: f-2,f-284,f-198,f-189
+FIRE  163 add-water-cell: f-2,f-284,f-187,f-178
+FIRE  164 add-water-cell: f-2,f-283,f-275,f-267
+FIRE  165 add-water-cell: f-2,f-283,f-264,f-256
+FIRE  166 add-water-cell: f-2,f-283,f-253,f-245
+FIRE  167 add-water-cell: f-2,f-283,f-242,f-234
+FIRE  168 add-water-cell: f-2,f-283,f-220,f-212
+FIRE  169 add-water-cell: f-2,f-283,f-209,f-201
+FIRE  170 add-water-cell: f-2,f-283,f-198,f-190
+FIRE  171 add-water-cell: f-2,f-283,f-187,f-179
+FIRE  172 add-water-cell: f-2,f-282,f-242,f-235
+FIRE  173 add-water-cell: f-2,f-279,f-242,f-238
+FIRE  174 add-water-cell: f-2,f-278,f-242,f-239
+FIRE  175 add-water-cell: f-2,f-277,f-242,f-240
+FIRE  176 add-water-cell: f-2,f-276,f-242,f-241
+FIRE  177 fill-neighbor-right: f-2,f-290,f-215
+FIRE  178 update-scores-cols: f-293,f-303,f-285
+FIRE  179 update-scores-cols: f-339,f-302,f-284
+FIRE  180 update-scores-cols: f-341,f-301,f-283
+FIRE  181 update-scores-cols: f-343,f-300,f-282
+FIRE  182 update-scores-cols: f-345,f-304,f-287
+FIRE  183 update-scores-cols: f-289,f-166,f-285
+FIRE  184 update-scores-cols: f-349,f-307,f-284
+FIRE  185 update-scores-cols: f-351,f-306,f-283
+FIRE  186 update-scores-cols: f-353,f-169,f-282
+FIRE  187 finish-init-col: f-2,f-355
+FIRE  188 finish-init-col: f-2,f-347
+<== Focus INIT to AGENT
+FIRE  189 go-on-update-kc: f-2
+==> Focus UPDATE_KC from AGENT
+FIRE  190 update-kb-sottomarino: f-290,f-150
+<== Focus UPDATE_KC to AGENT
+FIRE  191 go-on-deliberate: f-2
+==> Focus DELIBERATION from AGENT
+FIRE  192 find-top-for-middle: f-286,f-356,*,*,f-282,f-288,f-354
+<== Focus DELIBERATION to AGENT
+FIRE  193 go-on-action: f-2
+==> Focus ACTION from AGENT
+FIRE  194 update-scores-rows: f-363,f-350,f-285
+FIRE  195 update-scores-rows: f-365,f-352,f-284
+FIRE  196 update-scores-rows: f-367,f-354,f-283
+FIRE  197 update-scores-cols: f-362,f-268,f-275
+FIRE  198 update-scores-cols: f-371,f-257,f-264
+FIRE  199 update-scores-cols: f-373,f-246,f-253
+FIRE  200 update-scores-cols: f-375,f-333,f-242
+FIRE  201 update-scores-cols: f-377,f-346,f-292
+FIRE  202 update-scores-cols: f-379,f-213,f-220
+FIRE  203 update-scores-cols: f-381,f-202,f-209
+FIRE  204 update-scores-cols: f-383,f-191,f-198
+FIRE  205 update-scores-cols: f-385,f-180,f-187
+FIRE  206 update-scores-cols: f-387,f-359,f-361
+FIRE  207 update-scores-rows-index: f-369,f-388,f-360
+FIRE  208 update-scores-rows: f-390,f-286,f-287
+FIRE  209 update-scores-rows: f-392,f-171,f-291
+FIRE  210 update-scores-rows: f-394,f-172,f-279
+FIRE  211 update-scores-rows: f-396,f-173,f-278
+FIRE  212 update-scores-rows: f-398,f-174,f-277
+FIRE  213 update-scores-rows: f-400,f-175,f-276
+FIRE  214 finish-update-score-col: f-402
+FIRE  215 finish-update-score-row: f-389
+FIRE  216 exec-action-guess: f-2,f-5,f-358
+<== Focus ACTION to AGENT
+<== Focus AGENT to MAIN
+FIRE  217 go-on-env: f-2,f-403
+==> Focus ENV from MAIN
+FIRE  218 action-guess: f-2,f-403,f-5
+<== Focus ENV to MAIN
+FIRE  219 go-on-agent: f-1,f-405
+==> Focus AGENT from MAIN
+FIRE  220 go-on-update-kc: f-405
+==> Focus UPDATE_KC from AGENT
+<== Focus UPDATE_KC to AGENT
+FIRE  221 go-on-deliberate: f-405
+==> Focus DELIBERATION from AGENT
+FIRE  222 find-bot-for-middle: f-391,f-393,*,*,f-291,f-361,f-361
+<== Focus DELIBERATION to AGENT
+FIRE  223 go-on-action: f-405
+==> Focus ACTION from AGENT
+FIRE  224 update-scores-rows: f-412,f-364,f-285
+FIRE  225 update-scores-rows: f-414,f-366,f-284
+FIRE  226 update-scores-rows: f-416,f-368,f-283
+FIRE  227 update-scores-cols: f-411,f-270,f-275
+FIRE  228 update-scores-cols: f-420,f-259,f-264
+FIRE  229 update-scores-cols: f-422,f-248,f-253
+FIRE  230 update-scores-cols: f-424,f-305,f-242
+FIRE  231 update-scores-cols: f-426,f-357,f-292
+FIRE  232 update-scores-cols: f-428,f-338,f-220
+FIRE  233 update-scores-cols: f-430,f-204,f-209
+FIRE  234 update-scores-cols: f-432,f-193,f-198
+FIRE  235 update-scores-cols: f-434,f-182,f-187
+FIRE  236 update-scores-cols: f-436,f-408,f-410
+FIRE  237 update-scores-rows-index: f-418,f-388,f-360
+FIRE  238 update-scores-rows: f-439,f-391,f-287
+FIRE  239 update-scores-rows-index: f-441,f-437,f-409
+FIRE  240 update-scores-rows: f-442,f-395,f-279
+FIRE  241 update-scores-rows: f-444,f-397,f-278
+FIRE  242 update-scores-rows: f-446,f-399,f-277
+FIRE  243 update-scores-rows: f-448,f-401,f-276
+FIRE  244 finish-update-score-col: f-450
+FIRE  245 finish-update-score-row: f-438
+FIRE  246 exec-action-guess: f-405,f-406,f-407
+<== Focus ACTION to AGENT
+<== Focus AGENT to MAIN
+FIRE  247 go-on-env: f-405,f-451
+==> Focus ENV from MAIN
+FIRE  248 action-guess: f-405,f-451,f-406
+<== Focus ENV to MAIN
+FIRE  249 go-on-agent: f-1,f-453
+==> Focus AGENT from MAIN
+FIRE  250 go-on-update-kc: f-453
+==> Focus UPDATE_KC from AGENT
+FIRE  251 update-kb-incrociatore-ver: f-440,f-388,f-437,f-143
+<== Focus UPDATE_KC to AGENT
+FIRE  252 go-on-deliberate: f-453
+==> Focus DELIBERATION from AGENT
+FIRE  253 find-cell-guess: f-274,*,f-276,f-275
+<== Focus DELIBERATION to AGENT
+FIRE  254 go-on-action: f-453
+==> Focus ACTION from AGENT
+FIRE  255 update-scores-rows: f-463,f-265,f-285
+FIRE  256 update-scores-rows: f-465,f-317,f-284
+FIRE  257 update-scores-rows: f-467,f-325,f-283
+FIRE  258 update-scores-rows: f-469,f-370,f-360
+FIRE  259 update-scores-rows: f-471,f-308,f-287
+FIRE  260 update-scores-rows: f-473,f-419,f-409
+FIRE  261 update-scores-rows: f-475,f-294,f-279
+FIRE  262 update-scores-rows: f-477,f-272,f-278
+FIRE  263 update-scores-rows: f-479,f-273,f-277
+FIRE  264 update-scores-cols: f-462,f-459,f-461
+FIRE  265 update-scores-cols: f-483,f-263,f-264
+FIRE  266 update-scores-cols: f-485,f-252,f-253
+FIRE  267 update-scores-cols: f-487,f-337,f-242
+FIRE  268 update-scores-cols: f-489,f-296,f-292
+FIRE  269 update-scores-cols: f-491,f-219,f-220
+FIRE  270 update-scores-cols: f-493,f-208,f-209
+FIRE  271 update-scores-cols: f-495,f-197,f-198
+FIRE  272 update-scores-cols: f-497,f-186,f-187
+FIRE  273 update-scores-cols: f-499,f-449,f-410
+FIRE  274 update-scores-rows-index: f-481,f-482,f-460
+FIRE  275 finish-update-score-col: f-502
+FIRE  276 finish-update-score-row: f-501
+FIRE  277 exec-action-guess: f-453,f-454,f-458
+<== Focus ACTION to AGENT
+<== Focus AGENT to MAIN
+FIRE  278 go-on-env: f-453,f-503
+==> Focus ENV from MAIN
+FIRE  279 action-guess: f-453,f-503,f-454
+<== Focus ENV to MAIN
+FIRE  280 go-on-agent: f-1,f-505
+==> Focus AGENT from MAIN
+FIRE  281 go-on-update-kc: f-505
+==> Focus UPDATE_KC from AGENT
+<== Focus UPDATE_KC to AGENT
+FIRE  282 go-on-deliberate: f-505
+==> Focus DELIBERATION from AGENT
+FIRE  283 find-cell-guess: f-486,*,f-460,f-253
+<== Focus DELIBERATION to AGENT
+FIRE  284 go-on-action: f-505
+==> Focus ACTION from AGENT
+FIRE  285 update-scores-rows: f-512,f-243,f-285
+FIRE  286 update-scores-rows: f-514,f-319,f-284
+FIRE  287 update-scores-rows: f-516,f-327,f-283
+FIRE  288 update-scores-rows: f-518,f-374,f-360
+FIRE  289 update-scores-rows: f-520,f-310,f-287
+FIRE  290 update-scores-rows: f-522,f-423,f-409
+FIRE  291 update-scores-rows: f-524,f-249,f-279
+FIRE  292 update-scores-rows: f-526,f-250,f-278
+FIRE  293 update-scores-rows: f-528,f-251,f-277
+FIRE  294 update-scores-cols: f-511,f-482,f-461
+FIRE  295 update-scores-cols: f-532,f-484,f-264
+FIRE  296 update-scores-cols: f-534,f-508,f-510
+FIRE  297 update-scores-cols: f-536,f-488,f-242
+FIRE  298 update-scores-cols: f-538,f-490,f-292
+FIRE  299 update-scores-cols: f-540,f-492,f-220
+FIRE  300 update-scores-cols: f-542,f-494,f-209
+FIRE  301 update-scores-cols: f-544,f-496,f-198
+FIRE  302 update-scores-cols: f-546,f-498,f-187
+FIRE  303 update-scores-cols: f-548,f-500,f-410
+FIRE  304 update-scores-rows-index: f-530,f-535,f-509
+FIRE  305 finish-update-score-col: f-551
+FIRE  306 finish-update-score-row: f-550
+FIRE  307 exec-action-guess: f-505,f-506,f-507
+<== Focus ACTION to AGENT
+<== Focus AGENT to MAIN
+FIRE  308 go-on-env: f-505,f-552
+==> Focus ENV from MAIN
+FIRE  309 action-guess: f-505,f-552,f-506
+<== Focus ENV to MAIN
+FIRE  310 go-on-agent: f-1,f-554
+==> Focus AGENT from MAIN
+FIRE  311 go-on-update-kc: f-554
+==> Focus UPDATE_KC from AGENT
+<== Focus UPDATE_KC to AGENT
+FIRE  312 go-on-deliberate: f-554
+==> Focus DELIBERATION from AGENT
+FIRE  313 find-cell-guess: f-478,*,f-278,f-461
+<== Focus DELIBERATION to AGENT
+FIRE  314 go-on-action: f-554
+==> Focus ACTION from AGENT
+FIRE  315 update-scores-rows: f-561,f-464,f-285
+FIRE  316 update-scores-rows: f-563,f-466,f-284
+FIRE  317 update-scores-rows: f-565,f-468,f-283
+FIRE  318 update-scores-rows: f-567,f-470,f-360
+FIRE  319 update-scores-rows: f-569,f-472,f-287
+FIRE  320 update-scores-rows: f-571,f-474,f-409
+FIRE  321 update-scores-rows: f-573,f-476,f-279
+FIRE  322 update-scores-cols: f-560,f-557,f-559
+FIRE  323 update-scores-cols: f-577,f-261,f-264
+FIRE  324 update-scores-cols: f-579,f-527,f-510
+FIRE  325 update-scores-cols: f-581,f-335,f-242
+FIRE  326 update-scores-cols: f-583,f-298,f-292
+FIRE  327 update-scores-cols: f-585,f-217,f-220
+FIRE  328 update-scores-cols: f-587,f-206,f-209
+FIRE  329 update-scores-cols: f-589,f-195,f-198
+FIRE  330 update-scores-cols: f-591,f-184,f-187
+FIRE  331 update-scores-cols: f-593,f-445,f-410
+FIRE  332 update-scores-rows-index: f-575,f-576,f-558
+FIRE  333 update-scores-rows: f-596,f-480,f-277
+FIRE  334 update-scores-rows-index: f-598,f-531,f-509
+FIRE  335 finish-update-score-col: f-599
+FIRE  336 finish-update-score-row: f-595
+FIRE  337 exec-action-guess: f-554,f-555,f-556
+<== Focus ACTION to AGENT
+<== Focus AGENT to MAIN
+FIRE  338 go-on-env: f-554,f-600
+==> Focus ENV from MAIN
+FIRE  339 action-guess: f-554,f-600,f-555
+<== Focus ENV to MAIN
+FIRE  340 go-on-agent: f-1,f-602
+==> Focus AGENT from MAIN
+FIRE  341 go-on-update-kc: f-602
+==> Focus UPDATE_KC from AGENT
+<== Focus UPDATE_KC to AGENT
+FIRE  342 go-on-deliberate: f-602
+==> Focus DELIBERATION from AGENT
+FIRE  343 find-cell-guess: f-580,*,f-558,f-510
+<== Focus DELIBERATION to AGENT
+FIRE  344 go-on-action: f-602
+==> Focus ACTION from AGENT
+FIRE  345 update-scores-rows: f-609,f-513,f-285
+FIRE  346 update-scores-rows: f-611,f-515,f-284
+FIRE  347 update-scores-rows: f-613,f-517,f-283
+FIRE  348 update-scores-rows: f-615,f-519,f-360
+FIRE  349 update-scores-rows: f-617,f-521,f-287
+FIRE  350 update-scores-rows: f-619,f-523,f-409
+FIRE  351 update-scores-rows: f-621,f-525,f-279
+FIRE  352 update-scores-cols: f-608,f-576,f-559
+FIRE  353 update-scores-cols: f-625,f-578,f-264
+FIRE  354 update-scores-cols: f-627,f-605,f-607
+FIRE  355 update-scores-cols: f-629,f-582,f-242
+FIRE  356 update-scores-cols: f-631,f-584,f-292
+FIRE  357 update-scores-cols: f-633,f-586,f-220
+FIRE  358 update-scores-cols: f-635,f-588,f-209
+FIRE  359 update-scores-cols: f-637,f-590,f-198
+FIRE  360 update-scores-cols: f-639,f-592,f-187
+FIRE  361 update-scores-cols: f-641,f-594,f-410
+FIRE  362 update-scores-rows-index: f-623,f-628,f-606
+FIRE  363 update-scores-rows: f-644,f-529,f-277
+FIRE  364 update-scores-rows-index: f-646,f-535,f-509
+FIRE  365 finish-update-score-col: f-647
+FIRE  366 finish-update-score-row: f-643
+<== Focus ACTION to AGENT
+<== Focus AGENT to MAIN
+<== Focus MAIN
 CLIPS> @REM (facts MAIN)
 @REM
 CLIPS> (facts AGENT)
@@ -30,7 +460,6 @@ f-138   (k-per-col (col 8) (num 1))
 f-139   (k-per-col (col 9) (num 3))
 f-141   (boat-agent (id gen1) (name corazzata) (qty 1) (boat-pieces 4))
 f-142   (boat-agent (id gen2) (name incrociatore) (qty 2) (boat-pieces 3))
-f-143   (boat-agent (id gen3) (name incrociatore) (qty 2) (boat-pieces 3))
 f-144   (boat-agent (id gen4) (name cacciatorpediniere) (qty 3) (boat-pieces 2))
 f-145   (boat-agent (id gen5) (name cacciatorpediniere) (qty 3) (boat-pieces 2))
 f-146   (boat-agent (id gen6) (name cacciatorpediniere) (qty 3) (boat-pieces 2))
@@ -38,145 +467,133 @@ f-147   (boat-agent (id gen7) (name sottomarino) (qty nil) (boat-pieces 1))
 f-148   (boat-agent (id gen8) (name sottomarino) (qty nil) (boat-pieces 1))
 f-149   (boat-agent (id gen9) (name sottomarino) (qty nil) (boat-pieces 1))
 f-160   (statistics (num_fire_ok 0) (num_fire_ko 0) (num_guess_ok 0) (num_guess_ko 0) (num_safe 0) (num_sink 0))
+f-177   (cell-agent (x 0) (y 8) (content none) (status none) (score 2))
+f-183   (cell-agent (x 6) (y 8) (content none) (status none) (score 1))
+f-185   (cell-agent (x 8) (y 8) (content none) (status none) (score 1))
+f-187   (k-per-col-agent (col 8) (num 1))
+f-188   (cell-agent (x 0) (y 7) (content none) (status none) (score 4))
+f-194   (cell-agent (x 6) (y 7) (content none) (status none) (score 2))
+f-196   (cell-agent (x 8) (y 7) (content none) (status none) (score 2))
+f-198   (k-per-col-agent (col 7) (num 2))
+f-199   (cell-agent (x 0) (y 6) (content none) (status none) (score 4))
+f-205   (cell-agent (x 6) (y 6) (content none) (status none) (score 2))
+f-207   (cell-agent (x 8) (y 6) (content none) (status none) (score 2))
+f-209   (k-per-col-agent (col 6) (num 2))
+f-210   (cell-agent (x 0) (y 5) (content none) (status none) (score 2))
+f-216   (cell-agent (x 6) (y 5) (content none) (status none) (score 1))
+f-218   (cell-agent (x 8) (y 5) (content none) (status none) (score 1))
+f-220   (k-per-col-agent (col 5) (num 1))
 f-242   (k-per-col-agent (col 3) (num 0))
+f-260   (cell-agent (x 6) (y 1) (content none) (status none) (score 1))
+f-262   (cell-agent (x 8) (y 1) (content none) (status none) (score 1))
+f-264   (k-per-col-agent (col 1) (num 1))
+f-277   (k-per-row-agent (row 8) (num 1))
+f-279   (k-per-row-agent (row 6) (num 1))
 f-283   (k-per-row-agent (row 2) (num 0))
 f-284   (k-per-row-agent (row 1) (num 0))
+f-285   (k-per-row-agent (row 0) (num 2))
 f-287   (k-per-row-agent (row 4) (num 0))
 f-292   (k-per-col-agent (col 4) (num 0))
+f-295   (cell-agent (x 0) (y 1) (content water) (status know) (score 0))
+f-297   (cell-agent (x 8) (y 4) (content water) (status exclusion) (score 0))
+f-299   (cell-agent (x 6) (y 4) (content water) (status exclusion) (score 0))
+f-309   (cell-agent (x 4) (y 1) (content water) (status exclusion) (score 0))
 f-311   (cell-agent (x 4) (y 3) (content water) (status exclusion) (score 0))
+f-312   (cell-agent (x 4) (y 5) (content water) (status exclusion) (score 0))
+f-313   (cell-agent (x 4) (y 6) (content water) (status exclusion) (score 0))
+f-314   (cell-agent (x 4) (y 7) (content water) (status exclusion) (score 0))
+f-315   (cell-agent (x 4) (y 8) (content water) (status exclusion) (score 0))
+f-316   (cell-agent (x 0) (y 3) (content water) (status exclusion) (score 0))
+f-318   (cell-agent (x 1) (y 1) (content water) (status exclusion) (score 0))
 f-320   (cell-agent (x 1) (y 3) (content water) (status exclusion) (score 0))
+f-321   (cell-agent (x 1) (y 5) (content water) (status exclusion) (score 0))
+f-322   (cell-agent (x 1) (y 6) (content water) (status exclusion) (score 0))
+f-323   (cell-agent (x 1) (y 7) (content water) (status exclusion) (score 0))
+f-324   (cell-agent (x 1) (y 8) (content water) (status exclusion) (score 0))
+f-326   (cell-agent (x 2) (y 1) (content water) (status exclusion) (score 0))
 f-328   (cell-agent (x 2) (y 3) (content water) (status exclusion) (score 0))
+f-329   (cell-agent (x 2) (y 5) (content water) (status exclusion) (score 0))
+f-330   (cell-agent (x 2) (y 6) (content water) (status exclusion) (score 0))
+f-331   (cell-agent (x 2) (y 7) (content water) (status exclusion) (score 0))
+f-332   (cell-agent (x 2) (y 8) (content water) (status exclusion) (score 0))
+f-334   (cell-agent (x 6) (y 3) (content water) (status exclusion) (score 0))
+f-336   (cell-agent (x 8) (y 3) (content water) (status exclusion) (score 0))
+f-340   (cell-agent (x 0) (y 4) (content water) (status exclusion) (score 0))
 f-342   (cell-agent (x 1) (y 4) (content water) (status exclusion) (score 0))
 f-344   (cell-agent (x 2) (y 4) (content water) (status exclusion) (score 0))
 f-348   (cell-agent (x 4) (y 4) (content water) (status exclusion) (score 0))
+f-360   (k-per-row-agent (row 3) (num 2))
+f-372   (cell-agent (x 3) (y 1) (content none) (status none) (score 2))
+f-376   (cell-agent (x 3) (y 3) (content water) (status exclusion) (score 0))
+f-378   (cell-agent (x 3) (y 4) (content water) (status exclusion) (score 0))
+f-380   (cell-agent (x 3) (y 5) (content none) (status none) (score 2))
+f-382   (cell-agent (x 3) (y 6) (content none) (status none) (score 4))
+f-384   (cell-agent (x 3) (y 7) (content none) (status none) (score 4))
+f-386   (cell-agent (x 3) (y 8) (content none) (status none) (score 2))
 f-403   (exec (step 0) (action guess) (x 3) (y 9))
 f-409   (k-per-row-agent (row 5) (num 0))
 f-410   (k-per-col-agent (col 9) (num 0))
+f-413   (cell-agent (x 0) (y 9) (content none) (status none) (score 0))
 f-415   (cell-agent (x 1) (y 9) (content water) (status exclusion) (score 0))
 f-417   (cell-agent (x 2) (y 9) (content water) (status exclusion) (score 0))
+f-421   (cell-agent (x 5) (y 1) (content none) (status none) (score 0))
 f-425   (cell-agent (x 5) (y 3) (content water) (status exclusion) (score 0))
 f-427   (cell-agent (x 5) (y 4) (content sub) (status know) (score 0))
-f-437   (cell-agent (x 5) (y 9) (content bot) (status guess) (score 0))
-f-440   (cell-agent (x 4) (y 9) (content middle) (status know) (score 0))
+f-429   (cell-agent (x 5) (y 5) (content water) (status exclusion) (score 0))
+f-431   (cell-agent (x 5) (y 6) (content none) (status none) (score 0))
+f-433   (cell-agent (x 5) (y 7) (content none) (status none) (score 0))
+f-435   (cell-agent (x 5) (y 8) (content none) (status none) (score 0))
+f-443   (cell-agent (x 6) (y 9) (content none) (status none) (score 0))
+f-447   (cell-agent (x 8) (y 9) (content none) (status none) (score 0))
 f-451   (exec (step 1) (action guess) (x 5) (y 9))
-f-500   (exec (step 2) (action guess) (x 9) (y 0))
-f-549   (exec (step 3) (action guess) (x 9) (y 2))
-f-597   (exec (step 4) (action guess) (x 7) (y 0))
-f-645   (exec (step 5) (action guess) (x 7) (y 2))
-f-694   (exec (step 6) (action guess) (x 9) (y 7))
-f-743   (exec (step 7) (action guess) (x 9) (y 6))
-f-790   (exec (step 8) (action guess) (x 3) (y 0))
-f-836   (exec (step 9) (action guess) (x 0) (y 0))
-f-842   (k-per-row-agent (row 0) (num 0))
-f-846   (cell-agent (x 0) (y 0) (content none) (status guess) (score 0))
-f-850   (cell-agent (x 0) (y 2) (content none) (status guess) (score 0))
-f-852   (cell-agent (x 0) (y 3) (content water) (status exclusion) (score 0))
-f-854   (cell-agent (x 0) (y 4) (content water) (status exclusion) (score 0))
-f-864   (cell-agent (x 0) (y 9) (content none) (status none) (score 0))
-f-883   (exec (step 10) (action guess) (x 0) (y 2))
-f-890   (k-per-col-agent (col 8) (num 0))
-f-893   (cell-agent (x 0) (y 8) (content none) (status none) (score 0))
-f-895   (cell-agent (x 1) (y 8) (content water) (status exclusion) (score 0))
-f-897   (cell-agent (x 2) (y 8) (content water) (status exclusion) (score 0))
-f-901   (cell-agent (x 4) (y 8) (content water) (status exclusion) (score 0))
-f-903   (cell-agent (x 5) (y 8) (content none) (status none) (score 0))
-f-932   (exec (step 11) (action guess) (x 7) (y 8))
-f-939   (k-per-col-agent (col 1) (num 0))
-f-942   (cell-agent (x 0) (y 1) (content water) (status know) (score 0))
-f-944   (cell-agent (x 1) (y 1) (content water) (status exclusion) (score 0))
-f-946   (cell-agent (x 2) (y 1) (content water) (status exclusion) (score 0))
-f-950   (cell-agent (x 4) (y 1) (content water) (status exclusion) (score 0))
-f-952   (cell-agent (x 5) (y 1) (content none) (status none) (score 0))
-f-981   (exec (step 12) (action guess) (x 9) (y 1))
-f-987   (k-per-row-agent (row 9) (num 0))
-f-988   (k-per-col-agent (col 5) (num 0))
-f-991   (cell-agent (x 0) (y 5) (content none) (status none) (score 0))
-f-993   (cell-agent (x 1) (y 5) (content water) (status exclusion) (score 0))
-f-995   (cell-agent (x 2) (y 5) (content water) (status exclusion) (score 0))
-f-999   (cell-agent (x 4) (y 5) (content water) (status exclusion) (score 0))
-f-1001  (cell-agent (x 5) (y 5) (content water) (status exclusion) (score 0))
-f-1009  (cell-agent (x 9) (y 0) (content none) (status guess) (score 0))
-f-1011  (cell-agent (x 9) (y 1) (content none) (status guess) (score 0))
-f-1013  (cell-agent (x 9) (y 2) (content none) (status guess) (score 0))
-f-1015  (cell-agent (x 9) (y 3) (content water) (status exclusion) (score 0))
-f-1017  (cell-agent (x 9) (y 4) (content water) (status exclusion) (score 0))
-f-1019  (cell-agent (x 9) (y 5) (content none) (status guess) (score 0))
-f-1021  (cell-agent (x 9) (y 6) (content none) (status guess) (score 0))
-f-1023  (cell-agent (x 9) (y 7) (content none) (status guess) (score 0))
-f-1025  (cell-agent (x 9) (y 8) (content none) (status none) (score 0))
-f-1027  (cell-agent (x 9) (y 9) (content none) (status none) (score 0))
-f-1030  (exec (step 13) (action guess) (x 9) (y 5))
-f-1036  (k-per-row-agent (row 7) (num 0))
-f-1037  (k-per-col-agent (col 7) (num 0))
-f-1040  (cell-agent (x 0) (y 7) (content none) (status none) (score 0))
-f-1042  (cell-agent (x 1) (y 7) (content water) (status exclusion) (score 0))
-f-1044  (cell-agent (x 2) (y 7) (content water) (status exclusion) (score 0))
-f-1048  (cell-agent (x 4) (y 7) (content water) (status exclusion) (score 0))
-f-1050  (cell-agent (x 5) (y 7) (content none) (status none) (score 0))
-f-1054  (cell-agent (x 7) (y 0) (content none) (status guess) (score 0))
-f-1056  (cell-agent (x 7) (y 1) (content none) (status none) (score 0))
-f-1058  (cell-agent (x 7) (y 2) (content none) (status guess) (score 0))
-f-1060  (cell-agent (x 7) (y 3) (content water) (status exclusion) (score 0))
-f-1062  (cell-agent (x 7) (y 4) (content water) (status exclusion) (score 0))
-f-1064  (cell-agent (x 7) (y 5) (content none) (status none) (score 0))
-f-1068  (cell-agent (x 7) (y 7) (content none) (status guess) (score 0))
-f-1070  (cell-agent (x 7) (y 8) (content none) (status guess) (score 0))
-f-1072  (cell-agent (x 7) (y 9) (content none) (status none) (score 0))
-f-1078  (exec (step 14) (action guess) (x 7) (y 7))
-f-1084  (k-per-row-agent (row 3) (num 0))
-f-1085  (k-per-col-agent (col 2) (num 0))
-f-1088  (cell-agent (x 3) (y 0) (content none) (status guess) (score 0))
-f-1090  (cell-agent (x 3) (y 1) (content none) (status none) (score 0))
-f-1092  (cell-agent (x 3) (y 2) (content none) (status guess) (score 0))
-f-1094  (cell-agent (x 3) (y 3) (content water) (status exclusion) (score 0))
-f-1096  (cell-agent (x 3) (y 4) (content water) (status exclusion) (score 0))
-f-1098  (cell-agent (x 3) (y 5) (content none) (status none) (score 0))
-f-1102  (cell-agent (x 3) (y 7) (content none) (status none) (score 0))
-f-1104  (cell-agent (x 3) (y 8) (content none) (status none) (score 0))
-f-1106  (cell-agent (x 3) (y 9) (content top) (status guess) (score 0))
-f-1109  (cell-agent (x 1) (y 2) (content water) (status exclusion) (score 0))
-f-1111  (cell-agent (x 2) (y 2) (content water) (status exclusion) (score 0))
-f-1114  (cell-agent (x 4) (y 2) (content water) (status exclusion) (score 0))
-f-1116  (cell-agent (x 5) (y 2) (content none) (status none) (score 0))
-f-1124  (exec (step 15) (action guess) (x 3) (y 2))
-f-1130  (k-per-row-agent (row 8) (num 0))
-f-1131  (k-per-col-agent (col 0) (num 0))
-f-1134  (cell-agent (x 8) (y 0) (content none) (status guess) (score 0))
-f-1136  (cell-agent (x 8) (y 1) (content none) (status none) (score 0))
-f-1138  (cell-agent (x 8) (y 2) (content none) (status none) (score 0))
-f-1140  (cell-agent (x 8) (y 3) (content water) (status exclusion) (score 0))
-f-1142  (cell-agent (x 8) (y 4) (content water) (status exclusion) (score 0))
-f-1144  (cell-agent (x 8) (y 5) (content none) (status none) (score 0))
-f-1148  (cell-agent (x 8) (y 7) (content none) (status none) (score 0))
-f-1150  (cell-agent (x 8) (y 8) (content none) (status none) (score 0))
-f-1152  (cell-agent (x 8) (y 9) (content none) (status none) (score 0))
-f-1155  (cell-agent (x 1) (y 0) (content water) (status exclusion) (score 0))
-f-1157  (cell-agent (x 2) (y 0) (content water) (status exclusion) (score 0))
-f-1160  (cell-agent (x 4) (y 0) (content water) (status exclusion) (score 0))
-f-1162  (cell-agent (x 5) (y 0) (content none) (status none) (score 0))
-f-1169  (exec (step 16) (action guess) (x 8) (y 0))
-f-1175  (k-per-row-agent (row 6) (num 0))
-f-1176  (k-per-col-agent (col 6) (num 0))
-f-1179  (cell-agent (x 0) (y 6) (content none) (status none) (score 0))
-f-1181  (cell-agent (x 1) (y 6) (content water) (status exclusion) (score 0))
-f-1183  (cell-agent (x 2) (y 6) (content water) (status exclusion) (score 0))
-f-1185  (cell-agent (x 3) (y 6) (content none) (status none) (score 0))
-f-1187  (cell-agent (x 4) (y 6) (content water) (status exclusion) (score 0))
-f-1189  (cell-agent (x 5) (y 6) (content none) (status none) (score 0))
-f-1191  (cell-agent (x 6) (y 0) (content water) (status know) (score 0))
-f-1193  (cell-agent (x 6) (y 1) (content none) (status none) (score 0))
-f-1195  (cell-agent (x 6) (y 2) (content none) (status none) (score 0))
-f-1197  (cell-agent (x 6) (y 3) (content water) (status exclusion) (score 0))
-f-1199  (cell-agent (x 6) (y 4) (content water) (status exclusion) (score 0))
-f-1201  (cell-agent (x 6) (y 5) (content none) (status none) (score 0))
-f-1203  (cell-agent (x 6) (y 6) (content none) (status guess) (score 0))
-f-1205  (cell-agent (x 6) (y 7) (content none) (status none) (score 0))
-f-1207  (cell-agent (x 6) (y 8) (content none) (status none) (score 0))
-f-1209  (cell-agent (x 6) (y 9) (content none) (status none) (score 0))
-f-1212  (cell-agent (x 7) (y 6) (content none) (status none) (score 0))
-f-1214  (cell-agent (x 8) (y 6) (content none) (status none) (score 0))
-f-1217  (exec (step 17) (action guess) (x 6) (y 6))
-f-1219  (status (step 18) (currently running))
-f-1220  (moves (fires 5) (guesses 2))
-For a total of 176 facts.
+f-455   (cell-agent (x 4) (y 9) (content middle) (status know) (score -1))
+f-456   (cell-agent (x 3) (y 9) (content top) (status guess) (score -1))
+f-457   (cell-agent (x 5) (y 9) (content bot) (status guess) (score -1))
+f-503   (exec (step 2) (action guess) (x 9) (y 0))
+f-509   (k-per-row-agent (row 9) (num 4))
+f-531   (cell-agent (x 9) (y 0) (content none) (status guess) (score 16))
+f-533   (cell-agent (x 9) (y 1) (content none) (status none) (score 4))
+f-535   (cell-agent (x 9) (y 2) (content none) (status guess) (score 12))
+f-537   (cell-agent (x 9) (y 3) (content water) (status exclusion) (score 0))
+f-539   (cell-agent (x 9) (y 4) (content water) (status exclusion) (score 0))
+f-541   (cell-agent (x 9) (y 5) (content none) (status none) (score 4))
+f-543   (cell-agent (x 9) (y 6) (content none) (status none) (score 8))
+f-545   (cell-agent (x 9) (y 7) (content none) (status none) (score 8))
+f-547   (cell-agent (x 9) (y 8) (content none) (status none) (score 4))
+f-549   (cell-agent (x 9) (y 9) (content none) (status none) (score 0))
+f-552   (exec (step 3) (action guess) (x 9) (y 2))
+f-559   (k-per-col-agent (col 0) (num 3))
+f-562   (cell-agent (x 0) (y 0) (content none) (status none) (score 6))
+f-564   (cell-agent (x 1) (y 0) (content water) (status exclusion) (score 0))
+f-566   (cell-agent (x 2) (y 0) (content water) (status exclusion) (score 0))
+f-568   (cell-agent (x 3) (y 0) (content none) (status none) (score 6))
+f-570   (cell-agent (x 4) (y 0) (content water) (status exclusion) (score 0))
+f-572   (cell-agent (x 5) (y 0) (content none) (status none) (score 0))
+f-574   (cell-agent (x 6) (y 0) (content water) (status know) (score 3))
+f-597   (cell-agent (x 8) (y 0) (content none) (status none) (score 3))
+f-600   (exec (step 4) (action guess) (x 7) (y 0))
+f-602   (status (step 5) (currently running))
+f-603   (moves (fires 5) (guesses 15))
+f-604   (action (name guess) (x 7) (y 2))
+f-606   (k-per-row-agent (row 7) (num 2))
+f-607   (k-per-col-agent (col 2) (num 2))
+f-610   (cell-agent (x 0) (y 2) (content none) (status none) (score 4))
+f-612   (cell-agent (x 1) (y 2) (content water) (status exclusion) (score 0))
+f-614   (cell-agent (x 2) (y 2) (content water) (status exclusion) (score 0))
+f-616   (cell-agent (x 3) (y 2) (content none) (status none) (score 4))
+f-618   (cell-agent (x 4) (y 2) (content water) (status exclusion) (score 0))
+f-620   (cell-agent (x 5) (y 2) (content none) (status none) (score 0))
+f-622   (cell-agent (x 6) (y 2) (content none) (status none) (score 2))
+f-624   (cell-agent (x 7) (y 0) (content none) (status guess) (score 6))
+f-626   (cell-agent (x 7) (y 1) (content none) (status none) (score 2))
+f-628   (cell-agent (x 7) (y 2) (content none) (status guess) (score 4))
+f-630   (cell-agent (x 7) (y 3) (content water) (status exclusion) (score 0))
+f-632   (cell-agent (x 7) (y 4) (content water) (status exclusion) (score 0))
+f-634   (cell-agent (x 7) (y 5) (content none) (status none) (score 2))
+f-636   (cell-agent (x 7) (y 6) (content none) (status none) (score 4))
+f-638   (cell-agent (x 7) (y 7) (content none) (status none) (score 4))
+f-640   (cell-agent (x 7) (y 8) (content none) (status none) (score 2))
+f-642   (cell-agent (x 7) (y 9) (content none) (status none) (score 0))
+f-645   (cell-agent (x 8) (y 2) (content none) (status none) (score 2))
+For a total of 163 facts.
 CLIPS> (exit)

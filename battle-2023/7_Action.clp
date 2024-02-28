@@ -59,7 +59,7 @@
 ;  exec della guess
 (defrule exec-action-guess (declare (salience 90))
     (status (step ?s)(currently running))
-    (moves (guesses ?ng&:(> ?ng 0)))
+    (moves (guesses ?ng&:(> ?ng 15)))
     ?a <- (action(name ?n)(x ?x)(y ?y))
    =>
    (assert (exec (step ?s) (action ?n) (x ?x) (y ?y)))
