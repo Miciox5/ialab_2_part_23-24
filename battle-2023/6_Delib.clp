@@ -13,35 +13,7 @@
 
 
 
-;(defrule find-incrociatore-hor)   TO DO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-;   Se ho un sub aggiorno la base di conoscenza (aggiunta la condizione sullo score per non farlo attivare sugli altri fatti)
-; (defrule find-sottomarino (declare (salience 85)) 
-;    ?cell <- (cell-agent (x ?x) (y ?y) (content sub) (score ?s&:(> ?s 0)) )
-;    ?sub <- (boat-agent (name sottomarino))
-;    =>
-;    (modify ?cell (score 0))
-;    (retract ?sub)
-; )
-;   aggiornamento della cella a seguito di una fire su un pezzo di nave
-; (defrule update-cell-after-fire (declare (salience 90))
-;     ?k-cell <- (k-cell (x ?x) (y ?y) (content ?content&:(neq ?content water)))
-;     ?cell-to-upd <- (cell-agent (x ?x) (y ?y))
-;     ?row <- (k-per-row-agent (row ?x) (num ?nr) )
-;     ?col <- (k-per-col-agent (col ?y) (num ?nc) )
-; =>
-;     (bind ?new-nr (- ?nr 1))
-;     (bind ?new-nc (- ?nc 1))
-;     (modify ?cell-to-upd (content ?content) (status know) (score 0)) 
-;     (modify ?row(num ?new-nr )) ;decrem row
-;     (modify ?col(num ?new-nc)) ;decrem col 
-; )
-
-
 ;------------------------- inferenza + azione ---------------------------
-
-()
-
 
 
 
@@ -97,6 +69,17 @@
 
 ;---------------------scelta azione---------------------------------
 
+;---------------------FIRE------------------------------------------
+
+(defrule first-step-fire (declare (salience 95))
+   (not (k-cell (x ?x) (y ?y)))
+   ?cell-to-upd <-(cell-agent (x ?x) (y ?y) (status none) (score ?s))   
+   (not (cell-agent (x ?x1) (y ?y2) (status none) (score ?s1&:(> ?s1 ?s))))
+   =>
+   (assert (action (name fire) (x ?x) (y ?y)))  
+   (pop-focus)
+)
+
 ; (defrule do-fire (declare (salience 95)) 
 ;    ?a <- (unguess (x ?x) (y ?y))
 ;    ?cell-to-upd <-(cell-agent (x ?x) (y ?y))   
@@ -111,6 +94,8 @@
 ;    (pop-focus)
 
 ; )
+;---------------------END-FIRE------------------------------------------
+
 
 (defrule find-cell-guess (declare (salience 70)) 
    ;(moves (guesses ?ng&:(> ?ng 0)))

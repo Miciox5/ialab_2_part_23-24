@@ -41,7 +41,7 @@
 
 (deftemplate boat-agent
 	(slot id (default-dynamic (gensym*)))
-	(slot name (allowed-values corazzata incrociatore cacciatorpediniere sottomarino))
+	(slot name (allowed-values corazzata incrociatore caccia sottomarino))
 	(slot qty)
 	(slot boat-pieces)
 )
@@ -81,9 +81,9 @@
 	(boat-agent (name corazzata) (qty 1) (boat-pieces 4))
 	(boat-agent (name incrociatore) (qty 2) (boat-pieces 3))
 	(boat-agent (name incrociatore) (qty 2) (boat-pieces 3))
-	(boat-agent (name cacciatorpediniere) (qty 3) (boat-pieces 2))
-	(boat-agent (name cacciatorpediniere) (qty 3) (boat-pieces 2))
-	(boat-agent (name cacciatorpediniere) (qty 3) (boat-pieces 2))
+	(boat-agent (name caccia) (qty 3) (boat-pieces 2))
+	(boat-agent (name caccia) (qty 3) (boat-pieces 2)) 
+	(boat-agent (name caccia) (qty 3) (boat-pieces 2))
 	(boat-agent (name sottomarino) (boat-pieces 1))
 	(boat-agent (name sottomarino) (boat-pieces 1))
 	(boat-agent (name sottomarino) (boat-pieces 1))

@@ -2,6 +2,9 @@
 
 ;------------ REGOLE -----------------------------
 
+; Le due regole seguenti aggiornano lo score di una riga ma non quello della cella dove è stata fatta la guess
+; (rimane lo score di quando ho fatto la guess)
+
 ; Update score di tutte le colonne di una riga
 (defrule update-scores-rows (declare (salience 100))
    ?a <- (update-score-col (col ?col) (num ?nc) (x-to-upd ?x))
@@ -22,6 +25,8 @@
     (assert (update-score-col (col ?col) (num ?nc) (x-to-upd (+ ?x 1))))
 )
 
+; Aggiornamento degli score di una colonna tranne per la cella in cui è stata fatta la guess
+; (rimane lo score di quando ho fatto la guess)
 
 ; Update score di tutte le righe di una colonna
 (defrule update-scores-cols (declare (salience 100))
@@ -56,13 +61,23 @@
     (retract ?factc)
 
 )
-;  exec della guess
-(defrule exec-action-guess (declare (salience 90))
+;  exec della fire
+(defrule exec-action-fire (declare (salience 90))
     (status (step ?s)(currently running))
-    (moves (guesses ?ng&:(> ?ng 15)))
-    ?a <- (action(name ?n)(x ?x)(y ?y))
+    (moves (fires ?nf&:(> ?nf 1)))
+    ?a <- (action (name fire)(x ?x)(y ?y))
    =>
-   (assert (exec (step ?s) (action ?n) (x ?x) (y ?y)))
+   (assert (exec (step ?s) (action fire) (x ?x) (y ?y)))
    (retract ?a)
    (pop-focus)
 )
+;  exec della guess
+; (defrule exec-action-guess (declare (salience 90))
+;     (status (step ?s)(currently running))
+;     (moves (guesses ?ng&:(> ?ng 15)))
+;     ?a <- (action(name ?guess)(x ?x)(y ?y))
+;    =>
+;    (assert (exec (step ?s) (action guess) (x ?x) (y ?y)))
+;    (retract ?a)
+;    (pop-focus)
+; )
