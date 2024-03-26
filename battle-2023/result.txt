@@ -162,66 +162,68 @@ FIRE  147 exec-action-fire: f-2,f-5,f-267
 FIRE  148 go-on-env: f-2,f-268
 ==> Focus ENV from MAIN
 FIRE  149 action-fire: f-2,f-268,f-5
-FIRE  150 make-visible-right: f-269,f-80,f-112,*
-FIRE  151 fire-ok: f-269,f-80,f-3
+FIRE  150 make-visible-right: f-270,f-80,f-112,*
+FIRE  151 fire-ok: f-270,f-80,f-3
 FIRE  152 hit-boat-hor-trace: f-80,f-112,*
 <== Focus ENV to MAIN
 FIRE  153 go-on-agent: f-1,f-2
 ==> Focus AGENT from MAIN
 FIRE  154 go-on-update-kc: f-2
 ==> Focus UPDATE_KC from AGENT
-FIRE  155 copy-k-cell: f-270,*,f-209,f-259,f-212
-FIRE  156 update-scores-rows: f-274,f-202,f-266
-FIRE  157 update-scores-rows: f-275,f-203,f-265
-FIRE  158 update-scores-rows: f-276,f-204,f-264
-FIRE  159 update-scores-rows: f-277,f-205,f-263
-FIRE  160 update-scores-rows: f-278,f-206,f-262
-FIRE  161 update-scores-rows: f-279,f-207,f-261
-FIRE  162 update-scores-rows: f-280,f-208,f-260
-FIRE  163 update-scores-rows: f-281,f-209,f-259
-FIRE  164 update-scores-rows: f-282,f-210,f-258
-FIRE  165 update-scores-rows: f-283,f-211,f-257
-FIRE  166 update-scores-cols: f-273,f-253,f-256
-FIRE  167 update-scores-cols: f-285,f-242,f-245
-FIRE  168 update-scores-cols: f-286,f-231,f-234
-FIRE  169 update-scores-cols: f-287,f-220,f-223
-FIRE  170 update-scores-cols: f-288,f-209,f-212
-FIRE  171 update-scores-cols: f-289,f-198,f-201
-FIRE  172 update-scores-cols: f-290,f-187,f-190
-FIRE  173 update-scores-cols: f-291,f-176,f-179
-FIRE  174 update-scores-cols: f-292,f-165,f-168
-FIRE  175 update-scores-cols: f-293,f-154,f-157
+FIRE  155 copy-k-cell: f-271,*,f-209,f-259,f-212
+FIRE  156 update-scores-rows: f-275,f-202,f-266
+FIRE  157 update-scores-rows: f-276,f-203,f-265
+FIRE  158 update-scores-rows: f-277,f-204,f-264
+FIRE  159 update-scores-rows: f-278,f-205,f-263
+FIRE  160 update-scores-rows: f-279,f-206,f-262
+FIRE  161 update-scores-rows: f-280,f-207,f-261
+FIRE  162 update-scores-rows: f-281,f-208,f-260
+FIRE  163 update-scores-rows: f-282,f-209,f-259
+FIRE  164 update-scores-rows: f-283,f-210,f-258
+FIRE  165 update-scores-rows: f-284,f-211,f-257
+FIRE  166 update-scores-cols: f-274,f-253,f-256
+FIRE  167 update-scores-cols: f-286,f-242,f-245
+FIRE  168 update-scores-cols: f-287,f-231,f-234
+FIRE  169 update-scores-cols: f-288,f-220,f-223
+FIRE  170 update-scores-cols: f-289,f-209,f-212
+FIRE  171 update-scores-cols: f-290,f-198,f-201
+FIRE  172 update-scores-cols: f-291,f-187,f-190
+FIRE  173 update-scores-cols: f-292,f-176,f-179
+FIRE  174 update-scores-cols: f-293,f-165,f-168
+FIRE  175 update-scores-cols: f-294,f-154,f-157
+FIRE  176 add-water-after-fire-right: f-269,f-271,f-198
+FIRE  177 add-water-after-fire-bot: f-269,f-271,f-210
 <== Focus UPDATE_KC to AGENT
-FIRE  176 go-on-deliberate: f-2
+FIRE  178 go-on-deliberate: f-2
 ==> Focus DELIBERATION from AGENT
-FIRE  177 find-cell-guess: f-203,*,f-265,f-212
+FIRE  179 find-cell-guess: f-203,*,f-265,f-212
 <== Focus DELIBERATION to AGENT
-FIRE  178 go-on-action: f-2
+FIRE  180 go-on-action: f-2
 ==> Focus ACTION from AGENT
-FIRE  179 update-scores-rows: f-297,f-202,f-266
-FIRE  180 update-scores-cols: f-296,f-247,f-256
-FIRE  181 update-scores-cols: f-299,f-236,f-245
-FIRE  182 update-scores-cols: f-300,f-225,f-234
-FIRE  183 update-scores-cols: f-301,f-214,f-223
-FIRE  184 update-scores-cols: f-302,f-203,f-212
-FIRE  185 update-scores-cols: f-303,f-192,f-201
-FIRE  186 update-scores-cols: f-304,f-181,f-190
-FIRE  187 update-scores-cols: f-305,f-170,f-179
-FIRE  188 update-scores-cols: f-306,f-159,f-168
-FIRE  189 update-scores-cols: f-307,f-148,f-157
-FIRE  190 update-scores-rows-index: f-298,f-203,f-265
-FIRE  191 update-scores-rows: f-309,f-204,f-264
-FIRE  192 update-scores-rows: f-310,f-205,f-263
-FIRE  193 update-scores-rows: f-311,f-206,f-262
-FIRE  194 update-scores-rows: f-312,f-207,f-261
-FIRE  195 update-scores-rows: f-313,f-208,f-260
-FIRE  196 update-scores-rows: f-314,f-209,f-259
-FIRE  197 update-scores-rows: f-315,f-210,f-258
-FIRE  198 update-scores-rows: f-316,f-211,f-257
-FIRE  199 finish-update-score-col: f-317
-FIRE  200 finish-update-score-row: f-308
-FIRE  201 finish-update-score-row: f-294
-FIRE  202 finish-update-score-col: f-284
+FIRE  181 update-scores-rows: f-298,f-202,f-266
+FIRE  182 update-scores-cols: f-297,f-247,f-256
+FIRE  183 update-scores-cols: f-300,f-236,f-245
+FIRE  184 update-scores-cols: f-301,f-225,f-234
+FIRE  185 update-scores-cols: f-302,f-214,f-223
+FIRE  186 update-scores-cols: f-303,f-203,f-212
+FIRE  187 update-scores-cols: f-304,f-192,f-201
+FIRE  188 update-scores-cols: f-305,f-181,f-190
+FIRE  189 update-scores-cols: f-306,f-170,f-179
+FIRE  190 update-scores-cols: f-307,f-159,f-168
+FIRE  191 update-scores-cols: f-308,f-148,f-157
+FIRE  192 update-scores-rows-index: f-299,f-203,f-265
+FIRE  193 update-scores-rows: f-310,f-204,f-264
+FIRE  194 update-scores-rows: f-311,f-205,f-263
+FIRE  195 update-scores-rows: f-312,f-206,f-262
+FIRE  196 update-scores-rows: f-313,f-207,f-261
+FIRE  197 update-scores-rows: f-314,f-208,f-260
+FIRE  198 update-scores-rows: f-315,f-209,f-259
+FIRE  199 update-scores-rows: f-316,f-210,f-258
+FIRE  200 update-scores-rows: f-317,f-211,f-257
+FIRE  201 finish-update-score-col: f-318
+FIRE  202 finish-update-score-row: f-309
+FIRE  203 finish-update-score-row: f-295
+FIRE  204 finish-update-score-col: f-285
 <== Focus ACTION to AGENT
 <== Focus AGENT to MAIN
 <== Focus MAIN
@@ -313,7 +315,7 @@ f-194   (cell-agent (x 3) (y 5) (content none) (status none) (score 1))
 f-195   (cell-agent (x 4) (y 5) (content none) (status none) (score 3))
 f-196   (cell-agent (x 5) (y 5) (content none) (status none) (score 2))
 f-197   (cell-agent (x 6) (y 5) (content water) (status exclusion) (score 0))
-f-198   (cell-agent (x 7) (y 5) (content none) (status none) (score 4))
+f-198   (cell-agent (x 7) (y 5) (content water) (status know) (score 0))
 f-199   (cell-agent (x 8) (y 5) (content none) (status none) (score 1))
 f-200   (cell-agent (x 9) (y 5) (content none) (status none) (score 2))
 f-201   (k-per-col-agent (col 5) (num 1))
@@ -325,7 +327,7 @@ f-206   (cell-agent (x 4) (y 4) (content none) (status none) (score 9))
 f-207   (cell-agent (x 5) (y 4) (content none) (status none) (score 6))
 f-208   (cell-agent (x 6) (y 4) (content water) (status exclusion) (score 0))
 f-209   (cell-agent (x 7) (y 4) (content right) (status fire) (score 12))
-f-210   (cell-agent (x 8) (y 4) (content none) (status none) (score 3))
+f-210   (cell-agent (x 8) (y 4) (content water) (status know) (score 3))
 f-211   (cell-agent (x 9) (y 4) (content none) (status none) (score 6))
 f-212   (k-per-col-agent (col 4) (num 3))
 f-213   (cell-agent (x 0) (y 3) (content none) (status none) (score 3))
@@ -383,7 +385,8 @@ f-264   (k-per-row-agent (row 2) (num 1))
 f-265   (k-per-row-agent (row 1) (num 3))
 f-266   (k-per-row-agent (row 0) (num 1))
 f-268   (exec (step 0) (action fire) (x 7) (y 4))
-f-270   (k-cell (x 7) (y 4) (content right))
-f-295   (action (name guess) (x 1) (y 4))
-For a total of 157 facts.
+f-269   (fire (x 7) (y 4))
+f-271   (k-cell (x 7) (y 4) (content right))
+f-296   (action (name guess) (x 1) (y 4))
+For a total of 158 facts.
 CLIPS> (exit)

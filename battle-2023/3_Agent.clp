@@ -32,6 +32,12 @@
 	(slot y)
 )
 
+(deftemplate fire
+	; (slot step)
+	(slot x)
+	(slot y)
+)
+
 ; (deftemplate boat-agent
 ; 	(slot id (default-dynamic (gensym*)))
 ; 	(slot name (allowed-values corazzata incrociatore cacciatorpediniere sottomarino))

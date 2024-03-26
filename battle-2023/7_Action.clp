@@ -69,6 +69,7 @@
    =>
    (assert (exec (step ?s) (action fire) (x ?x) (y ?y)))
    (retract ?a)
+   (assert (fire (x ?x) (y ?y)))
    (pop-focus)
 )
 ;  exec della guess

@@ -39,7 +39,42 @@
 )
 
 ;---------------UPDATE KNOWLEDGE CONTROL--------------------------------------
+; regole per aggiungere l'acqua ai vicini dopo aver fatto una fire(se middle non aggiungiamo)
 
+; top si riferisce alla cella in esame da riempire con l'acqua (non al contenuto della fire)
+(defrule add-water-after-fire-top (declare (salience 80))
+   ?fire <- (fire (x ?x) (y ?y))
+   (k-cell (x ?x) (y ?y) (content top | right | left))
+   ?top <- (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (content ?content&:(neq ?content water)))
+   =>
+   (modify ?top (content water) (status know) (score 0))
+)
+
+(defrule add-water-after-fire-bot (declare (salience 80))
+   ?fire <- (fire (x ?x) (y ?y))
+   (k-cell (x ?x) (y ?y) (content bot | right | left))
+   ?bot <- (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content ?content&:(neq ?content water)))
+   =>
+   (modify ?bot (content water) (status know) (score 0))
+)
+
+(defrule add-water-after-fire-right (declare (salience 80))
+   ?fire <- (fire (x ?x) (y ?y))
+   (k-cell (x ?x) (y ?y) (content bot | right | top))
+   ?right <- (cell-agent (x ?x) (y ?right-y&:(eq ?right-y (+ ?y 1))) (content ?content&:(neq ?content water)))
+   =>
+   (modify ?right (content water) (status know) (score 0))
+)
+
+(defrule add-water-after-fire-left (declare (salience 80))
+   ?fire <- (fire (x ?x) (y ?y))
+   (k-cell (x ?x) (y ?y) (content bot | left | top))
+   ?left <- (cell-agent (x ?x) (y ?left-y&:(eq ?left-y (- ?y 1))) (content ?content&:(neq ?content water)))
+   =>
+   (modify ?left (content water) (status know) (score 0))
+)
+
+;-----------------------------------------------------------------------------
 
 (defrule update-kb-corazzata-hor (declare (salience 80))
    ?cell-left <- (cell-agent (x ?x) (y ?left-y) (content left) (score ?left-s&:(neq ?left-s -1)))

@@ -15,6 +15,16 @@
 
 ;------------------------- inferenza + azione ---------------------------
 
+; Qui ci riferiamo al top come contenuto della fire eseguita nel passo precedente
+(defrule find-fire-driven-top (declare (salience 90))
+   ?fire <- (fire (x ?x) (y ?y))
+   (k-cell (x ?x) (y ?y) (content top))
+   ?cell <- (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content ?content&:(neq ?content water)) (status none))
+   =>
+   (assert (action (name guess) (x ?bot-x) (y ?y)))  
+   
+   (retract ?fire)
+)
 
 
 ;-----------------------------------------------------------------------
