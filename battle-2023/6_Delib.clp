@@ -15,15 +15,93 @@
 
 ;------------------------- inferenza + azione ---------------------------
 
+; -------BOTTOM------- 
 ; Qui ci riferiamo al top come contenuto della fire eseguita nel passo precedente
-(defrule find-fire-driven-top (declare (salience 90))
+; Esaminiamo la fire sul top con la sicurezza di aver bottom sotto
+(defrule find-guess-to-bot-fire-driven(declare (salience 90))
    ?fire <- (fire (x ?x) (y ?y))
    (k-cell (x ?x) (y ?y) (content top))
    ?cell <- (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content ?content&:(neq ?content water)) (status none))
+   ?col <- (k-per-col-agent (col ?y) (num ?nc))
+   ?row <- (k-per-row-agent (row ?bot-x) (num ?nr))
+   (or
+      ; caso indice colonna
+      (k-per-col-agent (col ?y) (num ?nc&:(= ?nc 1)) )
+      ; caso indice riga
+      (k-per-row-agent (row ?bot-bot-x&:(eq ?bot-bot-x (+ ?bot-x 1))) (num ?nc&:(= ?nc 0)) )
+      ; caso bordo 
+      (not (k-per-row-agent (row ?bot-bot-x&:(eq ?bot-bot-x (+ ?bot-x 1))) ))
+   )
    =>
    (assert (action (name guess) (x ?bot-x) (y ?y)))  
-   
+   (modify ?cell (content bot) (status guess))
+   (modify ?row (num (- ?nr 1))) ;decrem row
+   (modify ?col (num (- ?nc 1))) ;decrem col
+   (assert (update-score-row (row ?bot-x) (num (- ?nr 1)) (y-to-upd 0)) )
+   (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0)) )
    (retract ?fire)
+   (pop-focus)
+)
+;-----BOTTOM-ELSE-------
+; Guess guidata dalla fire con incertezza del contenuto sulla cella inferiore
+(defrule find-guess-fire-driven-else-bot(declare (salience 90))
+   ?fire <- (fire (x ?x) (y ?y))
+   (k-cell (x ?x) (y ?y) (content top))
+   ?cell <- (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content ?content&:(neq ?content water)) (status none))
+   ?col <- (k-per-col-agent (col ?y) (num ?nc))
+   ?row <- (k-per-row-agent (row ?bot-x) (num ?nr))
+   =>
+   (assert (action (name guess) (x ?bot-x) (y ?y)))  
+   (modify ?cell (status guess))
+   (modify ?row (num (- ?nr 1))) ;decrem row
+   (modify ?col (num (- ?nc 1))) ;decrem col
+   (assert (update-score-row (row ?bot-x) (num (- ?nr 1)) (y-to-upd 0)) )
+   (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0)) )
+   (retract ?fire)
+   (pop-focus)
+)
+; -------TOP------- 
+(defrule find-guess-to-top-fire-driven(declare (salience 90))
+   ?fire <- (fire (x ?x) (y ?y))
+   (k-cell (x ?x) (y ?y) (content bot))
+   ?cell <- (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (content ?content&:(neq ?content water)) (status none))
+   ?col <- (k-per-col-agent (col ?y) (num ?nc))
+   ?row <- (k-per-row-agent (row ?top-x) (num ?nr))
+   (or
+      ; caso indice colonna
+      (k-per-col-agent (col ?y) (num ?nc&:(= ?nc 1)) )
+      ; caso indice riga
+      (k-per-row-agent (row ?top-top-x&:(eq ?top-top-x (- ?top-x 1))) (num ?nc&:(= ?nc 0)) )
+      ; caso bordo 
+      (not (k-per-row-agent (row ?top-top-x&:(eq ?top-top-x (- ?top-x 1))) ))
+   )
+   =>
+   (assert (action (name guess) (x ?top-x) (y ?y)))  
+   (modify ?cell (content top) (status guess))
+   (modify ?row (num (- ?nr 1))) ;decrem row
+   (modify ?col (num (- ?nc 1))) ;decrem col
+   (assert (update-score-row (row ?top-x) (num (- ?nr 1)) (y-to-upd 0)) )
+   (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0)) )
+   (retract ?fire)
+   (pop-focus)
+)
+;-----TOP-ELSE-------
+; Guess guidata dalla fire con incertezza del contenuto sulla cella superior
+(defrule find-guess-fire-driven-else-bot(declare (salience 90))
+   ?fire <- (fire (x ?x) (y ?y))
+   (k-cell (x ?x) (y ?y) (content bot))
+   ?cell <- (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (content ?content&:(neq ?content water)) (status none))
+   ?col <- (k-per-col-agent (col ?y) (num ?nc))
+   ?row <- (k-per-row-agent (row ?top-x) (num ?nr))
+   =>
+   (assert (action (name guess) (x ?top-x) (y ?y)))  
+   (modify ?cell (status guess))
+   (modify ?row (num (- ?nr 1))) ;decrem row
+   (modify ?col (num (- ?nc 1))) ;decrem col
+   (assert (update-score-row (row ?top-x) (num (- ?nr 1)) (y-to-upd 0)) )
+   (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0)) )
+   (retract ?fire)
+   (pop-focus)
 )
 
 
