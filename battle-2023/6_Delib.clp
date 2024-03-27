@@ -15,6 +15,11 @@
 
 ;------------------------- inferenza + azione ---------------------------
 
+; RICERCA CORAZZATA (NAVI DA 4)
+
+; RICERCA INCROCIATORI (NAVI DA 3)
+
+; RICERCA CACCIA (NAVI DA DUE)
 ; -------BOTTOM------- 
 ; Qui ci riferiamo al top come contenuto della fire eseguita nel passo precedente
 ; Esaminiamo la fire sul top con la sicurezza di aver bottom sotto
@@ -28,7 +33,7 @@
       ; caso indice colonna
       (k-per-col-agent (col ?y) (num ?nc&:(= ?nc 1)) )
       ; caso indice riga
-      (k-per-row-agent (row ?bot-bot-x&:(eq ?bot-bot-x (+ ?bot-x 1))) (num ?nc&:(= ?nc 0)) )
+      (k-per-row-agent (row ?bot-bot-x&:(eq ?bot-bot-x (+ ?bot-x 1))) (num ?bot-bot-nr&:(= ?bot-bot-nr 0)) )
       ; caso bordo 
       (not (k-per-row-agent (row ?bot-bot-x&:(eq ?bot-bot-x (+ ?bot-x 1))) ))
    )
@@ -52,7 +57,7 @@
    ?row <- (k-per-row-agent (row ?bot-x) (num ?nr))
    =>
    (assert (action (name guess) (x ?bot-x) (y ?y)))  
-   (modify ?cell (status guess))
+   (modify ?cell (content middle) (status guess))
    (modify ?row (num (- ?nr 1))) ;decrem row
    (modify ?col (num (- ?nc 1))) ;decrem col
    (assert (update-score-row (row ?bot-x) (num (- ?nr 1)) (y-to-upd 0)) )
@@ -71,7 +76,7 @@
       ; caso indice colonna
       (k-per-col-agent (col ?y) (num ?nc&:(= ?nc 1)) )
       ; caso indice riga
-      (k-per-row-agent (row ?top-top-x&:(eq ?top-top-x (- ?top-x 1))) (num ?nc&:(= ?nc 0)) )
+      (k-per-row-agent (row ?top-top-x&:(eq ?top-top-x (- ?top-x 1))) (num ?top-top-nr&:(= ?top-top-nr 0)) )
       ; caso bordo 
       (not (k-per-row-agent (row ?top-top-x&:(eq ?top-top-x (- ?top-x 1))) ))
    )
@@ -87,7 +92,7 @@
 )
 ;-----TOP-ELSE-------
 ; Guess guidata dalla fire con incertezza del contenuto sulla cella superior
-(defrule find-guess-fire-driven-else-bot(declare (salience 90))
+(defrule find-guess-fire-driven-else-top(declare (salience 90))
    ?fire <- (fire (x ?x) (y ?y))
    (k-cell (x ?x) (y ?y) (content bot))
    ?cell <- (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (content ?content&:(neq ?content water)) (status none))
@@ -95,7 +100,7 @@
    ?row <- (k-per-row-agent (row ?top-x) (num ?nr))
    =>
    (assert (action (name guess) (x ?top-x) (y ?y)))  
-   (modify ?cell (status guess))
+   (modify ?cell (content middle) (status guess))
    (modify ?row (num (- ?nr 1))) ;decrem row
    (modify ?col (num (- ?nc 1))) ;decrem col
    (assert (update-score-row (row ?top-x) (num (- ?nr 1)) (y-to-upd 0)) )
@@ -104,6 +109,95 @@
    (pop-focus)
 )
 
+; -------LEFT------- 
+(defrule find-guess-to-left-fire-driven(declare (salience 90))
+   ?fire <- (fire (x ?x) (y ?y))
+   (k-cell (x ?x) (y ?y) (content right))
+   ?cell <- (cell-agent (x ?x) (y ?left-y&:(eq ?left-y (- ?y 1))) (content ?content&:(neq ?content water)) (status none))
+   ?col <- (k-per-col-agent (col ?left-y) (num ?nc))
+   ?row <- (k-per-row-agent (row ?x) (num ?nr))
+   (or
+      ; caso indice riga
+      ( k-per-row-agent (row ?x) (num ?nr&:(= ?nr 1))  )
+      ; caso indice colonna
+      (k-per-col-agent (col ?left-left-y&:(eq ?left-left-y (- ?left-y 1))) (num ?left-left-nc&:(= ?left-left-nc 0)) )
+      ; caso bordo 
+      (not (k-per-col-agent (col ?left-left-y&:(eq ?left-left-y (- ?y 2))) ))
+   )
+   =>
+   (assert (action (name guess) (x ?x) (y ?left-y)))  
+   (modify ?cell (content left) (status guess))
+   (modify ?row (num (- ?nr 1))) ;decrem row
+   (modify ?col (num (- ?nc 1))) ;decrem col
+   (assert (update-score-row (row ?x) (num (- ?nr 1)) (y-to-upd 0)) )
+   (assert (update-score-col (col ?left-y) (num (- ?nc 1)) (x-to-upd 0)) )
+   (retract ?fire)
+   (pop-focus)
+)
+;-----LEFT-ELSE-------
+; Guess guidata dalla fire con incertezza del contenuto sulla cella superior
+(defrule find-guess-fire-driven-else-left(declare (salience 90))
+   ?fire <- (fire (x ?x) (y ?y))
+   (k-cell (x ?x) (y ?y) (content right))
+   ?cell <- (cell-agent (x ?x) (y ?left-y&:(eq ?left-y (- ?y 1))) (content ?content&:(neq ?content water)) (status none))
+   ?col <- (k-per-col-agent (col ?left-y) (num ?nc))
+   ?row <- (k-per-row-agent (row ?x) (num ?nr))
+   =>
+   (assert (action (name guess) (x ?x) (y ?left-y)))  
+   (modify ?cell (content middle) (status guess))
+   (modify ?row (num (- ?nr 1))) ;decrem row
+   (modify ?col (num (- ?nc 1))) ;decrem col
+   (assert (update-score-row (row ?x) (num (- ?nr 1)) (y-to-upd 0)) )
+   (assert (update-score-col (col ?left-y) (num (- ?nc 1)) (x-to-upd 0)) )
+   (retract ?fire)
+   (pop-focus)
+)
+
+; -------RIGHT------- 
+(defrule find-guess-to-right-fire-driven(declare (salience 90))
+   ?fire <- (fire (x ?x) (y ?y))
+   (k-cell (x ?x) (y ?y) (content left))
+   ?cell <- (cell-agent (x ?x) (y ?right-y&:(eq ?right-y (+ ?y 1))) (content ?content&:(neq ?content water)) (status none))
+   ?col <- (k-per-col-agent (col ?right-y) (num ?nc))
+   ?row <- (k-per-row-agent (row ?x) (num ?nr))
+   (or
+      ; caso indice riga
+      (k-per-row-agent (row ?x) (num ?nc&:(= ?nr 1)) )
+      ; caso indice colonna
+      (k-per-col-agent (col ?right-right-y&:(eq ?right-right-y (- ?right-y 1))) (num ?right-right-nc&:(= ?right-right-nc 0)) )
+      ; caso bordo 
+      (not (k-per-col-agent (col ?right-right-y&:(eq ?right-right-y (- ?right-y 1))) ))
+   )
+   =>
+   (assert (action (name guess) (x ?x) (y ?right-y)))  
+   (modify ?cell (content right) (status guess))
+   (modify ?row (num (- ?nr 1))) ;decrem row
+   (modify ?col (num (- ?nc 1))) ;decrem col
+   (assert (update-score-row (row ?x) (num (- ?nr 1)) (y-to-upd 0)) )
+   (assert (update-score-col (col ?right-y) (num (- ?nc 1)) (x-to-upd 0)) )
+   (retract ?fire)
+   (pop-focus)
+)
+;-----RIGHT-ELSE-------
+; Guess guidata dalla fire con incertezza del contenuto sulla cella superior
+(defrule find-guess-fire-driven-else-right(declare (salience 90))
+   ?fire <- (fire (x ?x) (y ?y))
+   (k-cell (x ?x) (y ?y) (content left))
+   ?cell <- (cell-agent (x ?x) (y ?right-y&:(eq ?right-y (+ ?y 1))) (content ?content&:(neq ?content water)) (status none))
+   ?col <- (k-per-col-agent (col ?right-y) (num ?nc))
+   ?row <- (k-per-row-agent (row ?x) (num ?nr))
+   =>
+   (assert (action (name guess) (x ?x) (y ?right-y)))  
+   (modify ?cell (content middle) (status guess))
+   (modify ?row (num (- ?nr 1))) ;decrem row
+   (modify ?col (num (- ?nc 1))) ;decrem col
+   (assert (update-score-row (row ?x) (num (- ?nr 1)) (y-to-upd 0)) )
+   (assert (update-score-col (col ?right-y) (num (- ?nc 1)) (x-to-upd 0)) )
+   (retract ?fire)
+   (pop-focus)
+)
+
+; RICERCA SOTTOMARINI (NAVI DA 1)
 
 ;-----------------------------------------------------------------------
 

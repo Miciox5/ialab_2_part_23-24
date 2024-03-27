@@ -73,12 +73,12 @@
    (pop-focus)
 )
 ;  exec della guess
-; (defrule exec-action-guess (declare (salience 90))
-;     (status (step ?s)(currently running))
-;     (moves (guesses ?ng&:(> ?ng 15)))
-;     ?a <- (action(name ?guess)(x ?x)(y ?y))
-;    =>
-;    (assert (exec (step ?s) (action guess) (x ?x) (y ?y)))
-;    (retract ?a)
-;    (pop-focus)
-; )
+(defrule exec-action-guess (declare (salience 90))
+    (status (step ?s)(currently running))
+    (moves (guesses ?ng&:(> ?ng 0)))
+    ?a <- (action(name ?guess)(x ?x)(y ?y))
+   =>
+   (assert (exec (step ?s) (action guess) (x ?x) (y ?y)))
+   (retract ?a)
+   (pop-focus)
+)
