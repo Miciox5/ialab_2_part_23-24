@@ -64,7 +64,8 @@
 ;  exec della fire
 (defrule exec-action-fire (declare (salience 90))
     (status (step ?s)(currently running))
-    (moves (fires ?nf&:(> ?nf 1)))
+    ; da eliminare -> ridondante
+    (moves (fires ?nf&:(> ?nf 0)))
     ?a <- (action (name fire)(x ?x)(y ?y))
    =>
    (assert (exec (step ?s) (action fire) (x ?x) (y ?y)))
@@ -75,6 +76,7 @@
 ;  exec della guess
 (defrule exec-action-guess (declare (salience 90))
     (status (step ?s)(currently running))
+    ; da eliminare -> ridondante
     (moves (guesses ?ng&:(> ?ng 0)))
     ?a <- (action(name ?guess)(x ?x)(y ?y))
    =>

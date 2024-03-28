@@ -6,7 +6,7 @@
 
 ;---------------- REGOLE ------------------------------------------
 
-(defrule copy-k-cell (declare (salience 100))
+(defrule copy-k-cell (declare (salience 150))
    ?k-cell <- (k-cell (x ?x) (y ?y) (content ?content&:(neq ?content water)))
    (not (cell-agent (x ?x) (y ?y) (status know | fire)))
    ?cell-to-upd <- (cell-agent (x ?x) (y ?y))
@@ -73,6 +73,52 @@
    =>
    (modify ?left (content water) (status know) (score 0))
 )
+;---------------------------------------------------------------
+; Se esistono le celle right e left, dopo aver inferito un middle, allora inferiamo l'acqua nella cella sopra
+(defrule add-water-after-fire-middle-hor-up (declare (salience 80))
+   ?middle<- (cell-agent (x ?x) (y ?y) (content middle) )
+   (or
+      (cell-agent (x ?x) (y ?right-y&:(eq ?right-y (+ ?y 1))) (content right))
+      (cell-agent (x ?x) (y ?left-y&:(eq ?left-y (- ?y 1))) (content left))
+   )
+   ?sopra<-(cell-agent (x ?xu&:(eq ?xu (- ?x 1))) (y ?y) (content ?c&:(neq ?c water)))
+   =>
+   (modify ?sopra (content water) (status know) (score 0))
+)
+; Se esistono le celle right e left, dopo aver inferito un middle, allora inferiamo l'acqua nella cella sotto
+(defrule add-water-after-fire-middle-hor-bot (declare (salience 80))
+   ?middle<- (cell-agent (x ?x) (y ?y) (content middle) )
+   (or
+      (cell-agent (x ?x) (y ?right-y&:(eq ?right-y (+ ?y 1))) (content right))
+      (cell-agent (x ?x) (y ?left-y&:(eq ?left-y (- ?y 1))) (content left))
+   )
+   ?sotto<-(cell-agent (x ?xu&:(eq ?xu (+ ?x 1))) (y ?y) (content ?c&:(neq ?c water)))
+   =>
+   (modify ?sotto (content water) (status know) (score 0))
+)
+; Se esistono le celle top e bot, dopo aver inferito un middle, allora inferiamo l'acqua nella cella a sinistra
+(defrule add-water-after-fire-middle-ver-left (declare (salience 80))
+   ?middle<- (cell-agent (x ?x) (y ?y) (content middle) )
+   (or
+      (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (content top))
+      (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content bot))
+   )
+   ?sinistra<-(cell-agent (x ?x) (y ?ys&:(eq ?ys (- ?y 1))) (content ?c&:(neq ?c water)))
+   =>
+   (modify ?sinistra (content water) (status know) (score 0))
+)
+; Se esistono le celle top e bot, dopo aver inferito un middle, allora inferiamo l'acqua nella cella a destra
+(defrule add-water-after-fire-middle-ver-right (declare (salience 80))
+   ?middle<- (cell-agent (x ?x) (y ?y) (content middle) )
+   (or
+      (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (content top))
+      (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content bot))
+   )
+   ?destra<-(cell-agent (x ?x) (y ?ys&:(eq ?ys (+ ?y 1))) (content ?c&:(neq ?c water)))
+   =>
+   (modify ?destra (content water) (status know) (score 0))
+)
+
 
 ;-----------------------------------------------------------------------------
 
@@ -134,7 +180,7 @@
 
 (defrule update-kb-caccia-hor (declare (salience 80))
    ?cell-left <- (cell-agent (x ?x) (y ?left-y) (content left) (score ?left-s&:(neq ?left-s -1)))
-   ?cell-right <- (cell-agent (x ?x) (y ?right-y&:(eq ?right-y (+ ?left-y 1))) (content right) (score ?right-s&:(neq ?right-s -1)) )
+   ?cell-right <- (cell-agent (x ?x) (y ?rig(status fire)ht-y&:(eq ?right-y (+ ?left-y 1))) (content right) (score ?right-s&:(neq ?right-s -1)) )
    ?caccia <- (boat-agent (name caccia))
    =>
    (modify ?cell-left (score -1))
@@ -143,7 +189,7 @@
 )
 
 (defrule update-kb-caccia-ver (declare (salience 80))
-   ?cell-top <- (cell-agent (x ?top-x) (y ?y)(content top) (score ?top-s&:(neq ?top-s -1)))
+   ?cell-top <- (cell-agent (x ?top-x) (y ?y(status fire))(content top) (score ?top-s&:(neq ?top-s -1)))
    ?cell-bot <- (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?top-x 1))) (y ?y) (content bot) (score ?bot-s&:(neq ?bot-s -1)))
    ?caccia <- (boat-agent (name caccia))
    =>

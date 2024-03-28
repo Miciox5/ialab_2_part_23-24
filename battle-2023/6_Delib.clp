@@ -19,11 +19,47 @@
 
 ; RICERCA INCROCIATORI (NAVI DA 3)
 
+; Mette la guess a destra se ha già trovato un middle ed un left sicuri
+(defrule find-guess-after-middle-right (declare (salience 90))
+   (moves (guesses ?ng&:(> ?ng 0)))
+   ?middle <- (cell-agent (x ?x) (y ?y) (content middle) )
+   ?left <- (cell-agent (x ?x) (y ?yl&:(eq ?yl (- ?y 1))) (content left))
+   ?cell <- (cell-agent (x ?x) (y ?cupd&:(eq ?cupd (+ ?y 1))) (content none) (status ?s&:(neq ?s guess)))
+   ?col <- (k-per-col-agent (col ?cupd) (num ?nc))
+   ?row <- (k-per-row-agent (row ?x) (num ?nr))
+   =>
+   (assert (action (name guess) (x ?x) (y ?cupd)))  
+   (modify ?cell (status guess))
+   (modify ?row (num (- ?nr 1))) ;decrem row
+   (modify ?col (num (- ?nc 1))) ;decrem col
+   (assert (update-score-row (row ?x) (num (- ?nr 1)) (y-to-upd 0)) )
+   (assert (update-score-col (col ?cupd) (num (- ?nc 1)) (x-to-upd 0)) )
+   (pop-focus)
+)
+; Mette la guess a sinistra se ha già trovato un middle ed un right sicuri
+(defrule find-guess-after-middle-left (declare (salience 90))
+   (moves (guesses ?ng&:(> ?ng 0)))
+   ?middle <- (cell-agent (x ?x) (y ?y) (content middle) )
+   ?left <- (cell-agent (x ?x) (y ?yr&:(eq ?yr (+ ?y 1))) (content right))
+   ?cell <- (cell-agent (x ?x) (y ?cupd&:(eq ?cupd (- ?y 1))) (content none) (status ?s&:(neq ?s guess)))
+   ?col <- (k-per-col-agent (col ?cupd) (num ?nc))
+   ?row <- (k-per-row-agent (row ?x) (num ?nr))
+   =>
+   (assert (action (name guess) (x ?x) (y ?cupd)))  
+   (modify ?cell (status guess))
+   (modify ?row (num (- ?nr 1))) ;decrem row
+   (modify ?col (num (- ?nc 1))) ;decrem col
+   (assert (update-score-row (row ?x) (num (- ?nr 1)) (y-to-upd 0)) )
+   (assert (update-score-col (col ?cupd) (num (- ?nc 1)) (x-to-upd 0)) )
+   (pop-focus)
+)
 ; RICERCA CACCIA (NAVI DA DUE)
+
 ; -------BOTTOM------- 
 ; Qui ci riferiamo al top come contenuto della fire eseguita nel passo precedente
 ; Esaminiamo la fire sul top con la sicurezza di aver bottom sotto
 (defrule find-guess-to-bot-fire-driven(declare (salience 90))
+   (moves (guesses ?ng&:(> ?ng 0)))
    ?fire <- (fire (x ?x) (y ?y))
    (k-cell (x ?x) (y ?y) (content top))
    ?cell <- (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content ?content&:(neq ?content water)) (status none))
@@ -50,6 +86,7 @@
 ;-----BOTTOM-ELSE-------
 ; Guess guidata dalla fire con incertezza del contenuto sulla cella inferiore
 (defrule find-guess-fire-driven-else-bot(declare (salience 90))
+   (moves (guesses ?ng&:(> ?ng 0)))
    ?fire <- (fire (x ?x) (y ?y))
    (k-cell (x ?x) (y ?y) (content top))
    ?cell <- (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content ?content&:(neq ?content water)) (status none))
@@ -67,6 +104,7 @@
 )
 ; -------TOP------- 
 (defrule find-guess-to-top-fire-driven(declare (salience 90))
+   (moves (guesses ?ng&:(> ?ng 0)))
    ?fire <- (fire (x ?x) (y ?y))
    (k-cell (x ?x) (y ?y) (content bot))
    ?cell <- (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (content ?content&:(neq ?content water)) (status none))
@@ -93,6 +131,7 @@
 ;-----TOP-ELSE-------
 ; Guess guidata dalla fire con incertezza del contenuto sulla cella superior
 (defrule find-guess-fire-driven-else-top(declare (salience 90))
+   (moves (guesses ?ng&:(> ?ng 0)))
    ?fire <- (fire (x ?x) (y ?y))
    (k-cell (x ?x) (y ?y) (content bot))
    ?cell <- (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (content ?content&:(neq ?content water)) (status none))
@@ -102,7 +141,6 @@
    (assert (action (name guess) (x ?top-x) (y ?y)))  
    (modify ?cell (content middle) (status guess))
    (modify ?row (num (- ?nr 1))) ;decrem row
-   (modify ?col (num (- ?nc 1))) ;decrem col
    (assert (update-score-row (row ?top-x) (num (- ?nr 1)) (y-to-upd 0)) )
    (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0)) )
    (retract ?fire)
@@ -137,6 +175,7 @@
 ;-----LEFT-ELSE-------
 ; Guess guidata dalla fire con incertezza del contenuto sulla cella superior
 (defrule find-guess-fire-driven-else-left(declare (salience 90))
+   (moves (guesses ?ng&:(> ?ng 0)))
    ?fire <- (fire (x ?x) (y ?y))
    (k-cell (x ?x) (y ?y) (content right))
    ?cell <- (cell-agent (x ?x) (y ?left-y&:(eq ?left-y (- ?y 1))) (content ?content&:(neq ?content water)) (status none))
@@ -152,9 +191,9 @@
    (retract ?fire)
    (pop-focus)
 )
-
 ; -------RIGHT------- 
 (defrule find-guess-to-right-fire-driven(declare (salience 90))
+   (moves (guesses ?ng&:(> ?ng 0)))
    ?fire <- (fire (x ?x) (y ?y))
    (k-cell (x ?x) (y ?y) (content left))
    ?cell <- (cell-agent (x ?x) (y ?right-y&:(eq ?right-y (+ ?y 1))) (content ?content&:(neq ?content water)) (status none))
@@ -181,6 +220,7 @@
 ;-----RIGHT-ELSE-------
 ; Guess guidata dalla fire con incertezza del contenuto sulla cella superior
 (defrule find-guess-fire-driven-else-right(declare (salience 90))
+   (moves (guesses ?ng&:(> ?ng 0)))
    ?fire <- (fire (x ?x) (y ?y))
    (k-cell (x ?x) (y ?y) (content left))
    ?cell <- (cell-agent (x ?x) (y ?right-y&:(eq ?right-y (+ ?y 1))) (content ?content&:(neq ?content water)) (status none))
@@ -204,6 +244,7 @@
 ;   Se il contenuto di una cella nota è middle, allora la cella sopra sarà top
 ;   se quella ancora sopra contiene acqua oppure non esiste(bordo)
 (defrule find-top-for-middle (declare (salience 80)) 
+   (moves (guesses ?ng&:(> ?ng 0)))
    ?cell-middle <- (cell-agent (x ?x) (y ?y) (content middle) (status know))
    ?cell-top-on-middle <- (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (content none))
    (not (cell-agent (x ?x) (y ?left-y&:(eq ?left-y (- ?y 1))) (content none)))
@@ -228,6 +269,7 @@
 ;   Se il contenuto di una cella nota è middle, allora la cella sottostante sarà bottom
 ;   se quella ancora sotto contiene acqua oppure non esiste(bordo)
 (defrule find-bot-for-middle (declare (salience 80)) 
+   (moves (guesses ?ng&:(> ?ng 0)))
    ?cell-middle <- (cell-agent (x ?x) (y ?y) (content middle) (status know))
    ?cell-bot-on-middle <- (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content none))
    (not (cell-agent (x ?x) (y ?left-y&:(eq ?left-y (- ?y 1))) (content none)))
@@ -253,7 +295,9 @@
 
 ;---------------------FIRE------------------------------------------
 
+; prima fire se non ho conoscnza
 (defrule first-step-fire (declare (salience 95))
+   (moves (fires ?nf&:(> ?nf 0)))
    (not (k-cell (x ?x) (y ?y)))
    ?cell-to-upd <-(cell-agent (x ?x) (y ?y) (status none) (score ?s))   
    (not (cell-agent (x ?x1) (y ?y2) (status none) (score ?s1&:(> ?s1 ?s))))
@@ -261,26 +305,22 @@
    (assert (action (name fire) (x ?x) (y ?y)))  
    (pop-focus)
 )
+; finchè ho fire le faccio
+(defrule find-cell-fire (declare (salience 70)) 
+   (moves (fires ?ng&:(> ?ng 0)))
+   ?cell-to-upd <-(cell-agent (x ?x) (y ?y) (status none) (score ?s))   
+   (not (cell-agent (x ?x1) (y ?y2) (status none) (score ?s1&:(> ?s1 ?s))))
+   =>
+   (assert (action (name fire) (x ?x) (y ?y)))
+   (pop-focus)
+)
 
-; (defrule do-fire (declare (salience 95)) 
-;    ?a <- (unguess (x ?x) (y ?y))
-;    ?cell-to-upd <-(cell-agent (x ?x) (y ?y))   
-;    ?row <- (k-per-row-agent (row ?x) (num ?nr) )
-;    ?col <- (k-per-col-agent (col ?y) (num ?nc) )
-;    =>
-;    (retract ?a)
-;    (assert (action (name fire) (x ?x) (y ?y)))  
-;    (modify ?cell-to-upd (status fire))
-;    (modify ?row (num (- ?nr 1))) 
-;    (modify ?col (num (- ?nc 1))) 
-;    (pop-focus)
 
-; )
 ;---------------------END-FIRE------------------------------------------
 
 
-(defrule find-cell-guess (declare (salience 70)) 
-   ;(moves (guesses ?ng&:(> ?ng 0)))
+(defrule find-cell-guess (declare (salience 65)) 
+   (moves (guesses ?ng&:(> ?ng 0)))
    ?cell-to-upd <-(cell-agent (x ?x) (y ?y) (status none) (score ?s))   
    (not (cell-agent (x ?x1) (y ?y2) (status none) (score ?s1&:(> ?s1 ?s))))
    ?row <- (k-per-row-agent (row ?x) (num ?nr&:(> ?nr 0)) )
