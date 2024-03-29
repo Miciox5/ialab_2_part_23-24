@@ -94,7 +94,7 @@
    ?row <- (k-per-row-agent (row ?bot-x) (num ?nr))
    =>
    (assert (action (name guess) (x ?bot-x) (y ?y)))  
-   (modify ?cell (content middle) (status guess))
+   (modify ?cell (status guess))
    (modify ?row (num (- ?nr 1))) ;decrem row
    (modify ?col (num (- ?nc 1))) ;decrem col
    (assert (update-score-row (row ?bot-x) (num (- ?nr 1)) (y-to-upd 0)) )
@@ -139,7 +139,7 @@
    ?row <- (k-per-row-agent (row ?top-x) (num ?nr))
    =>
    (assert (action (name guess) (x ?top-x) (y ?y)))  
-   (modify ?cell (content middle) (status guess))
+   (modify ?cell  (status guess))
    (modify ?row (num (- ?nr 1))) ;decrem row
    (assert (update-score-row (row ?top-x) (num (- ?nr 1)) (y-to-upd 0)) )
    (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0)) )
@@ -183,7 +183,7 @@
    ?row <- (k-per-row-agent (row ?x) (num ?nr))
    =>
    (assert (action (name guess) (x ?x) (y ?left-y)))  
-   (modify ?cell (content middle) (status guess))
+   (modify ?cell (status guess))
    (modify ?row (num (- ?nr 1))) ;decrem row
    (modify ?col (num (- ?nc 1))) ;decrem col
    (assert (update-score-row (row ?x) (num (- ?nr 1)) (y-to-upd 0)) )
@@ -228,7 +228,7 @@
    ?row <- (k-per-row-agent (row ?x) (num ?nr))
    =>
    (assert (action (name guess) (x ?x) (y ?right-y)))  
-   (modify ?cell (content middle) (status guess))
+   (modify ?cell (status guess))
    (modify ?row (num (- ?nr 1))) ;decrem row
    (modify ?col (num (- ?nc 1))) ;decrem col
    (assert (update-score-row (row ?x) (num (- ?nr 1)) (y-to-upd 0)) )
@@ -335,18 +335,25 @@
    (pop-focus)
 )
 
-;   Faccio l'unguess delle celle con contenuto none per poi fare le fire
-; (defrule find-cell-unguess (declare (salience 60)) 
-;    ?cell-to-upd <-(cell-agent (x ?x) (y ?y) (status guess) (score ?s))  
-;    (not (cell-agent (x ?x1) (y ?y2) (content none) (status guess) (score ?s1&:(> ?s1 ?s))))
+; ( defrule fine (declare (salience 60))
+;    (moves (guesses ?ng&:(> ?ng 0)))
+; =>
+;    (assert (action (name guess) (x 9) (y 9)))  
+;    (pop-focus)
+; )
+
+; (defrule unguess (declare (salience 55))
+;    (moves (guesses ?ng&:(eq ?ng 0)))
+;    ?cell-to-upd <-(cell-agent (x ?x) (y ?y) (status guess) (content none) (score ?s&:(neq ?s -1)))   
 ;    ?row <- (k-per-row-agent (row ?x) (num ?nr) )
 ;    ?col <- (k-per-col-agent (col ?y) (num ?nc) )
-;    =>
-;    (assert (unguess (x ?x) (y ?y) ))
+; =>
 ;    (assert (action (name unguess) (x ?x) (y ?y)))  
 ;    (modify ?cell-to-upd (status unguess))
 ;    (modify ?row (num (+ ?nr 1))) 
 ;    (modify ?col (num (+ ?nc 1))) 
+;    (assert (update-score-row (row ?x) (num (+ ?nr 1)) (y-to-upd 0)) )
+;    (assert (update-score-col (col ?y) (num (+ ?nc 1)) (x-to-upd 0)) )
 ;    (pop-focus)
 ; )
 
@@ -356,48 +363,10 @@
 
 
 
-; (defrule find-max-number-row (declare (salience 100)) 
-; (moves (guesses ?ng&:(> ?ng 0)))
-;    (k-per-row-agent (row ?r1) (num ?n1))
-;    (not (k-per-row-agent (row ?r2) (num ?n2&:(> ?n2 ?n1))))
-;    =>
-;    (printout t "La riga con il numero più grande è: " ?r1 " con " ?n1 crlf)
-; )
-
-; (defrule find-max-number-col (declare (salience 90)) 
-;    (moves (guesses ?ng&:(> ?ng 0)))
-;    (k-per-col-agent (col ?c1) (num ?n3))
-;    (not (k-per-col-agent (col ?c2) (num ?n4&:(> ?n4 ?n3))))
-;    =>
-;    (printout t "La colonna con il numero più grande è: " ?c1 " con " ?n3 crlf)
-; )
 
 
 
 
-; (defrule find-other-cell 
-; (moves (guesses ?ng&:(> ?ng 0)))
-;    (k-per-row-agent (row ?r1) (num ?n1) )
-;    (not (k-per-row-agent (row ?r2) (num ?n2&:(> ?n2 ?n1))))
-;    ?row <- (k-per-row-agent (row ?r2) (num ?n2) )
-;    =>
-;    (printout t "La riga con il secondo numero più grande è: " ?r2 " con " ?n2 crlf)
-
-; )
-
-
-   ; ?row <- (k-per-row-agent (row ?r1) (num ?n1) )
-   ; (not (k-per-row-agent (row ?r2) (num ?n2&:(> ?n2 ?n1))))
-   ; ?col <- (k-per-col-agent (col ?c1) (num ?n3) )
-   ; (not (k-per-col-agent (col ?c2) (num ?n4&:(> ?n4 ?n3))))
-   ; ?cell-to-upd <-(cell-agent (x ?r1) (y ?c1) (status none))
 
 
 
-
-; (defrule prova 
-;   ?f <- (cell-agent (x 0)(y 0))
-; =>
-;   (modify ?f (status guess))
-;   (pop-focus)
-; )

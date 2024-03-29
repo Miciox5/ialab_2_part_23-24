@@ -78,9 +78,21 @@
     (status (step ?s)(currently running))
     ; da eliminare -> ridondante
     (moves (guesses ?ng&:(> ?ng 0)))
-    ?a <- (action(name ?guess)(x ?x)(y ?y))
+    ?a <- (action(name guess)(x ?x)(y ?y))
    =>
    (assert (exec (step ?s) (action guess) (x ?x) (y ?y)))
    (retract ?a)
    (pop-focus)
 )
+
+;  exec della unguess
+; (defrule exec-action-unguess (declare (salience 90))
+;     (status (step ?s)(currently running))
+;     ; da eliminare -> ridondante
+;     (moves (guesses ?ng&:(eq ?ng 0)))
+;     ?a <- (action(name unguess)(x ?x)(y ?y))
+;    =>
+;    (assert (exec (step ?s) (action unguess) (x ?x) (y ?y)))
+;    (retract ?a)
+;    (pop-focus)
+; )
