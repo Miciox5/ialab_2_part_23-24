@@ -9,8 +9,8 @@
 (reset)
 @REM Il watch focus è molto utile per capire l'esecuzione dei moduli
 @REM nello stack.
-(watch focus)
-(watch rules)
+@REM (watch focus)
+@REM (watch rules)
 (set-break game-over)
 (run)
 (run 2)

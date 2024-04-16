@@ -25,15 +25,9 @@
 	(slot num)
 )
 
-(deftemplate action
-	; (slot step)
-	(slot name)
-	(slot x)
-	(slot y)
-)
-
-(deftemplate fire
-	; (slot step)
+(deftemplate exec-agent
+	(slot step)
+	(slot action (allowed-values guess fire unguess))
 	(slot x)
 	(slot y)
 )
@@ -48,8 +42,6 @@
 (deftemplate boat-agent
 	(slot id (default-dynamic (gensym*)))
 	(slot name (allowed-values corazzata incrociatore caccia sottomarino))
-	(slot qty)
-	(slot boat-pieces)
 )
 
 ; (deftemplate boat-hor-agent
@@ -68,6 +60,7 @@
 ; 	(multislot status (allowed-values safe hit))
 ; )
 
+; template per action
 (deftemplate update-score-row
     (slot row )
 	(slot num )
@@ -84,16 +77,16 @@
 
 (deffacts initialization
 	(first-pass-to-init)
-	(boat-agent (name corazzata) (qty 1) (boat-pieces 4))
-	(boat-agent (name incrociatore) (qty 2) (boat-pieces 3))
-	(boat-agent (name incrociatore) (qty 2) (boat-pieces 3))
-	(boat-agent (name caccia) (qty 3) (boat-pieces 2))
-	(boat-agent (name caccia) (qty 3) (boat-pieces 2)) 
-	(boat-agent (name caccia) (qty 3) (boat-pieces 2))
-	(boat-agent (name sottomarino) (boat-pieces 1))
-	(boat-agent (name sottomarino) (boat-pieces 1))
-	(boat-agent (name sottomarino) (boat-pieces 1))
-	(boat-agent (name sottomarino) (boat-pieces 1))
+	(boat-agent (name corazzata))
+	(boat-agent (name incrociatore))
+	(boat-agent (name incrociatore))
+	(boat-agent (name caccia))
+	(boat-agent (name caccia)) 
+	(boat-agent (name caccia))
+	(boat-agent (name sottomarino))
+	(boat-agent (name sottomarino))
+	(boat-agent (name sottomarino))
+	(boat-agent (name sottomarino))
 )
 
 
@@ -122,13 +115,5 @@
 (defrule go-on-action (declare (salience 10))
 	(status (step ?s)(currently running))	
 =>
-	; (retract (assert-deliberate))
 	(focus ACTION)
 )
-
-; (defrule print-what-i-know-since-the-beginning
-; 	(k-cell (x ?x) (y ?y) (content ?t) )
-; =>
-; 	(printout t "I know that cell [" ?x ", " ?y "] contains " ?t "." crlf)
-; )
-

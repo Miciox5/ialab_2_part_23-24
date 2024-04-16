@@ -1,3 +1,4 @@
+(dribble-on result.txt)
 (load 0_Main.clp)
 (load 1_Env.clp)
 REM (load mapEnvironment-0.clp)
@@ -14,7 +15,6 @@ REM (load mapEnvironment-0.clp)
 (watch rules)
 @REM Il comando dribble-on serve per mettere il risultato
 @REM delle prossime esecuzioni nel file result.txt
-(dribble-on result.txt)
 (run)
 @REM (facts MAIN)
 (facts AGENT)
