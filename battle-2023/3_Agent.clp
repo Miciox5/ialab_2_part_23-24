@@ -9,7 +9,7 @@
 	(slot x)
 	(slot y)	
 	(slot content (allowed-values none water left right middle top bot sub)) ;il contenuto ce lo dice la fire
-	(slot status (allowed-values none guess fire unguess know exclusion))
+	(slot status (allowed-values none guess unguess know ))
 	(slot score )
 )
 
@@ -28,6 +28,7 @@
 (deftemplate exec-agent
 	(slot step)
 	(slot action (allowed-values guess fire unguess))
+	(slot content (default none) (allowed-values none water left right middle top bot sub))
 	(slot x)
 	(slot y)
 )

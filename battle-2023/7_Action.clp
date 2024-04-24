@@ -13,7 +13,7 @@
 ;  exec della guess
 (defrule exec-action-guess (declare (salience 90))
    (status (step ?step) (currently running))
-   (exec-agent (step ?step) (action guess) (x ?x) (y ?y))
+   (exec-agent (step ?step) (action guess) (content ?content) (x ?x) (y ?y))
    =>
    (assert (exec (step ?step) (action guess) (x ?x) (y ?y)))
    (pop-focus)
