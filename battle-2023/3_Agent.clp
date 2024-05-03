@@ -27,8 +27,9 @@
 
 (deftemplate exec-agent
 	(slot step)
-	(slot action (allowed-values guess fire unguess))
+	(slot action (allowed-values guess fire unguess solve))
 	(slot content (default none) (allowed-values none water left right middle top bot sub))
+	(slot state-dfs (default greedy) (allowed-values greedy explore backtracking))
 	(slot x)
 	(slot y)
 )

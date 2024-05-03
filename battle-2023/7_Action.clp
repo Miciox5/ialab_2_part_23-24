@@ -27,4 +27,3 @@
    (assert (exec (step ?step) (action unguess) (x ?x) (y ?y)))
    (pop-focus)
 )
-
