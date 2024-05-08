@@ -33,19 +33,19 @@
 ;   nel momento in cui viene effettuata una ricerca con osservazioni.
 ;   Scatta perciò quando vengono asseriti fatti k-cell, da cui viene preso
 ;   il contenuto. Viene poi effettuato l'aggiornamento dei valori k-per-row, col e score
-(defrule update-cell-boat (declare (salience 95))
-    (status (step 0)(currently running))
-    ?k-cell <- (k-cell (x ?x) (y ?y) (content ?content&:(neq ?content water)))
-    ?cell-to-upd <- (cell-agent (x ?x) (y ?y) (content none) (status none))
-    ?row <- (k-per-row-agent (row ?x) (num ?nr) )
-    ?col <- (k-per-col-agent (col ?y) (num ?nc) )
-=>
-    (modify ?cell-to-upd (content ?content) (status know)) 
-    (modify ?row(num (- ?nr 1) )) ;decrem row
-    (modify ?col(num (- ?nc 1))) ;decrem col 
-    (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0) ))
-    (assert (update-score-row (row ?y) (num (- ?nr 1)) (y-to-upd 0) ))
-)
+; (defrule update-cell-boat (declare (salience 95))
+;     (status (step 0)(currently running))
+;     ?k-cell <- (k-cell (x ?x) (y ?y) (content ?content&:(neq ?content water)))
+;     ?cell-to-upd <- (cell-agent (x ?x) (y ?y) (content none) (status none))
+;     ?row <- (k-per-row-agent (row ?x) (num ?nr) )
+;     ?col <- (k-per-col-agent (col ?y) (num ?nc) )
+; =>
+;     (modify ?cell-to-upd (content ?content) (status know)) 
+;     (modify ?row(num (- ?nr 1) )) ;decrem row
+;     (modify ?col(num (- ?nc 1))) ;decrem col 
+;     (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0) ))
+;     (assert (update-score-row (row ?y) (num (- ?nr 1)) (y-to-upd 0) ))
+; )
 ;   Questa regola si attiva 
 ;   nel momento in cui viene effettuata una ricerca con osservazioni.
 ;   Scatta perciò quando vengono asseriti fatti k-cell, da cui viene preso

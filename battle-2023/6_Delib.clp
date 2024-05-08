@@ -6,12 +6,33 @@
 
 ;--- GREEDY ---
 
-(defrule enter-in-greedy-state (declare (salience 110))
+(defrule enter-in-greedy-state (declare (salience 140))
    (not (state-dfs greedy | explore | backtracking))
    =>
    (assert (state-dfs greedy))
 )
 
+; Regole che mettono guess sicure
+(defrule find-guess-with-k-cell (declare (salience 130))
+   (status (step ?step) (currently running))
+   (moves (guesses ?ng&:(> ?ng 0)))
+   (k-cell (x ?x) (y ?y) (content ?c))
+   (cell-agent (x ?x) (y ?y) (status none))
+   =>
+   (assert (exec-agent (step ?step) (action guess) (content ?c) (x ?x) (y ?y)))  
+   (pop-focus)
+)
+
+; (defrule find-guess-after-fire (declare (salience 120))
+;    (status (step ?step) (currently running))
+;    (moves (guesses ?ng&:(> ?ng 0)))
+;    (exec-agent (step ?pstep&:(eq ?pstep (- ?step 1))) (action fire) (x ?x) (y ?y))
+;    (cell-agent (x ?x) (y ?y) (content none) (status none))
+;    (k-cell (x ?x) (y ?y) (content ?c))
+;    =>
+;    (assert (exec-agent (step ?step) (action guess) (content ?c) (x ?x) (y ?y)))  
+;    (pop-focus)
+; )
 
 ; RICERCA CORAZZATA (NAVI DA 4)
 ; ---- Conoscenza di 3/4 dei pezzi di una nave da 4 ----
@@ -178,6 +199,8 @@
    (state-dfs greedy)
 
    (cell-agent (x ?x) (y ?y) (content none) (status none))
+   (k-per-row-agent (row ?x) (num ?nr&:(> ?nr 0)))
+   (k-per-col-agent (col ?y) (num ?nc&:(> ?nc 0)))
    (cell-agent (x ?x) (y ?my&:(eq ?my (- ?y 1))) (content middle) (status know))
    (or
       ; riga superiore con indice a 0
@@ -199,8 +222,10 @@
    (status (step ?step) (currently running))
    (moves (guesses ?ng&:(> ?ng 0)))
    (state-dfs greedy)
-
+   (k-per-row-agent (row ?x) (num ?nr&:(> ?nr 0)))
    (cell-agent (x ?x) (y ?y) (content none) (status none))
+   (k-per-row-agent (row ?x) (num ?nr&:(> ?nr 0)))
+   (k-per-col-agent (col ?y) (num ?nc&:(> ?nc 0)))
    (cell-agent (x ?x) (y ?my&:(eq ?my (+ ?y 1))) (content middle) (status know))
    (or
       ; riga superiore con indice a 0
@@ -224,7 +249,9 @@
    (state-dfs greedy)
 
    (cell-agent (x ?x) (y ?y) (content none) (status none))
-   (cell-agent (x ?x) (y ?my&:(eq ?my (+ ?y 1))) (content middle) (status know))
+   (k-per-row-agent (row ?x) (num ?nr&:(> ?nr 0)))
+   (k-per-col-agent (col ?y) (num ?nc&:(> ?nc 0)))
+   (cell-agent (x ?mx&:(eq ?mx (+ ?x 1))) (y ?y) (content middle) (status know))
    (or
       ; colonna sinistra con indice a 0
       (k-per-col-agent (col ?c1&:(eq ?c1 (- ?y 1))) (num 0))
@@ -247,7 +274,9 @@
    (state-dfs greedy)
 
    (cell-agent (x ?x) (y ?y) (content none) (status none))
-   (cell-agent (x ?x) (y ?my&:(eq ?my (- ?y 1))) (content middle) (status know))
+   (k-per-row-agent (row ?x) (num ?nr&:(> ?nr 0)))
+   (k-per-col-agent (col ?y) (num ?nc&:(> ?nc 0)))
+   (cell-agent (x ?mx&:(eq ?mx (- ?x 1))) (y ?y) (content middle) (status know))
    (or
       ; colonna sinistra con indice a 0
       (k-per-col-agent (col ?c1&:(eq ?c1 (- ?y 1))) (num 0))
@@ -403,7 +432,7 @@
    (status (step ?step) (currently running))
    (moves (guesses ?ng&:(> ?ng 0)))
    (cell-agent (x ?x) (y ?y) (content middle) (status know))
-   (cell-agent (x ?tx&:(eq ?tx (- ?x 1))) (y ?y) (content none))
+   (cell-agent (x ?tx&:(eq ?tx (- ?x 1))) (y ?y) (content none) (status none))
    (or 
       (not (cell-agent (x ?x) (y ?ly&:(eq ?ly (- ?y 1))) (content none)))
       (cell-agent (x ?x) (y ?ly&:(eq ?ly (- ?y 1))) (content water))
@@ -422,7 +451,7 @@
    (status (step ?step) (currently running))
    (moves (guesses ?ng&:(> ?ng 0)))
    (cell-agent (x ?x) (y ?y) (content middle) (status know))
-   (cell-agent (x ?bx&:(eq ?bx (+ ?x 1))) (y ?y) (content none))
+   (cell-agent (x ?bx&:(eq ?bx (+ ?x 1))) (y ?y) (content none) (status none))
    (or 
       (not (cell-agent (x ?x) (y ?ly&:(eq ?ly (- ?y 1))) (content none)))
       (cell-agent (x ?x) (y ?ly&:(eq ?ly (- ?y 1))) (content water))
@@ -441,7 +470,7 @@
    (status (step ?step) (currently running))
    (moves (guesses ?ng&:(> ?ng 0)))
    (cell-agent (x ?x) (y ?y) (content middle) (status know))
-   (cell-agent (x ?x) (y ?ly&:(eq ?ly (- ?y 1))) (content none))
+   (cell-agent (x ?x) (y ?ly&:(eq ?ly (- ?y 1))) (content none) (status none))
    (or 
       (not (cell-agent (x ?tx&:(eq ?tx (- ?x 1))) (y ?y) (content none)))
       (cell-agent (x ?tx&:(eq ?tx (- ?x 1))) (y ?y) (content water))
@@ -460,7 +489,7 @@
    (status (step ?step) (currently running))
    (moves (guesses ?ng&:(> ?ng 0)))
    (cell-agent (x ?x) (y ?y) (content middle) (status know))
-   (cell-agent (x ?x) (y ?ry&:(eq ?ry (+ ?y 1))) (content none))
+   (cell-agent (x ?x) (y ?ry&:(eq ?ry (+ ?y 1))) (content none) (status none))
    (or 
       (not (cell-agent (x ?tx&:(eq ?tx (- ?x 1))) (y ?y) (content none)))
       (cell-agent (x ?tx&:(eq ?tx (- ?x 1))) (y ?y) (content water))

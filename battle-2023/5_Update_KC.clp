@@ -15,24 +15,24 @@
 ;------------ REGOLE -----------------------------
 
 ; a seguito di una fire(non acqua) copio il contenuto nella cell-agent, aggiorno indici, ricalcolo score, aggiungo acqua intorno
-(defrule update-kc-fire-cell-agent (declare(salience 100))
-   (exec-agent (step ?step) (action fire) (x ?x) (y ?y))
-   (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
-   (k-cell (x ?x) (y ?y) (content ?content&:(neq ?content water)))
-   ?upd <- (cell-agent (x ?x) (y ?y) (content none))
-   (not (update-neighbor-guess))
-   (not (update-neighbor-fire))
-   ?row <- (k-per-row-agent (row ?x) (num ?nr&:(> ?nr 0)) )
-   ?col <- (k-per-col-agent (col ?y) (num ?nc&:(> ?nc 0)) )
-   =>
-   (modify ?upd (content ?content) (status know) (score 0))
-   (modify ?row (num (- ?nr 1)))
-   (modify ?col (num (- ?nc 1)))
-   (assert (tmp-exec-agent (step ?step) (action fire) (x ?x) (y ?y)))
-   (assert (update-neighbor-fire))
-   (assert (update-score-row (row ?x) (num (- ?nr 1)) (y-to-upd 0)))
-   (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0)))
-)
+; (defrule update-kc-fire-cell-agent (declare(salience 100))
+;    (exec-agent (step ?step) (action fire) (x ?x) (y ?y))
+;    (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
+;    (k-cell (x ?x) (y ?y) (content ?content&:(neq ?content water)))
+;    ?upd <- (cell-agent (x ?x) (y ?y) (content none))
+;    (not (update-neighbor-guess))
+;    (not (update-neighbor-fire))
+;    ?row <- (k-per-row-agent (row ?x) (num ?nr&:(> ?nr 0)) )
+;    ?col <- (k-per-col-agent (col ?y) (num ?nc&:(> ?nc 0)) )
+;    =>
+;    (modify ?upd (content ?content) (status know) (score 0))
+;    (modify ?row (num (- ?nr 1)))
+;    (modify ?col (num (- ?nc 1)))
+;    (assert (tmp-exec-agent (step ?step) (action fire) (x ?x) (y ?y)))
+;    (assert (update-neighbor-fire))
+;    (assert (update-score-row (row ?x) (num (- ?nr 1)) (y-to-upd 0)))
+;    (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0)))
+; )
 ; se fire becca l'acqua copio solo il contenuto
 (defrule update-kc-fire-cell-agent-water (declare(salience 100))
    (exec-agent (step ?step) (action fire) (x ?x) (y ?y))
@@ -102,11 +102,11 @@
 
 ;------------ REGOLE-MIGLIORAMENTI ---------------
 
-; Regole per aggiungere l'acqua ai vicini dopo aver fatto una fire(se middle non aggiungiamo)
+; Regole per aggiungere l'acqua ai vicini dopo aver fatto una fire o guess sicura(se middle non aggiungiamo)
 (defrule update-kc-fire-water-on-right-side (declare (salience 90))
    (or (update-neighbor-fire) (update-neighbor-guess))
    (tmp-exec-agent (step ?step) (action fire | guess) (x ?x) (y ?y))
-   (cell-agent (x ?x) (y ?y) (content right | top | bot) (status know))
+   (cell-agent (x ?x) (y ?y) (content right | top | bot | sub) (status know))
    ?right <- (cell-agent (x ?x) (y ?ry&:(eq ?ry (+ ?y 1))) (content none))
    =>
    (modify ?right (content water) (status know) (score 0))
@@ -115,7 +115,7 @@
 (defrule update-kc-fire-water-on-left-side (declare (salience 90))
    (or (update-neighbor-fire) (update-neighbor-guess))
    (tmp-exec-agent (step ?step) (action fire | guess) (x ?x) (y ?y))
-   (cell-agent (x ?x) (y ?y) (content left | top | bot) (status know))
+   (cell-agent (x ?x) (y ?y) (content left | top | bot | sub) (status know))
    ?left <- (cell-agent (x ?x) (y ?ly&:(eq ?ly (- ?y 1))) (content none))
    =>
    (modify ?left (content water) (status know) (score 0))
@@ -124,7 +124,7 @@
 (defrule update-kc-fire-water-on-top-side (declare (salience 90))
    (or (update-neighbor-fire) (update-neighbor-guess))
    (tmp-exec-agent (step ?step) (action fire | guess) (x ?x) (y ?y))
-   (cell-agent (x ?x) (y ?y) (content top | right | left) (status know))
+   (cell-agent (x ?x) (y ?y) (content top | right | left | sub) (status know))
    ?top <- (cell-agent (x ?tx&:(eq ?tx (- ?x 1))) (y ?y) (content none))
    =>
    (modify ?top (content water) (status know) (score 0))
@@ -133,7 +133,7 @@
 (defrule update-kc-fire-water-on-bot-side (declare (salience 90))
    (or (update-neighbor-fire) (update-neighbor-guess))
    (tmp-exec-agent (step ?step) (action fire | guess) (x ?x) (y ?y))
-   (cell-agent (x ?x) (y ?y) (content bot | right | left) (status know))
+   (cell-agent (x ?x) (y ?y) (content bot | right | left | sub) (status know))
    ?bot <- (cell-agent (x ?bx&:(eq ?bx (+ ?x 1))) (y ?y) (content none))
    =>
    (modify ?bot (content water) (status know) (score 0))
@@ -173,63 +173,63 @@
 )
 
 ;---------------------------------------------------------------
+; TODO: regole di aggiornamento dei vicini da aggiustare
 ; Se esistono le celle right e left, dopo aver inferito un middle, allora inferiamo l'acqua nella cella sopra
-(defrule add-water-after-fire-middle-hor-up (declare (salience 80))
-   (update-neighbor-guess)
-   (exec-agent (step ?step) (action fire) (x ?x) (y ?y))
-   (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
-   ?middle<- (cell-agent (x ?x) (y ?y) (content middle))
-   (or
-      (cell-agent (x ?x) (y ?right-y&:(eq ?right-y (+ ?y 1))) (content right))
-      (cell-agent (x ?x) (y ?left-y&:(eq ?left-y (- ?y 1))) (content left))
-   )
-   ?up <-(cell-agent (x ?xu&:(eq ?xu (- ?x 1))) (y ?y) (content ?c&:(neq ?c water)))
-   =>
-   (modify ?up (content water) (status know) (score 0))
-)
+; (defrule add-water-after-fire-middle-hor-up (declare (salience 80))
+;    (update-neighbor-guess)
+;    (exec-agent (step ?step) (action fire) (x ?x) (y ?y))
+;    (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
+;    ?middle<- (cell-agent (x ?x) (y ?y) (content middle))
+;    (or
+;       (cell-agent (x ?x) (y ?right-y&:(eq ?right-y (+ ?y 1))) (status guess))
+;       (cell-agent (x ?x) (y ?left-y&:(eq ?left-y (- ?y 1))) (status guess))
+;    )
+;    ?up <-(cell-agent (x ?xu&:(eq ?xu (- ?x 1))) (y ?y) (content ?c&:(neq ?c water)))
+;    =>
+;    (modify ?up (content water) (status know) (score 0))
+; )
 ; ; Se esistono le celle right o left dopo aver inferito un middle, allora inferiamo l'acqua nella cella sotto
-(defrule add-water-after-fire-middle-hor-bot (declare (salience 80))
-   (update-neighbor-guess)
-   (exec-agent (step ?step) (action fire) (x ?x) (y ?y))
-   (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
-   ?middle<- (cell-agent (x ?x) (y ?y) (content middle) )
-   (or
-      (cell-agent (x ?x) (y ?right-y&:(eq ?right-y (+ ?y 1))) (content right))
-      (cell-agent (x ?x) (y ?left-y&:(eq ?left-y (- ?y 1))) (content left))
-   )
-   ?down <-(cell-agent (x ?xu&:(eq ?xu (+ ?x 1))) (y ?y) (content ?c&:(neq ?c water)))
-   =>
-   (modify ?down (content water) (status know) (score 0))
-)
+; (defrule add-water-after-fire-middle-hor-bot (declare (salience 80))
+;    (update-neighbor-guess)
+;    (status (step ?step) (currently running))
+;    (exec-agent (step ?pstep&:(eq ?pstep (- ?step 1))) (x ?x) (y ?y))
+;    ?middle<- (cell-agent (x ?x) (y ?y) (content middle) )
+;    (or
+;       (cell-agent (x ?x) (y ?right-y&:(eq ?right-y (+ ?y 1))) (status guess))
+;       (cell-agent (x ?x) (y ?left-y&:(eq ?left-y (- ?y 1))) (status guess))
+;    )
+;    ?down <-(cell-agent (x ?xu&:(eq ?xu (+ ?x 1))) (y ?y) (content ?c&:(neq ?c water)))
+;    =>
+;    (modify ?down (content water) (status know) (score 0))
+; )
 ; ; Se esistono le celle top e bot, dopo aver inferito un middle, allora inferiamo l'acqua nella cella a sinistra
-(defrule add-water-after-fire-middle-ver-left (declare (salience 80))
-   (update-neighbor-guess)
-   (exec-agent (step ?step) (action fire) (x ?x) (y ?y))
-   (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
-   ?middle<- (cell-agent (x ?x) (y ?y) (content middle) )
-   (or
-      (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (content top))
-      (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content bot))
-   )
-   ?left <-(cell-agent (x ?x) (y ?ys&:(eq ?ys (- ?y 1))) (content ?c&:(neq ?c water)))
-   =>
-   (modify ?left (content water) (status know) (score 0))
-)
+; (defrule add-water-after-fire-middle-ver-left (declare (salience 80))
+;    (update-neighbor-guess)
+;    (exec-agent (step ?step) (action fire) (x ?x) (y ?y))
+;    (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
+;    ?middle<- (cell-agent (x ?x) (y ?y) (content middle) )
+;    (or
+;       (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (status guess))
+;       (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (status guess))
+;    )
+;    ?left <-(cell-agent (x ?x) (y ?ys&:(eq ?ys (- ?y 1))) (content ?c&:(neq ?c water)))
+;    =>
+;    (modify ?left (content water) (status know) (score 0))
+; )
 ; ; Se esistono le celle top e bot, dopo aver inferito un middle, allora inferiamo l'acqua nella cella a destra
-(defrule add-water-after-fire-middle-ver-right (declare (salience 80))
-   (update-neighbor-guess)
-   (exec-agent (step ?step) (action fire) (x ?x) (y ?y))
-   (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
-   ?middle<- (cell-agent (x ?x) (y ?y) (content middle) )
-   (or
-      (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (content top))
-      (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (content bot))
-   )
-   ?right <-(cell-agent (x ?x) (y ?ys&:(eq ?ys (+ ?y 1))) (content ?c&:(neq ?c water)))
-   =>
-   (modify ?right (content water) (status know) (score 0))
-)
-
+; (defrule add-water-after-fire-middle-ver-right (declare (salience 80))
+;    (update-neighbor-guess)
+;    (exec-agent (step ?step) (action fire) (x ?x) (y ?y))
+;    (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
+;    ?middle<- (cell-agent (x ?x) (y ?y) (content middle) )
+;    (or
+;       (cell-agent (x ?top-x&:(eq ?top-x (- ?x 1))) (y ?y) (status guess))
+;       (cell-agent (x ?bot-x&:(eq ?bot-x (+ ?x 1))) (y ?y) (status guess))
+;    )
+;    ?right <-(cell-agent (x ?x) (y ?ys&:(eq ?ys (+ ?y 1))) (content ?c&:(neq ?c water)))
+;    =>
+;    (modify ?right (content water) (status know) (score 0))
+; )
 
 ;-----------------------------------------------------------------------------
 
