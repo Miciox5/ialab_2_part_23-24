@@ -224,7 +224,7 @@
    (state-dfs greedy)
 
    (cell-agent (x ?x) (y ?y) (content none) (status none))
-   (cell-agent (x ?mx&:(eq ?mx (- ?x 1))) (y ?y) (content middle) (status know))
+   (cell-agent (x ?x) (y ?my&:(eq ?my (+ ?y 1))) (content middle) (status know))
    (or
       ; colonna sinistra con indice a 0
       (k-per-col-agent (col ?c1&:(eq ?c1 (- ?y 1))) (num 0))
@@ -247,16 +247,16 @@
    (state-dfs greedy)
 
    (cell-agent (x ?x) (y ?y) (content none) (status none))
-   (cell-agent (x ?x) (y ?my&:(eq ?my (+ ?y 1))) (content middle) (status know))
+   (cell-agent (x ?x) (y ?my&:(eq ?my (- ?y 1))) (content middle) (status know))
    (or
       ; colonna sinistra con indice a 0
-      (k-per-row-agent (row ?r1&:(eq ?r1 (- ?x 1))) (num 0))
+      (k-per-col-agent (col ?c1&:(eq ?c1 (- ?y 1))) (num 0))
       ; colonna destra con indice a 0
-      (k-per-row-agent (row ?r2&:(eq ?r2 (+ ?x 1))) (num 0))
+      (k-per-col-agent (col ?c2&:(eq ?c2 (+ ?y 1))) (num 0))
       ; colonna sinistra non esistente
-      (not (cell-agent (x ?r1&:(eq ?r1 (- ?x 1))) (y ?y)))
+      (not (cell-agent (x ?x) (y ?c1&:(eq ?c1 (- ?y 1)))))
       ; colonna destra non esistente
-      (not (cell-agent (x ?r2&:(eq ?r2 (+ ?x 1))) (y ?y)))
+      (not (cell-agent (x ?x) (y ?c2&:(eq ?c2 (+ ?y 1)))))
    )
    =>
    (assert (exec-agent (step ?step) (action guess) (x ?x) (y ?y)))  

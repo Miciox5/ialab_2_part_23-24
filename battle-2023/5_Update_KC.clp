@@ -14,6 +14,7 @@
 
 ;------------ REGOLE -----------------------------
 
+; a seguito di una fire(non acqua) copio il contenuto nella cell-agent, aggiorno indici, ricalcolo score, aggiungo acqua intorno
 (defrule update-kc-fire-cell-agent (declare(salience 100))
    (exec-agent (step ?step) (action fire) (x ?x) (y ?y))
    (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
@@ -32,7 +33,7 @@
    (assert (update-score-row (row ?x) (num (- ?nr 1)) (y-to-upd 0)))
    (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0)))
 )
-; se fire becca l'acqua
+; se fire becca l'acqua copio solo il contenuto
 (defrule update-kc-fire-cell-agent-water (declare(salience 100))
    (exec-agent (step ?step) (action fire) (x ?x) (y ?y))
    (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
@@ -43,7 +44,8 @@
    =>
    (modify ?upd (content water) (status know) (score 0))
 )
-; Guess di una cella dove non viene modificato il contenuto e lo status è stessato a guess
+
+; a seguito di una guess senza contenuto aggiorniamo solo lo status a guess della cella
 (defrule update-kc-guess-cell-agent (declare(salience 100))
    (exec-agent (step ?step) (action guess) (content none) (x ?x) (y ?y))
    (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
@@ -61,7 +63,7 @@
    (assert (update-score-row (row ?x) (num (- ?nr 1)) (y-to-upd 0)))
    (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0)))
 )
-; Guess di una cella dove viene modificato il contenuto e status settato a "know" (contenuto sicuro/inferito)
+; a seguito di una guess con contenuto aggiorniamo contenuto e status "know" (contenuto sicuro/inferito)
 (defrule update-kc-guess-cell-agent-else (declare(salience 100))
    (exec-agent (step ?step) (action guess) (content ?c&:(neq ?c none)) (x ?x) (y ?y))
    (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
@@ -81,22 +83,22 @@
 )
 
 ; Unguess di una cella in fase di backtracking
-(defrule update-kc-unguess-cell-agent (declare(salience 100))
-   (exec-agent (step ?step) (action unguess) (x ?x) (y ?y))
-   (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
-   ?upd <- (cell-agent (x ?x) (y ?y) (status guess))
-   (not (update-neighbor-guess))
-   (not (update-neighbor-fire))
-   ?row <- (k-per-row-agent (row ?x) (num ?nr) )
-   ?col <- (k-per-col-agent (col ?y) (num ?nc) )
-   =>
-   (modify ?upd (content none) (status none))
-   (modify ?row (num (+ ?nr 1)))
-   (modify ?col (num (+ ?nc 1)))
-   ; (assert (tmp-exec-agent (step ?step) (action guess) (content ?c) (x ?x) (y ?y)))
-   (assert (update-score-row (row ?x) (num (+ ?nr 1)) (y-to-upd 0)))
-   (assert (update-score-col (col ?y) (num (+ ?nc 1)) (x-to-upd 0)))
-)
+; (defrule update-kc-unguess-cell-agent (declare(salience 100))
+;    (exec-agent (step ?step) (action unguess) (x ?x) (y ?y))
+;    (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
+;    ?upd <- (cell-agent (x ?x) (y ?y) (status guess))
+;    (not (update-neighbor-guess))
+;    (not (update-neighbor-fire))
+;    ?row <- (k-per-row-agent (row ?x) (num ?nr) )
+;    ?col <- (k-per-col-agent (col ?y) (num ?nc) )
+;    =>
+;    (modify ?upd (content none) (status none))
+;    (modify ?row (num (+ ?nr 1)))
+;    (modify ?col (num (+ ?nc 1)))
+;    ; (assert (tmp-exec-agent (step ?step) (action guess) (content ?c) (x ?x) (y ?y)))
+;    (assert (update-score-row (row ?x) (num (+ ?nr 1)) (y-to-upd 0)))
+;    (assert (update-score-col (col ?y) (num (+ ?nc 1)) (x-to-upd 0)))
+; )
 
 ;------------ REGOLE-MIGLIORAMENTI ---------------
 
@@ -135,6 +137,39 @@
    ?bot <- (cell-agent (x ?bx&:(eq ?bx (+ ?x 1))) (y ?y) (content none))
    =>
    (modify ?bot (content water) (status know) (score 0))
+)
+
+(defrule update-kc-fire-water-on-topright-side (declare (salience 90))
+   (or (update-neighbor-fire) (update-neighbor-guess))
+   (tmp-exec-agent (step ?step) (action fire | guess) (x ?x) (y ?y))
+   (cell-agent (x ?x) (y ?y) (status know))
+   ?topright <- (cell-agent (x ?trx&:(eq ?trx (- ?x 1))) (y ?try&:(eq ?try (+ ?y 1))) (content none))
+   =>
+   (modify ?topright (content water) (status know) (score 0))
+)
+(defrule update-kc-fire-water-on-topleft-side (declare (salience 90))
+   (or (update-neighbor-fire) (update-neighbor-guess))
+   (tmp-exec-agent (step ?step) (action fire | guess) (x ?x) (y ?y))
+   (cell-agent (x ?x) (y ?y) (status know))
+   ?topleft <- (cell-agent (x ?trx&:(eq ?trx (- ?x 1))) (y ?try&:(eq ?try (- ?y 1))) (content none))
+   =>
+   (modify ?topleft (content water) (status know) (score 0))
+)
+(defrule update-kc-fire-water-on-botleft-side (declare (salience 90))
+   (or (update-neighbor-fire) (update-neighbor-guess))
+   (tmp-exec-agent (step ?step) (action fire | guess) (x ?x) (y ?y))
+   (cell-agent (x ?x) (y ?y) (status know))
+   ?botleft <- (cell-agent (x ?trx&:(eq ?trx (+ ?x 1))) (y ?try&:(eq ?try (- ?y 1))) (content none))
+   =>
+   (modify ?botleft (content water) (status know) (score 0))
+)
+(defrule update-kc-fire-water-on-botright-side (declare (salience 90))
+   (or (update-neighbor-fire) (update-neighbor-guess))
+   (tmp-exec-agent (step ?step) (action fire | guess) (x ?x) (y ?y))
+   (cell-agent (x ?x) (y ?y) (status know))
+   ?botright <- (cell-agent (x ?trx&:(eq ?trx (+ ?x 1))) (y ?try&:(eq ?try (+ ?y 1))) (content none))
+   =>
+   (modify ?botright (content water) (status know) (score 0))
 )
 
 ;---------------------------------------------------------------
