@@ -27,3 +27,12 @@
    (assert (exec (step ?step) (action unguess) (x ?x) (y ?y)))
    (pop-focus)
 )
+
+; exec della solve
+(defrule exec-action-solve (declare (salience 90))
+    (status (step ?s)(currently running))
+    (exec-agent (step ?step) (action solve))
+   =>
+   (assert (exec (step ?step) (action solve)))
+   (pop-focus)
+)

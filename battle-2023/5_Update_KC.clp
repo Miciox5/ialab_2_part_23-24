@@ -83,22 +83,22 @@
 )
 
 ; Unguess di una cella in fase di backtracking
-; (defrule update-kc-unguess-cell-agent (declare(salience 100))
-;    (exec-agent (step ?step) (action unguess) (x ?x) (y ?y))
-;    (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
-;    ?upd <- (cell-agent (x ?x) (y ?y) (status guess))
-;    (not (update-neighbor-guess))
-;    (not (update-neighbor-fire))
-;    ?row <- (k-per-row-agent (row ?x) (num ?nr) )
-;    ?col <- (k-per-col-agent (col ?y) (num ?nc) )
-;    =>
-;    (modify ?upd (content none) (status none))
-;    (modify ?row (num (+ ?nr 1)))
-;    (modify ?col (num (+ ?nc 1)))
-;    ; (assert (tmp-exec-agent (step ?step) (action guess) (content ?c) (x ?x) (y ?y)))
-;    (assert (update-score-row (row ?x) (num (+ ?nr 1)) (y-to-upd 0)))
-;    (assert (update-score-col (col ?y) (num (+ ?nc 1)) (x-to-upd 0)))
-; )
+(defrule update-kc-unguess-cell-agent (declare(salience 100))
+   (exec-agent (step ?step) (action unguess) (x ?x) (y ?y))
+   (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
+   ?upd <- (cell-agent (x ?x) (y ?y) (status guess))
+   (not (update-neighbor-guess))
+   (not (update-neighbor-fire))
+   ?row <- (k-per-row-agent (row ?x) (num ?nr) )
+   ?col <- (k-per-col-agent (col ?y) (num ?nc) )
+   =>
+   (modify ?upd (content none) (status none))
+   (modify ?row (num (+ ?nr 1)))
+   (modify ?col (num (+ ?nc 1)))
+   ; (assert (tmp-exec-agent (step ?step) (action guess) (content ?c) (x ?x) (y ?y)))
+   (assert (update-score-row (row ?x) (num (+ ?nr 1)) (y-to-upd 0)))
+   (assert (update-score-col (col ?y) (num (+ ?nc 1)) (x-to-upd 0)))
+)
 
 ;------------ REGOLE-MIGLIORAMENTI ---------------
 

@@ -11,7 +11,7 @@
 	(k-per-row (row ?r) (num ?n))
 	(k-per-col (col ?c) (num ?n1))
 => 
-	(assert (cell-agent (x ?r) (y ?c) (status none) (score (* ?n ?n1))))
+	(assert (cell-agent (x ?r) (y ?c) (status none) (score (* ?n ?n1)) (original-score (* ?n ?n1))))
 )
 
 (defrule init-rows (declare (salience 100)) 

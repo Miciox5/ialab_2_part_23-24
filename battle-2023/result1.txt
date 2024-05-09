@@ -91,6 +91,7 @@ Defining deftemplate: tmp-exec-agent
 Defining defrule: update-kc-fire-cell-agent-water +j+j+j+j+j+j+j
 Defining defrule: update-kc-guess-cell-agent +j+j+j+j+j+j+j+j
 Defining defrule: update-kc-guess-cell-agent-else +j+j+j+j+j+j+j+j
+Defining defrule: update-kc-unguess-cell-agent +j+j+j+j+j+j+j+j
 Defining defrule: update-kc-fire-water-on-right-side +j+j+j+j+j
 +j+j+j+j+j
 Defining defrule: update-kc-fire-water-on-left-side =j=j+j+j+j
@@ -191,15 +192,18 @@ Defining defrule: find-guess-right-for-middle =j=j=j+j+j+j+j
 Defining defrule: find-cell-fire =j+j+j+j+j+j+j+j+j
 Defining defrule: enter-in-explore-state +j+j
 Defining defrule: find-cell-guess =j=j+j+j+j+j+j+j
-Defining defrule: enter-in-backtracking-state +j+j
-Defining defrule: enter-in-explore-state-1 =j+j+j
-Defining defrule: resolution =j+j
+Defining defrule: enter-in-backtracking-state +j+j+j
+Defining defrule: find-min-guess-to-unguess =j=j+j+j+j+j+j+j+j+j
+Defining defrule: da-elim =j+j+j+j
+Defining defrule: enter-in-explore-state-after-bk =j=j+j
+Defining defrule: resolution =j+j+j
 TRUE
 CLIPS> (load 7_Action.clp)
 Defining defmodule: ACTION
 Defining defrule: exec-action-fire =j+j+j
 Defining defrule: exec-action-guess =j+j+j
 Defining defrule: exec-action-unguess =j+j+j
+Defining defrule: exec-action-solve =j+j+j
 TRUE
 CLIPS> (reset)
 CLIPS> @REM Il watch focus è molto utile per capire l'esecuzione dei moduli
@@ -212,7 +216,7 @@ CLIPS> @REM (watch rules)
 @REM
 CLIPS> (set-break game-over)
 CLIPS> (run)
-Your score is 85
+Your score is 75
 CLIPS> (run 2)
 CLIPS> @REM Il comando dribble-on serve per mettere il risultato
 @REM
@@ -295,6 +299,7 @@ f-97    (cell (x 9) (y 1) (content water) (status none))
 f-98    (cell (x 9) (y 2) (content water) (status none))
 f-101   (cell (x 9) (y 5) (content water) (status none))
 f-102   (cell (x 9) (y 6) (content water) (status none))
+f-103   (cell (x 9) (y 7) (content water) (status none))
 f-104   (cell (x 9) (y 8) (content water) (status none))
 f-105   (cell (x 9) (y 9) (content water) (status none))
 f-109   (boat-hor (name sub4) (x 4) (ys 2) (size 1) (status safe))
@@ -381,63 +386,62 @@ f-924   (guess 7 1)
 f-966   (exec (step 19) (action guess) (x 7) (y 9))
 f-967   (guess 7 9)
 f-1005  (exec (step 20) (action guess) (x 9) (y 7))
-f-1006  (guess 9 7)
 f-1052  (exec (step 21) (action guess) (x 8) (y 0))
 f-1053  (guess 8 0)
 f-1094  (exec (step 22) (action guess) (x 5) (y 2))
 f-1095  (guess 5 2)
 f-1138  (exec (step 23) (action guess) (x 4) (y 6))
 f-1139  (guess 4 6)
-f-1141  (moves (fires 0) (guesses 1))
-f-1183  (exec (step 24) (action solve) (x nil) (y nil))
-f-1184  (solve)
-f-1185  (status (step 25) (currently stopped))
-f-1187  (cell (x 4) (y 6) (content water) (status missed))
-f-1189  (cell (x 7) (y 3) (content hit-boat) (status guessed))
-f-1191  (considered 7 3)
-f-1193  (cell (x 5) (y 4) (content hit-boat) (status guessed))
-f-1194  (boat-ver (name nav5) (xs 4 5) (y 4) (size 2) (status hit hit))
-f-1195  (considered 5 4)
-f-1198  (sink-checked nav5)
-f-1200  (cell (x 0) (y 9) (content hit-boat) (status guessed))
-f-1201  (boat-ver (name nav1) (xs 0 1) (y 9) (size 2) (status hit hit))
-f-1202  (considered 0 9)
-f-1205  (sink-checked nav1)
-f-1207  (cell (x 1) (y 5) (content hit-boat) (status guessed))
-f-1209  (considered 1 5)
-f-1211  (cell (x 1) (y 3) (content hit-boat) (status guessed))
-f-1212  (boat-hor (name nav2) (x 1) (ys 3 4 5) (size 3) (status hit hit hit))
-f-1213  (considered 1 3)
-f-1216  (sink-checked nav2)
-f-1218  (cell (x 4) (y 0) (content hit-boat) (status guessed))
-f-1219  (boat-ver (name nav3) (xs 2 3 4) (y 0) (size 3) (status hit safe safe))
-f-1220  (considered 4 0)
-f-1222  (cell (x 7) (y 2) (content hit-boat) (status guessed))
-f-1224  (considered 7 2)
-f-1226  (cell (x 7) (y 1) (content hit-boat) (status guessed))
-f-1227  (boat-hor (name nav7) (x 7) (ys 1 2 3 4) (size 4) (status hit hit hit hit))
-f-1228  (considered 7 1)
-f-1231  (sink-checked nav7)
-f-1233  (cell (x 7) (y 9) (content hit-boat) (status guessed))
-f-1234  (boat-hor (name sub8) (x 7) (ys 9) (size 1) (status hit))
-f-1235  (considered 7 9)
-f-1238  (sink-checked sub8)
-f-1240  (cell (x 2) (y 4) (content water) (status missed))
-f-1242  (cell (x 9) (y 0) (content water) (status missed))
-f-1244  (cell (x 9) (y 7) (content water) (status missed))
-f-1246  (cell (x 8) (y 0) (content water) (status missed))
-f-1248  (cell (x 5) (y 2) (content water) (status missed))
-f-1250  (cell (x 2) (y 0) (content boat) (status missed))
-f-1252  (cell (x 3) (y 0) (content boat) (status missed))
-f-1254  (cell (x 4) (y 2) (content boat) (status missed))
-f-1256  (cell (x 5) (y 7) (content boat) (status missed))
-f-1258  (cell (x 8) (y 6) (content boat) (status missed))
-f-1260  (cell (x 9) (y 3) (content boat) (status missed))
-f-1261  (statistics (num_fire_ok 4) (num_fire_ko 1) (num_guess_ok 9) (num_guess_ko 6) (num_safe 7) (num_sink 5))
-f-1262  (cell (x 9) (y 4) (content boat) (status missed))
-f-1263  (sink-boat nav7)
-f-1264  (sink-boat nav2)
-f-1265  (sink-boat nav1)
-f-1266  (sink-boat nav5)
+f-1184  (exec (step 24) (action unguess) (x 9) (y 7))
+f-1186  (moves (fires 0) (guesses 2))
+f-1231  (exec (step 25) (action solve) (x nil) (y nil))
+f-1232  (solve)
+f-1233  (status (step 26) (currently stopped))
+f-1235  (cell (x 4) (y 6) (content water) (status missed))
+f-1237  (cell (x 7) (y 3) (content hit-boat) (status guessed))
+f-1239  (considered 7 3)
+f-1241  (cell (x 5) (y 4) (content hit-boat) (status guessed))
+f-1242  (boat-ver (name nav5) (xs 4 5) (y 4) (size 2) (status hit hit))
+f-1243  (considered 5 4)
+f-1246  (sink-checked nav5)
+f-1248  (cell (x 0) (y 9) (content hit-boat) (status guessed))
+f-1249  (boat-ver (name nav1) (xs 0 1) (y 9) (size 2) (status hit hit))
+f-1250  (considered 0 9)
+f-1253  (sink-checked nav1)
+f-1255  (cell (x 1) (y 5) (content hit-boat) (status guessed))
+f-1257  (considered 1 5)
+f-1259  (cell (x 1) (y 3) (content hit-boat) (status guessed))
+f-1260  (boat-hor (name nav2) (x 1) (ys 3 4 5) (size 3) (status hit hit hit))
+f-1261  (considered 1 3)
+f-1264  (sink-checked nav2)
+f-1266  (cell (x 4) (y 0) (content hit-boat) (status guessed))
+f-1267  (boat-ver (name nav3) (xs 2 3 4) (y 0) (size 3) (status hit safe safe))
+f-1268  (considered 4 0)
+f-1270  (cell (x 7) (y 2) (content hit-boat) (status guessed))
+f-1272  (considered 7 2)
+f-1274  (cell (x 7) (y 1) (content hit-boat) (status guessed))
+f-1275  (boat-hor (name nav7) (x 7) (ys 1 2 3 4) (size 4) (status hit hit hit hit))
+f-1276  (considered 7 1)
+f-1279  (sink-checked nav7)
+f-1281  (cell (x 7) (y 9) (content hit-boat) (status guessed))
+f-1282  (boat-hor (name sub8) (x 7) (ys 9) (size 1) (status hit))
+f-1283  (considered 7 9)
+f-1286  (sink-checked sub8)
+f-1288  (cell (x 2) (y 4) (content water) (status missed))
+f-1290  (cell (x 9) (y 0) (content water) (status missed))
+f-1292  (cell (x 8) (y 0) (content water) (status missed))
+f-1294  (cell (x 5) (y 2) (content water) (status missed))
+f-1296  (cell (x 2) (y 0) (content boat) (status missed))
+f-1298  (cell (x 3) (y 0) (content boat) (status missed))
+f-1300  (cell (x 4) (y 2) (content boat) (status missed))
+f-1302  (cell (x 5) (y 7) (content boat) (status missed))
+f-1304  (cell (x 8) (y 6) (content boat) (status missed))
+f-1306  (cell (x 9) (y 3) (content boat) (status missed))
+f-1307  (statistics (num_fire_ok 4) (num_fire_ko 1) (num_guess_ok 9) (num_guess_ko 5) (num_safe 7) (num_sink 5))
+f-1308  (cell (x 9) (y 4) (content boat) (status missed))
+f-1309  (sink-boat nav7)
+f-1310  (sink-boat nav2)
+f-1311  (sink-boat nav1)
+f-1312  (sink-boat nav5)
 For a total of 217 facts.
 CLIPS> (exit)

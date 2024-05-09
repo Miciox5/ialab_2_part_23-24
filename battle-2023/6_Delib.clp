@@ -7,7 +7,7 @@
 ;--- GREEDY ---
 
 (defrule enter-in-greedy-state (declare (salience 140))
-   (not (state-dfs greedy | explore | backtracking))
+   (not (state-dfs))
    =>
    (assert (state-dfs greedy))
 )
@@ -565,9 +565,40 @@
 ;---BACKTRACKING---
 (defrule enter-in-backtracking-state (declare (salience 70))
    ?state <- (state-dfs explore)
+   (moves (guesses ?ng&:(> ?ng 0)))
    =>
    (retract ?state)
    (assert (state-dfs backtracking))
+)
+
+(defrule find-min-guess-to-unguess (declare (salience 65))
+   (status (step ?step) (currently running) )
+   (moves (guesses ?ng&:(> ?ng 0)))
+   (state-dfs backtracking)
+   (not (root-backtracking ?x ?y))
+   ?eg-to-ungess <- (exec-agent (step ?step1&:(< ?step1 ?step)) (action guess) (state-dfs explore) (x ?x) (y ?y))
+   ?cell-to-unguess  <- (cell-agent (x ?x) (y ?y) (original-score ?s))
+
+   (not 
+      (and
+         (exec-agent (step ?step2&:(neq ?step2 ?step1)) (action guess) (state-dfs explore) (x ?x1) (y ?y1))
+         (cell-agent (x ?x1) (y ?y1) (original-score ?s1&:(< ?s1 ?s)))
+      )
+   )
+   =>
+   (assert (root-backtracking ?x ?y))
+   (assert (exec-agent (step ?step) (action unguess) (state-dfs backtracking) (x ?x) (y ?y)))  
+   (pop-focus)
+)
+
+(defrule da-elim (declare (salience 60))
+   (status (step ?step) (currently running) )
+   ?state <- (state-dfs backtracking)
+   ?r <- (root-backtracking ?x ?y)
+   =>
+   (retract ?r)
+   (retract ?state)
+   (assert (state-dfs solve))
 )
 ; (defrule find-cell-unguess (declare (salience 65))
 ;    (status (step ?step) (currently running) )
@@ -582,20 +613,20 @@
 ;    (pop-focus)
 ; )
 
-(defrule enter-in-explore-state-1 (declare (salience 60))
+(defrule enter-in-explore-state-after-bk (declare (salience 60))
    (status (step ?step) (currently running) )
    ?state <- (state-dfs backtracking)
    =>
    (retract ?state)
-   (assert (state-dfs solve))
-   (assert (exec (step ?step) (action solve)))  
+   (assert (state-dfs explore))
    (pop-focus)
 )
 
 ;-----------SOLVE--------------
 (defrule resolution (declare (salience -1))
    (status (step ?step))
+   (state-dfs solve)
    =>
-   (assert (exec (step ?step) (action solve)))  
+   (assert (exec-agent (step ?step) (action solve)))  
    (pop-focus)
 )

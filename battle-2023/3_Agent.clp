@@ -11,6 +11,7 @@
 	(slot content (allowed-values none water left right middle top bot sub)) ;il contenuto ce lo dice la fire
 	(slot status (allowed-values none guess unguess know ))
 	(slot score )
+	(slot original-score)
 )
 
 (deftemplate k-per-row-agent
