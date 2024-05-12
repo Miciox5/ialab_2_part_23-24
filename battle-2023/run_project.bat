@@ -18,5 +18,7 @@
 (run)
 @REM (facts MAIN)
 (facts AGENT)
+@REM (facts DELIBERATION)
 (exit)
+
 

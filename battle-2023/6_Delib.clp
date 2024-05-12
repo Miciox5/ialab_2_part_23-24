@@ -2,6 +2,11 @@
 
 ;------------ TEMPLATE ---------------------------
 
+(deftemplate root-backtracking
+   (slot step)
+   (slot x)
+   (slot y)
+)
 ;---------------- REGOLE ------------------------------------------
 
 ;--- GREEDY ---
@@ -546,10 +551,28 @@
    (assert (state-dfs explore))
 )
 
+(defrule find-cell-guess-after-backtracking (declare (salience 75))
+   (status (step ?step) (currently running) )
+   ; setting guess
+   (moves (guesses ?ng&:(> ?ng 0)))
+   ?rb <- (root-backtracking (x ?bkx) (y ?bky))
+   (cell-agent (x ?x&:(neq ?x ?bkx)) (y ?y&:(neq ?y ?bky)) (status none) (score ?s) )
+   (not (cell-agent (x ?x1) (y ?y2) (status none) (score ?s1&:(> ?s1 ?s))))
+   (k-per-row-agent (row ?x) (num ?nr&:(> ?nr 0)) )
+   (k-per-col-agent (col ?y) (num ?nc&:(> ?nc 0)) )
+   (state-dfs explore)
+   =>
+   (assert (exec-agent (step ?step) (action guess) (state-dfs explore) (x ?x) (y ?y)))  
+   (retract ?rb)
+   (printout t "guess after bk step="?step " x=" ?x " y=" ?y crlf)
+   (pop-focus)
+)
+
 (defrule find-cell-guess (declare (salience 75))
    (status (step ?step) (currently running) )
    ; setting guess
    (moves (guesses ?ng&:(> ?ng 0)))
+   (not (root-backtracking (x ?bkx) (y ?bky)))
    (cell-agent (x ?x) (y ?y) (status none) (score ?s) )
    (not (cell-agent (x ?x1) (y ?y2) (status none) (score ?s1&:(> ?s1 ?s))))
    (k-per-row-agent (row ?x) (num ?nr&:(> ?nr 0)) )
@@ -557,6 +580,7 @@
    (state-dfs explore)
    =>
    (assert (exec-agent (step ?step) (action guess) (state-dfs explore) (x ?x) (y ?y)))  
+   (printout t "guess step="?step " x=" ?x " y=" ?y crlf)
    (pop-focus)
 )
 
@@ -571,11 +595,12 @@
    (assert (state-dfs backtracking))
 )
 
-(defrule find-min-guess-to-unguess (declare (salience 65))
+; Trova la radice(cella con la guess in explore che ha score originale minore) che guida la salita del backtracking
+(defrule define-min-guess-to-unguess (declare (salience 65))
    (status (step ?step) (currently running) )
    (moves (guesses ?ng&:(> ?ng 0)))
    (state-dfs backtracking)
-   (not (root-backtracking ?x ?y))
+   (not (root-backtracking))
    ?eg-to-ungess <- (exec-agent (step ?step1&:(< ?step1 ?step)) (action guess) (state-dfs explore) (x ?x) (y ?y))
    ?cell-to-unguess  <- (cell-agent (x ?x) (y ?y) (original-score ?s))
 
@@ -586,40 +611,29 @@
       )
    )
    =>
-   (assert (root-backtracking ?x ?y))
-   (assert (exec-agent (step ?step) (action unguess) (state-dfs backtracking) (x ?x) (y ?y)))  
+   (assert (root-backtracking (step ?step1) (x ?x) (y ?y)))
+   (printout t "radice step="?step1 " x=" ?x " y=" ?y crlf)
+   ; (assert (exec-agent (step ?step) (action unguess) (state-dfs backtracking) (x ?x) (y ?y)))  
+   ; (pop-focus)
+)
+
+(defrule find-unguess-backtracking (declare (salience 60))
+   (status (step ?step) (currently running) )
+   ?state <- (state-dfs backtracking)
+   ?r <- (root-backtracking (step ?s) (x ?x) (y ?y))
+   (exec-agent (step ?step1&:(>= ?step1  ?s)) (action guess) (state-dfs explore) (x ?x1) (y ?y1)) ; guess da eliminare
+   (not (exec-agent (action unguess) (x ?x1) (y ?y1)))
+   =>
+   (assert (exec-agent (step ?step) (action unguess) (state-dfs backtracking) (x ?x1) (y ?y1)))  
    (pop-focus)
 )
 
-(defrule da-elim (declare (salience 60))
-   (status (step ?step) (currently running) )
-   ?state <- (state-dfs backtracking)
-   ?r <- (root-backtracking ?x ?y)
-   =>
-   (retract ?r)
-   (retract ?state)
-   (assert (state-dfs solve))
-)
-; (defrule find-cell-unguess (declare (salience 65))
-;    (status (step ?step) (currently running) )
-;    ; setting guess
-;    (moves (guesses ?ng&:(> ?ng 0)))
-;    ?guess <- (exec-agent (step ?step1) (action guess) (state-dfs explore) (content none) (x ?x) (y ?y))
-;    (not (exec-agent (step ?step2&:(> ?step2 ?step1)) (action guess)))
-;    (state-dfs backtracking)
-;    =>
-;    (retract ?guess)
-;    (assert (exec-agent (step ?step) (action unguess) (state-dfs backtracking) (x ?x) (y ?y)))  
-;    (pop-focus)
-; )
-
-(defrule enter-in-explore-state-after-bk (declare (salience 60))
+(defrule enter-in-explore-state-after-bk (declare (salience 45))
    (status (step ?step) (currently running) )
    ?state <- (state-dfs backtracking)
    =>
    (retract ?state)
    (assert (state-dfs explore))
-   (pop-focus)
 )
 
 ;-----------SOLVE--------------
