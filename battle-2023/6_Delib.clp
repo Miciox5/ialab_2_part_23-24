@@ -617,27 +617,50 @@
    ; (pop-focus)
 )
 
+(defrule check-solve-root-backtracking (declare (salience 63))
+   (status (step ?step) (currently running) )
+   (moves (guesses ?ng&:(> ?ng 0)))
+   (state-dfs backtracking)
+   ?root <- (root-backtracking (step ?s&:(eq ?s (- ?step 1))) (x ?x) (y ?y))
+   ?state <- (state-dfs backtracking)
+   =>
+   (retract ?state)
+   (assert (state-dfs solve))
+)
+
 (defrule find-unguess-backtracking (declare (salience 60))
    (status (step ?step) (currently running) )
    ?state <- (state-dfs backtracking)
    ?r <- (root-backtracking (step ?s) (x ?x) (y ?y))
-   (exec-agent (step ?step1&:(>= ?step1  ?s)) (action guess) (state-dfs explore) (x ?x1) (y ?y1)) ; guess da eliminare
-   (not (exec-agent (action unguess) (x ?x1) (y ?y1)))
+   ?guess-to-unguess <- (exec-agent (step ?step1&:(>= ?step1  ?s)) (action guess) (state-dfs explore) (x ?x1) (y ?y1)) ; guess da eliminare
+   (not (exec-agent (action unguess) (x ?x1) (y ?y1) (step ?s1&:(>= ?s1  ?s))))
    =>
    (assert (exec-agent (step ?step) (action unguess) (state-dfs backtracking) (x ?x1) (y ?y1)))  
+   (retract ?guess-to-unguess)
    (pop-focus)
 )
 
 (defrule enter-in-explore-state-after-bk (declare (salience 45))
    (status (step ?step) (currently running) )
    ?state <- (state-dfs backtracking)
+   (moves (guesses ?ng&:(> ?ng 0)))
    =>
    (retract ?state)
    (assert (state-dfs explore))
+   ; (assert (state-dfs solve))
+
 )
 
 ;-----------SOLVE--------------
-(defrule resolution (declare (salience -1))
+(defrule enter-in-solve-state (declare (salience -1))
+   ?state <- (state-dfs explore)
+   (moves (guesses ?ng&:(eq ?ng 0)))
+   =>
+   (retract ?state)
+   (assert (state-dfs solve))
+)
+
+(defrule resolution (declare (salience -2))
    (status (step ?step))
    (state-dfs solve)
    =>
