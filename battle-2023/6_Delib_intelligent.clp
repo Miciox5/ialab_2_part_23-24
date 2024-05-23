@@ -557,9 +557,9 @@
    (moves (guesses ?ng&:(> ?ng 0)))
    ?rb <- (root-backtracking (x ?bkx) (y ?bky))
    (cell-agent (x ?x&:(neq ?x ?bkx)) (y ?y&:(neq ?y ?bky)) (status none) (score ?s) )
-   (not (cell-agent (x ?x1) (y ?y2) (status none) (score ?s1&:(> ?s1 ?s))))
    (k-per-row-agent (row ?x) (num ?nr&:(> ?nr 0)) )
    (k-per-col-agent (col ?y) (num ?nc&:(> ?nc 0)) )
+   (not (cell-agent (x ?x1&:(neq ?x1 ?bkx)) (y ?y1&:(neq ?y1 ?bky)) (status none) (score ?s1&:(> ?s1 ?s))))
    (state-dfs explore)
    =>
    (assert (exec-agent (step ?step) (action guess) (state-dfs explore) (x ?x) (y ?y)))  
@@ -617,6 +617,7 @@
    ; (pop-focus)
 )
 
+; Condizione di uscita quando la radice è l'ultimo nodo su cui eseguire il backtracking
 (defrule check-solve-root-backtracking (declare (salience 63))
    (status (step ?step) (currently running) )
    (moves (guesses ?ng&:(> ?ng 0)))
