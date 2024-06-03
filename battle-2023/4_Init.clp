@@ -111,40 +111,40 @@
     (modify ?cell-left (content water) (status exclusion) (score 0))
 )
 
-;  Update score di tutte le colonne di una riga
-(defrule update-scores-rows (declare (salience 75))
-    ?a <- (update-score-row (row ?row) (num ?nr) (y-to-upd ?y))
-   ?cell-to-upd <- (cell-agent (x ?row) (y ?y) (status ?s&:(neq ?s know)))
-   (k-per-col-agent (col ?y) (num ?nc))
-   =>
-   (retract ?a)
-   (assert (update-score-row (row ?row) (num ?nr) (y-to-upd (+ ?y 1))))
-   (modify ?cell-to-upd (score (* ?nr ?nc)))
-)
-;  Update score di tutte le righe di una colonna
-(defrule update-scores-cols (declare (salience 70))
-    ?a <- (update-score-col (col ?y) (num ?nc) (x-to-upd ?x)  )
-   ?cell-to-upd <- (cell-agent (x ?x) (y ?y) (status ?s&:(neq ?s know)))
-   (k-per-row-agent (row ?x) (num ?nr))
-   =>
-   (assert (update-score-col (col ?y) (num ?nc) (x-to-upd (+ ?x 1))))
-   (retract ?a)
-   (modify ?cell-to-upd (score (* ?nr ?nc)))
-)
+; ;  Update score di tutte le colonne di una riga
+; (defrule update-scores-rows (declare (salience 75))
+;     ?a <- (update-score-row (row ?row) (num ?nr) (y-to-upd ?y))
+;    ?cell-to-upd <- (cell-agent (x ?row) (y ?y) (status ?s&:(neq ?s know)))
+;    (k-per-col-agent (col ?y) (num ?nc))
+;    =>
+;    (retract ?a)
+;    (assert (update-score-row (row ?row) (num ?nr) (y-to-upd (+ ?y 1))))
+;    (modify ?cell-to-upd (score (* ?nr ?nc)))
+; )
+; ;  Update score di tutte le righe di una colonna
+; (defrule update-scores-cols (declare (salience 70))
+;     ?a <- (update-score-col (col ?y) (num ?nc) (x-to-upd ?x)  )
+;    ?cell-to-upd <- (cell-agent (x ?x) (y ?y) (status ?s&:(neq ?s know)))
+;    (k-per-row-agent (row ?x) (num ?nr))
+;    =>
+;    (assert (update-score-col (col ?y) (num ?nc) (x-to-upd (+ ?x 1))))
+;    (retract ?a)
+;    (modify ?cell-to-upd (score (* ?nr ?nc)))
+; )
 
 
 
-(defrule finish-init-row ( declare (salience 60) ) 
-    (status (step ?s)(currently running))
-    ?factr <- (update-score-row (row ?r) (num ?n) (y-to-upd ?y) )
-    =>
-    (retract ?factr)
+; (defrule finish-init-row ( declare (salience 60) ) 
+;     (status (step ?s)(currently running))
+;     ?factr <- (update-score-row (row ?r) (num ?n) (y-to-upd ?y) )
+;     =>
+;     (retract ?factr)
 
-)
-(defrule finish-init-col ( declare (salience 60) ) 
-    (status (step ?s)(currently running))
-    ?factc <- (update-score-col (col ?col) (num ?nc) (x-to-upd ?x)) 
-    =>
-    (retract ?factc)
+; )
+; (defrule finish-init-col ( declare (salience 60) ) 
+;     (status (step ?s)(currently running))
+;     ?factc <- (update-score-col (col ?col) (num ?nc) (x-to-upd ?x)) 
+;     =>
+;     (retract ?factc)
 
-)
+; )
