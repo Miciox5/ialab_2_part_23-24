@@ -652,6 +652,17 @@
 
 )
 
+(defrule remain-last-path (declare (salience 73))
+   (status (step ?step) (currently running) )
+   ?state <- (state-dfs explore)
+   (guesses-to-do ?ng)
+   (maxduration ?maxd)
+   (test (>= (+ ?step (* ?ng 2)) ?maxd))
+   =>
+   (retract ?state)
+   (assert (state-dfs solve))
+)
+
 ;-----------SOLVE--------------
 (defrule enter-in-solve-state (declare (salience -1))
    ?state <- (state-dfs explore)
