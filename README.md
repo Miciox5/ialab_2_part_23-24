@@ -123,8 +123,7 @@ Questo [modulo](./battle-2023/5_Update_KC.clp) è responsabile di aggiornare la 
 
 **FATTI ORDINATI:**
 
-- [update-neighbor-guess]: fatto asserito nelle prime regole del modulo come *STATO* di aggiornamento dopo aver effettuato un'azione di *guess*.
-- [update-neighbor-fire]: fatto asserito nelle prime regole del modulo come *STATO* di aggiornamento dopo aver effettuato un'azione di *fire*.
+- [update-neighbor-guess](./battle-2023/5_Update_KC.clp#L43): fatto asserito nelle prime regole del modulo come *STATO* di aggiornamento dopo aver effettuato un'azione di *guess*.
 
 **REGOLE:**
 
