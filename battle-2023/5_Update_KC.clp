@@ -14,25 +14,6 @@
 
 ;------------ REGOLE -----------------------------
 
-; a seguito di una fire(non acqua) copio il contenuto nella cell-agent, aggiorno indici, ricalcolo score, aggiungo acqua intorno
-; (defrule update-kc-fire-cell-agent (declare(salience 100))
-;    (exec-agent (step ?step) (action fire) (x ?x) (y ?y))
-;    (status (step ?stepnext&:(eq ?stepnext (+ ?step 1))) (currently running))
-;    (k-cell (x ?x) (y ?y) (content ?content&:(neq ?content water)))
-;    ?upd <- (cell-agent (x ?x) (y ?y) (content none))
-;    (not (update-neighbor-guess))
-;    (not (update-neighbor-fire))
-;    ?row <- (k-per-row-agent (row ?x) (num ?nr&:(> ?nr 0)) )
-;    ?col <- (k-per-col-agent (col ?y) (num ?nc&:(> ?nc 0)) )
-;    =>
-;    (modify ?upd (content ?content) (status know) (score 0))
-;    (modify ?row (num (- ?nr 1)))
-;    (modify ?col (num (- ?nc 1)))
-;    (assert (tmp-exec-agent (step ?step) (action fire) (x ?x) (y ?y)))
-;    (assert (update-neighbor-fire))
-;    (assert (update-score-row (row ?x) (num (- ?nr 1)) (y-to-upd 0)))
-;    (assert (update-score-col (col ?y) (num (- ?nc 1)) (x-to-upd 0)))
-; )
 ; se fire becca l'acqua copio solo il contenuto
 (defrule update-kc-fire-cell-agent-water (declare(salience 100))
    (exec-agent (step ?step) (action fire) (x ?x) (y ?y))

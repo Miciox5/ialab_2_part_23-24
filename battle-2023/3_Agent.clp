@@ -47,22 +47,6 @@
 	(slot name (allowed-values corazzata incrociatore caccia sottomarino))
 )
 
-; (deftemplate boat-hor-agent
-; 	(slot name)
-; 	(slot x)
-; 	(multislot ys) 
-; 	(slot size)
-; 	(multislot status (allowed-values safe hit)) 
-; )
-
-; (deftemplate boat-ver-agent
-;     (slot name)
-; 	(multislot xs)
-; 	(slot y)
-; 	(slot size)
-; 	(multislot status (allowed-values safe hit))
-; )
-
 ; template per action
 (deftemplate update-score-row
     (slot row )

@@ -29,17 +29,6 @@
    (pop-focus)
 )
 
-; (defrule find-guess-after-fire (declare (salience 120))
-;    (status (step ?step) (currently running))
-;    (moves (guesses ?ng&:(> ?ng 0)))
-;    (exec-agent (step ?pstep&:(eq ?pstep (- ?step 1))) (action fire) (x ?x) (y ?y))
-;    (cell-agent (x ?x) (y ?y) (content none) (status none))
-;    (k-cell (x ?x) (y ?y) (content ?c))
-;    =>
-;    (assert (exec-agent (step ?step) (action guess) (content ?c) (x ?x) (y ?y)))  
-;    (pop-focus)
-; )
-
 ; RICERCA CORAZZATA (NAVI DA 4)
 ; ---- Conoscenza di 3/4 dei pezzi di una nave da 4 ----
 (defrule find-guess-corazzata-last-right (declare (salience 100))
