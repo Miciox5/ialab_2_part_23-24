@@ -29,10 +29,10 @@ L'obiettivo del progetto è quello di sviluppare un sistema esperto che giochi a
 
 Come di consueto le navi da individuare sono le seguenti:
 
-- **1** **corazzata** da **4 caselle**
-- **2** **incrociatori** da **3 caselle** ciascuno
-- **3** **cacciatorpedienieri** da **2 caselle** ciascuno
-- **4** **sottomarinieri** da **1 casella** ciascuno
+- **1 corazzata** da **4 caselle**
+- **2 incrociatori** da **3 caselle** ciascuno
+- **3 cacciatorpedienieri** da **2 caselle** ciascuno
+- **4 sottomarinieri** da **1 casella** ciascuno
 
 Nel documento [progetto_CLIPS-2022-2023.pdf](progetto%20CLIPS%20-%202022-2023.pdf) è possibile reperire la traccia completa.
 
@@ -68,8 +68,8 @@ I sistemi esperti implementati hanno degli STATI, composti da **fatti ordinati**
 
 - [GREEDY](./battle-2023/6_Delib_dump.clp#L13): vengono eseguite le *guess* proveniente da una conoscenza pregressa avuta input, oppure viene effettuata una RICERCA INFORMATA posizionando da subito delle *fire* e restringere lo SPAZIO DI RICERCA MENO INFORMATO;
 - [EXPLORE](./battle-2023/6_Delib_dump.clp#L536): entriamo in uno SPAZIO DI RICERCA MENO INFORMATO, in cui posizioniamo le *guess* al meglio che possiamo, sfruttando le regole di risoluzione definite nei MODULI di DELIBERAZIONE;
-- **BACKTRACKING**: vengono effettuate le *unguess* sulla base delle scelte prese nella fase di ricerca EXPLORE. Le regole di attuazione del backtracking variano nei due moduli di DELIBERAZIONE:
-  - [BACKTRACKING INFORMATO](./battle-2023/6_Delib_intelligent.clp#L571): viene trovata, nella regolare una RADICE come limite di backtracking. Viene scelta sulla base della [minore probabilità iniziale](#formula-probabilità-su-singola-cella) che hanno tutte le celle su cui è stata eseguita la *guess* in stato di EXPLORE. Verranno di seguito effettuale le *unguess* fino alla radice trovata.
+- **BACKTRACKING**: vengono effettuate le *unguess* sulla base delle scelte prese nella fase di ricerca [EXPLORE](./battle-2023/6_Delib_dump.clp#L536). Le regole di attuazione del backtracking variano nei due moduli di DELIBERAZIONE:
+  - [BACKTRACKING INFORMATO](./battle-2023/6_Delib_intelligent.clp#L571): viene trovata, nella regolare una RADICE come limite di backtracking. Viene scelta sulla base della [minore probabilità iniziale](#formula-probabilità-su-singola-cella) che hanno tutte le celle su cui è stata eseguita la *guess* in stato di [EXPLORE](./battle-2023/6_Delib_dump.clp#L536). Verranno di seguito effettuale le *unguess* fino alla radice trovata.
   > **NOTA**: viene mantenuto questo dato in ogni singola cella della *CONOSCENZA DI CONTROLLO*.
   >
   - [BACKTRACKING NON INFORMATO](./battle-2023/6_Delib_dump.clp#L604): viene effettuato il backtracking fino alla radice che corrisponde alla prima *guess* posizionata in fase [EXPLORE](./battle-2023/6_Delib_dump.clp#L536).
@@ -146,27 +146,62 @@ Tramite le regole di risoluzione sviluppate nel seguente progetto, viene propost
 
 A livello implementativo, i due sistemi si distinguono SOLO nel modulo di **DELIBERATION**, andando a modificare le due strategie di deliberazione delle azioni intraprese.
 
+**FATTI ORDINATI:**
+
+- [state-dfs](./battle-2023/6_Delib_dump.clp#L18): questo fatto rappresenta lo *STATO* in cui si trova il modulo di *DELIBERATION* in fase di deliberazione dell'azione. Sono tre i possibili valori:
+  - [greedy](./battle-2023/6_Delib_dump.clp#L18): stato di ricerca [GREEDY](#descrizione-stati).
+  - [explore](./battle-2023/6_Delib_dump.clp#L542): stato di ricerca [EXPLORE](#descrizione-stati)
+  - [backtracking](./battle-2023/6_Delib_dump.clp#L599): stato di ricerca [BACKTRACKING](#descrizione-stati)
+  - [solve](./battle-2023/6_Delib_dump.clp#L646): stato di ricerca [SOLVE](#descrizione-stati)
+
+**FATTI NON ORDINATI:**
+
+- [root-backtracking](./battle-2023/6_Delib_dump.clp#L5): template definito in fase di [EXPLORE](./battle-2023/6_Delib_dump.clp#L536)
+
+**REGOLE:**
+
+- [enter-in-\<name-state>-state](./battle-2023/6_Delib_dump.clp#L15): permette, secondo determinate precondizioni, di passare da uno stato all'altro quando non ci sono più regole attivabili in agenda per una determinata fase di ricerca;
+- [find-guess-with-k-cell](./battle-2023/6_Delib_dump.clp#L22): delibera le guess sicure. (es. dopo aver effettuato la *fire* nello step precedente, si attiverà la seguente regola dal momento che apparirà un fatto *k-cell* su una determinata cella)
+- [find-guess-*](./battle-2023/6_Delib_dump.clp#L33): le regole di deliberazione del sistema esperto cercano di completare prima le navi più grandi, usando la salience per dare priorità alle guess che completano le navi con più pezzi, soprattutto quando mancano pochi pezzi per affondarle. Questo approccio aiuta a ridurre il numero di guess casuali e a velocizzare la ricerca delle navi.
+- [find-cell-fire](./battle-2023/6_Delib_dump.clp#L519): la regola delibera una fire in fase di GREEDY, creando una base di conoscenza prima passare alla fase di [EXPLORE](./battle-2023/6_Delib_dump.clp#L536).
+- [find-cell-guess-after-backtracking](./battle-2023/6_Delib_dump.clp#L547): delibera una guess dopo aver trovato un root-backtracking, ossia la radice da cui proseguire la ricerca nello spazio degli stati.
+- [find-cell-guess](./battle-2023/6_Delib_dump.clp#L564): delibera una guess basandosi sul punteggio di scores più alto.
+- [find-unguess-backtracking](./battle-2023/6_Delib_dump.clp#605): delibera le unguess in fase di BACKTRACKING finché non arriva alla cella corrispondente alla *root-backtracking*.
+- [resolution](./battle-2023/6_Delib_dump.clp#L648): si attiva quando non ci sono più azioni possibili da deliberare o si è passati direttamente alla fase di *SOLVE*.
+
+>**NOTA**: le regole della fase di ricerca *SOLVE* sono state definite con salience **NEGATIVA** per essere eseguite *SOLO* alla fine della ricerca (o, eventualmente quando la ricerca viene indirizzata in questa fase).
+
 #### Sistema esperto dump
 
 Il sistema esperto Dump attua la sua ricerca con una strategia **brute force** finchè ha *guess* da eseguire.
 La strategia, dopo aver terminato lo stato GREEDY, esegue i seguenti passi:
 
-1. Si posizionano, nella fase di [EXPLORE](./batte-2023/ "dfsd"), tutte le *guess* possibili facendosi guidare dalle [probabilità](#formula-probabilità-su-singola-cella) create per singola cella
+1. Si posizionano, nella fase di [EXPLORE](./battle-2023/6_Delib_dump.clp#L536), tutte le *guess* possibili facendosi guidare dalle [probabilità](#formula-probabilità-su-singola-cella) create per singola cella
 2. Una volta posizionate tutte le *guess* possibili, si controlla se ce ne siano ancora:
 
-   - se ci sono ancora *guess* a disposizione, si entra nello stato di [BACKTRACKING NON INFORMATO](#descrizione-moduli) effettuando le *unguess* su tutte le mosse eseguite nello stato di EXPLORE;
-   - altrimenti, se non restano abbastanza mosse da eseguire viene fatta scattare la regola di [remain-last-path](./battle-2023/6_Delib_dump.clp#L580) e l'agente viene mandato in stato di [SOLVE](./battle-2023/6_Delib_dump.clp#L640).
+   - se ci sono ancora *guess* a disposizione, si entra nello stato di [BACKTRACKING NON INFORMATO](#descrizione-moduli) effettuando le *unguess* su tutte le mosse eseguite nello stato di [EXPLORE](./battle-2023/6_Delib_dump.clp#L536);
+   - altrimenti, se non restano abbastanza mosse, l'agente viene mandato in stato di [SOLVE](./battle-2023/6_Delib_dump.clp#L640).
+
+**REGOLE:**
+
+- [define-root](./battle-2023/6_Delib_dump.clp#580): trova la radice (root-backtracking), ossia la cella con la *prima guess* in  fase di [EXPLORE](./battle-2023/6_Delib_dump.clp#L536). Sarà il lower bound della fase di BACKTRACKING.
+- [remain-last-path](./battle-2023/6_Delib_dump.clp#580): si attiva per effettuare il passaggio di stato in *SOLVE* quando il numero di mosse sta per terminare e l'agente non riuscirebbe ad effettuare una risalita ed una discesa completa (formula di riferimento in [formula ultima discesa](#formula-ultima-discesa)).
 
 #### Sistema esperto Intelligente
 
 Nel sistema esperto intelligente è stata proposta una soluzione che integra al suo interno dell'intelligenza, ossia un BACKTRACKING INFORMATO.
 La strategia, dopo aver terminato lo stato GREEDY, esegue i seguenti passi:
 
-1. Si posizionano, nella fase di EXPLORE, tutte le *guess* possibili facendosi guidare dalle [probabilità](#formula-probabilità-su-singola-cella) create per singola cella
+1. Si posizionano, nella fase di [EXPLORE](./battle-2023/6_Delib_dump.clp#L536), tutte le *guess* possibili facendosi guidare dalle [probabilità](#formula-probabilità-su-singola-cella) create per singola cella
 2. Una volta posizionate tutte le *guess* possibili, si controlla se ce ne siano ancora:
 
    - se ci sono ancora *guess* a disposizione, si entra nello stato di [BACKTRACKING INFORMATO](#descrizione-moduli), risalendo fino alla radice con la minore probabilità iniziale trovata;
-   - altrimenti, se non restano abbastanza mosse da eseguire viene fatta scattare la regola di [remain-last-path](./battle-2023/6_Delib_dump.clp#L580) e l'agente viene mandato in stato di [SOLVE](./battle-2023/6_Delib_dump.clp#L640).
+   - altrimenti, se non restano abbastanza mosse da eseguire viene fatta scattare la regola di [remain-last-path](./battle-2023/6_Delib_intelligent.clp#L628) e l'agente viene mandato in stato di [SOLVE](./battle-2023/6_Delib_intelligent.clp#L639).
+
+**REGOLE:**
+
+- [define-min-guess-to-unguess](./battle-2023/6_Delib_intelligent.clp#L572): trova la radice (root-backtracking), ossia la cella con la [probabilità a priori più alta](#formula-original-score-probabilità-a-priori) in  fase di *EXPLORE*. Sarà il lower bound della fase di BACKTRACKING.
+- [check-solve-root-backtracking](./battle-2023/6_Delib_intelligent.clp#L594): condizione di uscita quando la radice è l'ultimo nodo su cui eseguire il backtracking.
 
 ### Action
 
@@ -207,7 +242,7 @@ $StepAttuale$ = Step attuale di ricerca
 
 $NGuessRimanenti$ = Numero di *guess* rimanenti
 
-Questa formula è necessaria per evitare lo stato di BACKTRACKING nel momento in cui l'agente non ha a disposizione almeno $2 * NGuessRimanenti$ da poter eseguire per effettuare una risalita (stato BACKTRACKING) e una nuova discesa (stato EXPLORE).
+Questa formula è necessaria per evitare lo stato di BACKTRACKING nel momento in cui l'agente non ha a disposizione almeno $2 * NGuessRimanenti$ da poter eseguire per effettuare una risalita (stato BACKTRACKING) e una nuova discesa (stato [EXPLORE](#descrizione-stati)).
 
 ### Formula original score (probabilità a priori)
 
