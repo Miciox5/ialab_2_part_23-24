@@ -1,3 +1,5 @@
+         CLIPS (6.4.1 4/8/23)
+CLIPS> (dribble-on result1.txt)
 TRUE
 CLIPS> (load 0_Main.clp)
 +%%%%****$
