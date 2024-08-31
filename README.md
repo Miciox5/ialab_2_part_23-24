@@ -57,8 +57,8 @@ I sistemi esperti implementati hanno i seguenti MODULI:
 - **Moduli degli agenti**:
 
   - [AGENT](./battle-2023/3_Agent.clp): come il Main per l'ambiente, gestisce lo scheduling tra i moduli all'interno degli agenti
-  - [INIT](./battle-2023/4_Init.clp): inizializza la **CONOSCENZA DI CONTROLLO** travasando la **CONOSCENZA DI DOMINIO** all'interno di essa. Viene utilizzato solo al primo avvio dell'agente.
-  - [UPDATE KNOWLEDGE CONTROL](./battle-2023/5_Update_KC.clp): ha il compito di aggiornare la CONOSCENZA DI CONTROLLO ogni qualvolta che viene eseguita un'azione sull'ambiente. Gestisce il **FRAME PROBLEM** all'interno di questo dominio.
+  - [INIT](./battle-2023/4_Init.clp): inizializza una copia della **CONOSCENZA DI DOMINIO** all'interno dei moduli di controllo. Viene utilizzato solo al primo avvio dell'agente.
+  - [UPDATE KNOWLEDGE CONTROL](./battle-2023/5_Update_KC.clp): ha il compito di aggiornare la copia della CONOSCENZA DI DOMINIO ogni qualvolta che viene eseguita un'azione sull'ambiente, riportando le modifiche sui MODULI DEGLI AGENTI. Gestisce il **FRAME PROBLEM** all'interno di questo dominio.
   - [DELIBERATION (DUMP)](./battle-2023/6_Delib_dump.clp): gestisce la strategia di deliberazione **dump**, ossia senza particolare intelligenza. Quando arriva al fondo di una ricerca senza aver impostato tutte le *guess*, fa backtracking fino all'ultima azione GREEDY e ramifica la ricerca verso un altro ramo.
   - [DELIBERATION (INTELLIGENT)](./battle-2023/6_Delib_intelligent.clp): gestisce la strategia di deliberazione **intelligente**, ossia effettuando il backtracking informato. Questo consiste nella ricerca della casella con il punteggio maggiore iniziale all'interno delle caselle in stato [EXPLORE](./battle-2023/6_Delib_dump.clp#L536).
 
@@ -70,7 +70,7 @@ I sistemi esperti implementati hanno degli STATI, composti da **fatti ordinati**
 - [EXPLORE](./battle-2023/6_Delib_dump.clp#L536): entriamo in uno SPAZIO DI RICERCA MENO INFORMATO, in cui posizioniamo le *guess* al meglio che possiamo, sfruttando le regole di risoluzione definite nei MODULI di DELIBERAZIONE;
 - **BACKTRACKING**: vengono effettuate le *unguess* sulla base delle scelte prese nella fase di ricerca [EXPLORE](./battle-2023/6_Delib_dump.clp#L536). Le regole di attuazione del backtracking variano nei due moduli di DELIBERAZIONE:
   - [BACKTRACKING INFORMATO](./battle-2023/6_Delib_intelligent.clp#L571): viene trovata, nella regolare una RADICE come limite di backtracking. Viene scelta sulla base della [minore probabilità iniziale](#formula-probabilità-su-singola-cella) che hanno tutte le celle su cui è stata eseguita la *guess* in stato di [EXPLORE](./battle-2023/6_Delib_dump.clp#L536). Verranno di seguito effettuale le *unguess* fino alla radice trovata.
-  > **NOTA**: viene mantenuto questo dato in ogni singola cella della *CONOSCENZA DI CONTROLLO*.
+  > **NOTA**: viene mantenuto questo dato in ogni singola cella della *CONOSCENZA DI DOMINIO*.
   >
   - [BACKTRACKING NON INFORMATO](./battle-2023/6_Delib_dump.clp#L604): viene effettuato il backtracking fino alla radice che corrisponde alla prima *guess* posizionata in fase [EXPLORE](./battle-2023/6_Delib_dump.clp#L536).
 - [SOLVE](./battle-2023/6_Delib_dump.clp#L640): ultimo stato in cui viene mandato all'ambiente il comando di *solve* per terminare la ricerca.
@@ -88,34 +88,34 @@ Il modulo [AGENT](./battle-2023/3_Agent.clp) è responsabile dello scheduling di
 
 **FATTI NON ORDINATI**:
 
-- [cell-agent](./battle-2023/3_Agent.clp#L8): copia del template [cell](./battle-2023/1_Env.clp#L7) del module [ENV](./battle-2023/1_Env.clp) con l'aggiunta dello score (calcolato con la [formula della probabilità](#formula-probabilità-su-singola-cella)) e dell'[original-score](./battle-2023/3_Agent.clp#L14), mantenendo lo score calcolato all'inizio necessario per l'esecuzione del [BACKTRACKING INFORMATO](README.md#descrizione-stati). E' un fatto non ordinato mantenuto nella *CONOSCENZA DI CONTROLLO*.
-- [k-per-row-agent](./battle-2023/3_Agent.clp#L17): copia del template [k-per-row](./battle-2023/1_Env.clp#L54) del module [ENV](./battle-2023/1_Env.clp). Rappresenta il numero di celle occupate da una nave su singola riga. E' un fatto non ordinato mantenuto nella *CONOSCENZA DI CONTROLLO*.
-- [k-per-col-agent](./battle-2023/3_Agent.clp#L23): copia del template [k-per-col](./battle-2023/1_Env.clp#L59) del module [ENV](./battle-2023/1_Env.clp). Rappresenta il numero di celle occupate da una nave su singola colonna. E' un fatto non ordinato mantenuto nella *CONOSCENZA DI CONTROLLO*.
-- [exec-agent](./battle-2023/3_Agent.clp#L29): copia del template [exec](./battle-2023/0_Main.clp#L5) del module [MAIN](./battle-2023/0_Main.clp). Rappresenta la mossa eseguita al passo *?step*. E' un fatto non ordinato mantenuto nella *CONOSCENZA DI CONTROLLO*.
-- [boat-agent](./battle-2023/3_Agent.clp#L45): Rappresenta una nave specifica a cui viene assegnato un codice univoco. Sarà necessario per inizializzare le navi nella *CONOSCENZA DI CONTROLLO* e verificare, nei moduli successivi, se sono state affondate o meno facendo pattern matching con le celle. Soluzione blind, non vengono riportate le celle ma solo il tipo di nave.
-- [update-score-row](./battle-2023/3_Agent.clp#L67): Serve al modulo [UPDATE_KC](./battle-2023/5_Update_KC.clp) per aggiornare gli score sulla riga in cui è stata effettuata un'azione. Mantiene le celle aggiornate nella *CONOSCENZA DI CONTROLLO*.
-- [update-score-col](./battle-2023/3_Agent.clp#L72): Serve al modulo [UPDATE_KC](./battle-2023/5_Update_KC.clp) per aggiornare gli score sulla colonna in cui è stata effettuata un'azione. Mantiene le celle aggiornate nella *CONOSCENZA DI CONTROLLO*.
+- [cell-agent](./battle-2023/3_Agent.clp#L8): copia del template [cell](./battle-2023/1_Env.clp#L7) del module [ENV](./battle-2023/1_Env.clp) con l'aggiunta dello score (calcolato con la [formula della probabilità](#formula-probabilità-su-singola-cella)) e dell'[original-score](./battle-2023/3_Agent.clp#L14), mantenendo lo score calcolato all'inizio necessario per l'esecuzione del [BACKTRACKING INFORMATO](README.md#descrizione-stati). E' un fatto non ordinato mantenuto nella *CONOSCENZA DI DOMINIO*.
+- [k-per-row-agent](./battle-2023/3_Agent.clp#L17): copia del template [k-per-row](./battle-2023/1_Env.clp#L54) del module [ENV](./battle-2023/1_Env.clp). Rappresenta il numero di celle occupate da una nave su singola riga. E' un fatto non ordinato mantenuto nella *CONOSCENZA DI DOMINIO*.
+- [k-per-col-agent](./battle-2023/3_Agent.clp#L23): copia del template [k-per-col](./battle-2023/1_Env.clp#L59) del module [ENV](./battle-2023/1_Env.clp). Rappresenta il numero di celle occupate da una nave su singola colonna. E' un fatto non ordinato mantenuto nella *CONOSCENZA DI DOMINIO*, contenuta nei *MODULI DEGLI AGENTI*.
+- [exec-agent](./battle-2023/3_Agent.clp#L29): copia del template [exec](./battle-2023/0_Main.clp#L5) del module [MAIN](./battle-2023/0_Main.clp). Rappresenta la mossa eseguita al passo *?step*. E' un fatto non ordinato mantenuto nella *CONOSCENZA DI DOMINIO*, contenuta nei *MODULI DEGLI AGENTI*.
+- [boat-agent](./battle-2023/3_Agent.clp#L45): Rappresenta una nave specifica a cui viene assegnato un codice univoco. Sarà necessario per inizializzare le navi nella *CONOSCENZA DI DOMINOI* e verificare, nei moduli successivi, se sono state affondate o meno facendo pattern matching con le celle. Soluzione blind, non vengono riportate le celle ma solo il tipo di nave.
+- [update-score-row](./battle-2023/3_Agent.clp#L67): Serve al modulo [UPDATE_KC](./battle-2023/5_Update_KC.clp) per aggiornare gli score sulla riga in cui è stata effettuata un'azione. Mantiene le celle aggiornate nella *CONOSCENZA DI DOMINIO*, contenuta nei *MODULI DEGLI AGENTI*.
+- [update-score-col](./battle-2023/3_Agent.clp#L72): Serve al modulo [UPDATE_KC](./battle-2023/5_Update_KC.clp) per aggiornare gli score sulla colonna in cui è stata effettuata un'azione. Mantiene le celle aggiornate nella *CONOSCENZA DI DOMINIO*, contenuta nei *MODULI DEGLI AGENTI*.
 
 **FATTI ORDINATI**:
 
-- [first-pass-to-init](./battle-2023/3_Agent.clp#L82): questo fatto ordinato permette di passare l'esecuzione una volta sola al modulo di [INIT](./battle-2023/4_Init.clp), che inizializzerà la CONOSCENZA DI CONTROLLO.
+- [first-pass-to-init](./battle-2023/3_Agent.clp#L82): questo fatto ordinato permette di passare l'esecuzione una volta sola al modulo di [INIT](./battle-2023/4_Init.clp), che inizializzerà la *CONOSCENZA DI DOMINIO*, contenuta nei *MODULI DEGLI AGENTI*.
 
 **REGOLE**: le regole permettono di passare l'esecuzione nell'ordine corretto tra i moduli [INIT](./battle-2023/4_Init.clp), [UPDATE_KC](./battle-2023/5_Update_KC.clp), [DELIBERATION](./battle-2023/6_Delib_dump.clp) e [ACTION](./battle-2023/7_Action.clp).
 
 ### Init
 
-Il modulo [INIT](./battle-2023/4_Init.clp) è responsabile di create TUTTI i FATTI INIZIALI nella *CONOSCENZA DI CONTROLLO*. Oltre ciò, verifica lo stato delle celle se, all'interno dell'ambiente, dovesse esserci della conoscenza, e riporta la medesima all'interno dei propri fatti inizializzati.
+Il modulo [INIT](./battle-2023/4_Init.clp) è responsabile di create TUTTI i FATTI INIZIALI nella *CONOSCENZA DI DOMINIO* contenuta nei *MODULI DEGLI AGENTI*. Oltre ciò, verifica lo stato delle celle se, all'interno dell'ambiente, dovesse esserci della conoscenza, e riporta la medesima all'interno dei propri fatti inizializzati.
 
 **REGOLE**:
 
-- [init-*](./battle-2023/4_Init.clp#L9): i fatti con radice *init* inizializzano i fatti [cell-agent](./battle-2023/3_Agent.clp#L8), [k-per-row-agent](./battle-2023/3_Agent.clp#L17) e [k-per-col-agent](./battle-2023/3_Agent.clp#L23) nella *CONOSCENZA DI CONTROLLO*.
-- [update-cell-water](./battle-2023/4_Init.clp#L53): vado ad aggiornare il contenuto delle cell-agent presente nella *CONOSCENZA DI CONTROLLO* se la k-cell, presente nella *CONOSCENZA DI DOMINIO*, contiene *water*.
+- [init-*](./battle-2023/4_Init.clp#L9): i fatti con radice *init* inizializzano i fatti [cell-agent](./battle-2023/3_Agent.clp#L8), [k-per-row-agent](./battle-2023/3_Agent.clp#L17) e [k-per-col-agent](./battle-2023/3_Agent.clp#L23) nella *CONOSCENZA DI DOMINIO* contenuta nei *MODULI DEGLI AGENTI*.
+- [update-cell-water](./battle-2023/4_Init.clp#L53): vado ad aggiornare il contenuto delle cell-agent presente nella *CONOSCENZA DI DOMINIO*, contenuta nei *MODULI DEGLI AGENTI*, se la k-cell, presente nella *CONOSCENZA DI DOMINIO*, contiene *water*.
 - [add-water-cell](./battle-2023/4_Init.clp#L65): contrassegna tutte le caselle in cui la moltiplicazione tra l'indice di possibili navi nella riga e l'indice nella colonna sia uguale a zero, ossia quando sicuramente non potrà esserci una nave ma solo *water*.
 - [fill-neighbor-*](./battle-2023/4_Init.clp#L77): le regole con la radice *fill-neighbor* aggiungono *water* ai lati dei pezzi delle navi quando sono sicuro che non potrà esserci altro. Es. se ho un pezzo di nave *top*, sopra di essa ci sarà sicuramente *water*.
 
 ### Update Knowledge Control
 
-Questo [modulo](./battle-2023/5_Update_KC.clp) è responsabile di aggiornare la *CONOSCENZA DI CONTROLLO*, riportando le modifiche fatte allo STEP PRECEDENTE, prima di deliberare la prossima azione.
+Questo [modulo](./battle-2023/5_Update_KC.clp) è responsabile di aggiornare la *CONOSCENZA DI DOMINIO* contenuta nei *MODULI DEGLI AGENTI*, riportando le modifiche fatte allo STEP PRECEDENTE, prima di deliberare la prossima azione.
 
 **FATTI NON ORDINATI:**
 
@@ -127,10 +127,10 @@ Questo [modulo](./battle-2023/5_Update_KC.clp) è responsabile di aggiornare la 
 
 **REGOLE:**
 
-- [update-kc-fire-cell-agent-water](./battle-2023/5_Update_KC.clp#L37): se l'azione eseguita allo step precedente è una *fire* e la cella su cui è stata effettuata riporta *water* come risultato, allora andrò ad aggiornare la cella nella *CONOSCENZA DI CONTROLLO* (se becco water sulla fire, copio solo il contenuto).
-- [update-kc-guess-cell-agent](./battle-2023/5_Update_KC.clp#L49): a seguito di una *guess* **SENZA CONTENUTO** aggiorniamo SOLO lo status a *guess* della cella nella *CONOSCENZA DI CONTROLLO*.
-- [update-kc-guess-cell-agent-else](./battle-2023/5_Update_KC.clp#L67): a seguito di una *guess* **CON CONTENUTO**, aggiorniamo il contenuto e lo status a *know* della cella nella *CONOSCENZA DI CONTROLLO*.
-- [update-kc-\<nome-nave>](./battle-2023/5_Update_KC.clp#L231): le regole con questa radice si attiveranno quando verranno rilevati dei pezzi di navi che sicuramente formano una nave. Verranno aggiornate le loro celle a score negativo e verrà rimossa dalla *CONOSCENZA DI CONTROLLO* la nave trovata.
+- [update-kc-fire-cell-agent-water](./battle-2023/5_Update_KC.clp#L37): se l'azione eseguita allo step precedente è una *fire* e la cella su cui è stata effettuata riporta *water* come risultato, allora andrò ad aggiornare la cella nella *CONOSCENZA DI DOMINIO* contenuta nei *MODULI DEGLI AGENTI* (se becco water sulla fire, copio solo il contenuto).
+- [update-kc-guess-cell-agent](./battle-2023/5_Update_KC.clp#L49): a seguito di una *guess* **SENZA CONTENUTO** aggiorniamo SOLO lo status a *guess* della cella nella *CONOSCENZA DI DOMINIO*, contenuta nei *MODULI DEGLI AGENTI*.
+- [update-kc-guess-cell-agent-else](./battle-2023/5_Update_KC.clp#L67): a seguito di una *guess* **CON CONTENUTO**, aggiorniamo il contenuto e lo status a *know* della cella nella *CONOSCENZA DI DOMINIO*, contenuta nei *MODULI DEGLI AGENTI*.
+- [update-kc-\<nome-nave>](./battle-2023/5_Update_KC.clp#L231): le regole con questa radice si attiveranno quando verranno rilevati dei pezzi di navi che sicuramente formano una nave. Verranno aggiornate le loro celle a score negativo e verrà rimossa la nave trovata dalla *CONOSCENZA DI DOMINIO*, contenuta nei *MODULI DEGLI AGENTI*.
 - [add-water-after-fire-*](./battle-2023/5_Update_KC.clp#L177): le regole con questa radice si attiveranno a seguito di una *fire* per andare a posizionare *water* nelle celle adiacenti al pezzo di nave trovato. Es. sopra un *top* vi sarà necessariamente *water* in alto, a destra e a sinistra.
 - [update-kc-scores-*](./battle-2023/5_Update_KC.clp#L319): verranno aggiornati gli score delle righe/colonne che hanno subito modifiche a seguito di un ritrovamento di un pezzo di nave.
 - [finish-update-kc-score-*](./battle-2023/5_Update_KC.clp#L355): una volta finito l'aggiornamento degli score effettuato da *update-kc-scores-\**, ferma l'aggiornamento ritrattando il fatto.
@@ -204,7 +204,7 @@ La strategia, dopo aver terminato lo stato GREEDY, esegue i seguenti passi:
 
 ### Action
 
-Il modulo [ACTION](./battle-2023/7_Action.clp) ha il compito di controllare se nella *CONOSCENZA DI CONTROLLO* è stata deliberata un'azione di exec (tramite il template *exec-agent*) e di che tipologia di azione si tratta. Fatto ciò, manderà l'azione di *exec* al modulo di [AGENT](./battle-2023/3_Agent.clp). Una volta fatto ciò, verrà eseguita l'azione sull'ambiente.
+Il modulo [ACTION](./battle-2023/7_Action.clp) ha il compito di controllare se nella *CONOSCENZA DI DOMINIO*, contenuta nei *MODULI DEGLI AGENTI*, è stata deliberata un'azione di exec (tramite il template *exec-agent*) e di che tipologia di azione si tratta. Fatto ciò, manderà l'azione di *exec* al modulo di [AGENT](./battle-2023/3_Agent.clp). Una volta fatto ciò, verrà eseguita l'azione sull'ambiente.
 Questo modulo ha con sè delle regole che si attivano in base alla tipologia di *action* (*fire*, *guess*, *unguess* e *solve*).
 
 **REGOLE**:
